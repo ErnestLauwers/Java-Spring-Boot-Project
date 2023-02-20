@@ -1,14 +1,41 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Regatta Overview</title>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head::head(title='regatta.overview')}">
 </head>
 <body>
-
+<header th:replace="~{fragments/header :: header(current='regatta-overview')}"></header>
 <main>
-    <h1>Overview (empty page)</h1>
+    <div class="container mt-3">
+        <h1 class="h4">Overzicht</h1>
+        <p th:if="${regattas.isEmpty()}">Er zijn momenteel nog geen regatta's.</p>
+        <div th:if="${not regattas.isEmpty()}" class="table-responsive">
+            <table class="table table-bordered text-center align-middle">
+                <thead class="table-light">
+                <tr>
+                    <th>Wedstrijdnaam</th>
+                    <th>Organiserende club</th>
+                    <th>Datum</th>
+                    <th>Max aantal teams</th>
+                    <th>Categorie</th>
+                    <th>Wijzig</th>
+                    <th>Verwijder</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="regattas:${regattas}">
+                    <td th:text="${regattas.wedstrijdNaam}"></td>
+                    <td th:text="${regattas.clubNaam}"></td>
+                    <td th:text="${regattas.datum}"></td>
+                    <td th:text="${regattas.maxTeams}"></td>
+                    <td th:text="${regattas.categorie}"></td>
+                    <td><button type="button" class="btn btn-outline-primary">Wijzig</button></td>
+                    <td><button type="button" class="btn btn-outline-danger">Verwijder</button></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </main>
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
 </body>
 </html>
