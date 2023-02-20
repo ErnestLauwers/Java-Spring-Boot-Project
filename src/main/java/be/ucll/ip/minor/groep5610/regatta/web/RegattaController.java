@@ -23,9 +23,13 @@ public class RegattaController {
 
     @GetMapping("/regatta")
     public String index(){
-        System.out.println("index");
         return "regatta/index.html";
     }
-    
+
+    @GetMapping("regatta/overview")
+    public String overview(){
+        return "regatta/overview.html";
+    }
+
 
 }
