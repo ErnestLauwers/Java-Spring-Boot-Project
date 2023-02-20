@@ -26,7 +26,6 @@ public class RegattaController {
         System.out.println("index");
         return "regatta/index.html";
     }
-
-
+    
 
 }
