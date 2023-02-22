@@ -44,6 +44,11 @@ public class RegattaController {
         return "regatta/overview";
     }
 
+    @GetMapping("/regatta/add")
+    public String add(Model model) {
+        return "regatta/add";
+    }
+
     private void createSampleData() {
         RegattaDto regatta1 = new RegattaDto();
         regatta1.setWedstrijdNaam("wedstrijd1");
