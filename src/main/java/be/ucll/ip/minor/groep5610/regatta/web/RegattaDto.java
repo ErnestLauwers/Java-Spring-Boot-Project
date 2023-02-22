@@ -1,6 +1,11 @@
 package be.ucll.ip.minor.groep5610.regatta.web;
 
 
+import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+
 import java.time.LocalDate;
 
 public class RegattaDto {
@@ -17,22 +22,28 @@ public class RegattaDto {
         return id;
     }
 
+    @NotBlank(message = "wedstrijd.naam.missing")
     public String getWedstrijdNaam() {
         return wedstrijdNaam;
     }
 
+    @NotBlank(message = "club.naam.missing")
     public String getClubNaam() {
         return clubNaam;
     }
 
+    @FutureOrPresent(message = "date.in.past")
+    @NotNull(message = "date.not.null")
     public LocalDate getDatum() {
         return datum;
     }
 
+    @Positive(message = "teams.must.be.positive")
     public int getMaxTeams() {
         return maxTeams;
     }
 
+    @NotBlank(message = "categorie.missing")
     public String getCategorie() {
         return categorie;
     }
