@@ -55,13 +55,17 @@ public class RegattaController {
 
     @PostMapping("/regatta/add")
     public String add(@Valid RegattaDto regatta, BindingResult result, Model model){
-        if(result.hasErrors()) {
-            model.addAttribute("regattaDto", regatta);
+        try {
+            if(result.hasErrors()) {
+                model.addAttribute("regattaDto", regatta);
+                return "regatta/add";
+            }
+            regattaService.createRegatta(regatta);
+            return "redirect:/regatta/overview";
+        } catch (IllegalArgumentException exc) {
+            model.addAttribute("error", exc.getMessage());
             return "regatta/add";
         }
-
-        regattaService.createRegatta(regatta);
-        return "redirect:/regatta/overview";
     }
 
     private void createSampleData() {
