@@ -22,14 +22,14 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="regattas:${regattas}">
-                    <td th:text="${regattas.wedstrijdNaam}"></td>
-                    <td th:text="${regattas.clubNaam}"></td>
-                    <td th:text="${regattas.datum}"></td>
-                    <td th:text="${regattas.maxTeams}"></td>
-                    <td th:text="${regattas.categorie}"></td>
-                    <td><button type="button" class="btn btn-outline-primary">Wijzig</button></td>
-                    <td><button type="button" class="btn btn-outline-danger">Verwijder</button></td>
+                <tr th:each="regatta:${regattas}">
+                    <td th:text="${regatta.wedstrijdNaam}"></td>
+                    <td th:text="${regatta.clubNaam}"></td>
+                    <td th:text="${regatta.datum}"></td>
+                    <td th:text="${regatta.maxTeams}"></td>
+                    <td th:text="${regatta.categorie}"></td>
+                    <td><a class="btn btn-outline-primary">Wijzig</a></td>
+                    <td><a th:href="@{/regatta/deleteConfirmation/{id}(id=${regatta.id})}" class="btn btn-outline-danger">Verwijder</a></td>
                 </tr>
                 </tbody>
             </table>
