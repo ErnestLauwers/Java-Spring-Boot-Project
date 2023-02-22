@@ -2,13 +2,16 @@ package be.ucll.ip.minor.groep5610.regatta.web;
 
 import be.ucll.ip.minor.groep5610.regatta.domain.Regatta;
 import be.ucll.ip.minor.groep5610.regatta.domain.RegattaService;
+import jakarta.validation.Valid;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -46,7 +49,19 @@ public class RegattaController {
 
     @GetMapping("/regatta/add")
     public String add(Model model) {
+        model.addAttribute("regattaDto", new RegattaDto());
         return "regatta/add";
+    }
+
+    @PostMapping("/regatta/add")
+    public String add(@Valid RegattaDto regatta, BindingResult result, Model model){
+        if(result.hasErrors()) {
+            model.addAttribute("regattaDto", regatta);
+            return "regatta/add";
+        }
+
+        regattaService.createRegatta(regatta);
+        return "redirect:/regatta/overview";
     }
 
     private void createSampleData() {

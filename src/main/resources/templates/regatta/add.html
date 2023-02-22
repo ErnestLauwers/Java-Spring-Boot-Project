@@ -7,31 +7,31 @@
 <main>
     <div class="container-lg">
         <h2>Regatta toevoegen</h2>
-        <form method="post" action="/add">
+        <form method="post" action="/regatta/add" th:object="${regattaDto}">
             <p class="mb-3">
                 <label for="wedstrijdNaam" class="col-form-label">Naam wedstrijd</label>
-                <input type="text" id="wedstrijdNaam" placeholder="Naam wedstrijd" class="form-control col-sm-5">
-                <span class="text-danger"></span>
+                <input type="text" th:field="*{wedstrijdNaam}" id="wedstrijdNaam" placeholder="Naam wedstrijd" class="form-control col-sm-5">
+                <span th:each="error:${#fields.errors('wedstrijdNaam')}" th:text="#{${error}}" class="text-danger"></span>
             </p>
             <p class="mb-3">
                 <label for="clubNaam" class="col-form-label">Naam club</label>
-                <input type="text" id="clubNaam" placeholder="Naam club" class="form-control col-sm-5">
-                <span class="text-danger"></span>
+                <input type="text" th:field="*{clubNaam}" id="clubNaam" placeholder="Naam club" class="form-control col-sm-5">
+                <span th:each="error:${#fields.errors('clubNaam')}" th:text="#{${error}}" class="text-danger"></span>
             </p>
             <p class="mb-3">
                 <label for="datum" class="col-form-label">Datum</label>
-                <input type="date"  id="datum" class="form-control col-sm-5">
-                <span class="text-danger"></span>
+                <input type="date" th:field="*{datum}" id="datum" class="form-control col-sm-5">
+                <span th:each="error:${#fields.errors('datum')}" th:text="#{${error}}" class="text-danger"></span>
             </p>
             <p class="mb-3">
-                <label for="aantalTeams" class="col-form-label">Aantal clubs</label>
-                <input type="number" id="aantalTeams" placeholder="0" class="form-control col-sm-5">
-                <span class="text-danger"></span>
+                <label for="maxTeams" class="col-form-label">Aantal clubs</label>
+                <input type="number" th:field="*{maxTeams}" id="maxTeams" placeholder="0" class="form-control col-sm-5">
+                <span th:each="error:${#fields.errors('maxTeams')}" th:text="#{${error}}" class="text-danger"></span>
             </p>
             <p class="mb-3">
                 <label for="categorie" class="col-form-label">Categorie</label>
-                <input type="text" id="categorie" placeholder="Categorie" class="form-control col-sm-5">
-                <span class="text-danger"></span>
+                <input type="text" th:field="*{categorie}" id="categorie" placeholder="Categorie" class="form-control col-sm-5">
+                <span th:each="error:${#fields.errors('categorie')}" th:text="#{${error}}" class="text-danger"></span>
             </p>
             <p>
                 <input type="submit" value="Regatta toevoegen" class="btn btn-primary">
