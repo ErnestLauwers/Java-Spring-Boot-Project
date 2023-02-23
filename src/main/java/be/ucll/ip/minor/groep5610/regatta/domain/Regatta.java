@@ -21,7 +21,7 @@ public class Regatta {
     private LocalDate datum;
 
     // max teams
-    private int maxTeams;
+    private Integer maxTeams;
 
     // categorie
     private String categorie;
@@ -44,7 +44,7 @@ public class Regatta {
         return datum;
     }
 
-    public int getMaxTeams() {
+    public Integer getMaxTeams() {
         return maxTeams;
     }
 
@@ -73,7 +73,7 @@ public class Regatta {
         this.datum = datum;
     }
 
-    public void setMaxTeams(int maxTeams) {
+    public void setMaxTeams(Integer maxTeams) {
         if(maxTeams < 0) throw new IllegalArgumentException();
         this.maxTeams = maxTeams;
     }

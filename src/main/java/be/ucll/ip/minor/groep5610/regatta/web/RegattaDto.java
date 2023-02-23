@@ -13,7 +13,7 @@ public class RegattaDto {
     private String wedstrijdNaam;
     private String clubNaam;
     private LocalDate datum;
-    private int maxTeams;
+    private Integer maxTeams;
     private String categorie;
 
     // GETTERS
@@ -38,8 +38,9 @@ public class RegattaDto {
         return datum;
     }
 
+    @NotNull(message = "teams.not.null")
     @Positive(message = "teams.must.be.positive")
-    public int getMaxTeams() {
+    public Integer getMaxTeams() {
         return maxTeams;
     }
 
@@ -66,7 +67,7 @@ public class RegattaDto {
         this.datum = datum;
     }
 
-    public void setMaxTeams(int maxTeams) {
+    public void setMaxTeams(Integer maxTeams) {
         this.maxTeams = maxTeams;
     }
 
