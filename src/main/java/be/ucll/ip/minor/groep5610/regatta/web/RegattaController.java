@@ -6,11 +6,12 @@ import jakarta.validation.Valid;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.time.LocalDate;
@@ -66,6 +67,30 @@ public class RegattaController {
             model.addAttribute("error", exc.getMessage());
             return "regatta/add";
         }
+    }
+
+    @GetMapping("/regatta/deleteConfirmation/{id}")
+    public String delete(@PathVariable("id") long id, Model model) {
+        Regatta regatta = regattaService.getRegatta(id);
+        model.addAttribute("regatta", toDto(regatta));
+        return "regatta/delete-confirmation";
+    }
+
+    public RegattaDto toDto(Regatta regatta) {
+        RegattaDto regattaDto = new RegattaDto();
+        regattaDto.setId(regatta.getId());
+        regattaDto.setWedstrijdNaam(regatta.getWedstrijdNaam());
+        regattaDto.setClubNaam(regatta.getClubNaam());
+        regattaDto.setDatum(regatta.getDatum());
+        regattaDto.setMaxTeams(regatta.getMaxTeams());
+        regattaDto.setCategorie(regatta.getCategorie());
+        return regattaDto;
+    }
+
+    @PostMapping("/regatta/delete/{id}")
+    public String delete(@PathVariable("id") long id) {
+        regattaService.deleteRegatta(id);
+        return "redirect:/regatta/overview";
     }
 
     private void createSampleData() {

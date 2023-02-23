@@ -35,4 +35,12 @@ public class RegattaService {
         regatta.setCategorie(dto.getCategorie());
         return regattaRepository.save(regatta);
     }
+
+    public Regatta getRegatta(Long id) {
+        return regattaRepository.findById(id).orElseThrow(() -> new RuntimeException("Regatta met id " + id + " niet gevonden."));
+    }
+
+    public void deleteRegatta(Long id) {
+        regattaRepository.deleteById(id);
+    }
 }
