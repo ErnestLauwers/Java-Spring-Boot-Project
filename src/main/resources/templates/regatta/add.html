@@ -10,7 +10,7 @@
         <div th:if="${error!=null}" class="alert alert-danger">
             <span th:text="${error}"></span>
         </div>
-        <form method="post" action="/regatta/add" th:object="${regattaDto}">
+        <form method="post" th:action="@{/regatta/add}" th:object="${regattaDto}">
             <p class="mb-3">
                 <label for="wedstrijdNaam" class="col-form-label">Naam wedstrijd</label>
                 <input type="text" th:field="*{wedstrijdNaam}" id="wedstrijdNaam" placeholder="Naam wedstrijd" class="form-control col-sm-5">

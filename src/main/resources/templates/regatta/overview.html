@@ -28,7 +28,7 @@
                     <td th:text="${regatta.datum}"></td>
                     <td th:text="${regatta.maxTeams}"></td>
                     <td th:text="${regatta.categorie}"></td>
-                    <td><a class="btn btn-outline-primary">Wijzig</a></td>
+                    <td><a th:href="@{/regatta/update/{id}(id=${regatta.id})}" class="btn btn-outline-primary">Wijzig</a></td>
                     <td><a th:href="@{/regatta/deleteConfirmation/{id}(id=${regatta.id})}" class="btn btn-outline-danger">Verwijder</a></td>
                 </tr>
                 </tbody>

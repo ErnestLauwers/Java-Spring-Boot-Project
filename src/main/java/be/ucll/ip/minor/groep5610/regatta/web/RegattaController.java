@@ -76,6 +76,37 @@ public class RegattaController {
         return "regatta/delete-confirmation";
     }
 
+    @PostMapping("/regatta/delete/{id}")
+    public String delete(@PathVariable("id") long id) {
+        regattaService.deleteRegatta(id);
+        return "redirect:/regatta/overview";
+    }
+
+    @GetMapping("/regatta/update/{id}")
+    public String update(@PathVariable("id") long id, Model model){
+        Regatta regatta = regattaService.getRegatta(id);
+        model.addAttribute("regatta", toDto(regatta));
+        return "regatta/update";
+    }
+
+    @PostMapping("/regatta/update/{id}")
+    public String update(@PathVariable("id") long id, @Valid RegattaDto dto, BindingResult result, Model model) {
+        Regatta regatta = regattaService.getRegatta(id);
+        System.out.println(id);
+        System.out.println(regatta);
+        try {
+            if(result.hasErrors()) {
+                model.addAttribute("regatta", regatta);
+                return "regatta/update/" + id;
+            }
+            regattaService.updateRegatta(dto, regatta);
+            return "redirect:/regatta/overview";
+        } catch (IllegalArgumentException exc) {
+            model.addAttribute("error", exc.getMessage());
+            return "regatta/update/" + id;
+        }
+    }
+
     public RegattaDto toDto(Regatta regatta) {
         RegattaDto regattaDto = new RegattaDto();
         regattaDto.setId(regatta.getId());
@@ -85,12 +116,6 @@ public class RegattaController {
         regattaDto.setMaxTeams(regatta.getMaxTeams());
         regattaDto.setCategorie(regatta.getCategorie());
         return regattaDto;
-    }
-
-    @PostMapping("/regatta/delete/{id}")
-    public String delete(@PathVariable("id") long id) {
-        regattaService.deleteRegatta(id);
-        return "redirect:/regatta/overview";
     }
 
     private void createSampleData() {
