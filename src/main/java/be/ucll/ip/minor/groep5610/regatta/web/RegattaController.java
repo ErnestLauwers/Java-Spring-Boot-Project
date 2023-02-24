@@ -96,14 +96,14 @@ public class RegattaController {
         System.out.println(regatta);
         try {
             if(result.hasErrors()) {
-                model.addAttribute("regatta", regatta);
-                return "regatta/update/" + id;
+                model.addAttribute("regatta", toDto(regatta));
+                return "regatta/update";
             }
             regattaService.updateRegatta(dto, regatta);
             return "redirect:/regatta/overview";
         } catch (IllegalArgumentException exc) {
             model.addAttribute("error", exc.getMessage());
-            return "regatta/update/" + id;
+            return "regatta/update";
         }
     }
 
