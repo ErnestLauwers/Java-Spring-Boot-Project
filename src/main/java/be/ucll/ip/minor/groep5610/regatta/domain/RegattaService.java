@@ -57,4 +57,8 @@ public class RegattaService {
         regatta.setCategorie(dto.getCategorie());
         regattaRepository.save(regatta);
     }
+
+    public List<Regatta> sortByName(){
+        return regattaRepository.findByOrderByClubNaamAsc();
+    }
 }
