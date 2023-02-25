@@ -9,7 +9,10 @@
         <div class="card">
             <div class="card-body">
                 <h1 class="h4 card-title">Wijzig regatta</h1>
-                <form method="post" th:action="@{/regatta/update/{id}(id=${regatta.id})}" th:object="${regatta}">
+                <div th:if="${error!=null}" class="alert alert-danger">
+                    <span th:text="${error}"></span>
+                </div>
+                <form method="post" th:action="@{/regatta/update/{id}(id=${regattaDto.id})}" th:object="${regattaDto}">
                     <p class="mb-3">
                         <label for="wedstrijdNaam" class="col-form-label">Naam wedstrijd</label>
                         <input type="text" th:field="*{wedstrijdNaam}" id="wedstrijdNaam" placeholder="Naam wedstrijd" class="form-control col-sm-5">

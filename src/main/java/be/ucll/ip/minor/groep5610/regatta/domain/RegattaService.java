@@ -45,11 +45,11 @@ public class RegattaService {
     }
 
     public void updateRegatta(RegattaDto dto, Regatta regatta){
-        /*Regatta existingRegatta = regattaRepository.findByClubNaamAndDatumAndWedstrijdNaam(dto.getClubNaam(), dto.getDatum(), dto.getWedstrijdNaam());
+        Regatta existingRegatta = regattaRepository.findByClubNaamAndDatumAndWedstrijdNaam(dto.getClubNaam(), dto.getDatum(), dto.getWedstrijdNaam());
         if (existingRegatta != null) {
             String message = messageSource.getMessage("combination.club.datum.wedstrijd.is.not.unique", null, null);
             throw new IllegalArgumentException(message);
-        }*/
+        }
         regatta.setWedstrijdNaam(dto.getWedstrijdNaam());
         regatta.setClubNaam(dto.getClubNaam());
         regatta.setDatum(dto.getDatum());

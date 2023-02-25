@@ -85,15 +85,13 @@ public class RegattaController {
     @GetMapping("/regatta/update/{id}")
     public String update(@PathVariable("id") long id, Model model){
         Regatta regatta = regattaService.getRegatta(id);
-        model.addAttribute("regatta", toDto(regatta));
+        model.addAttribute("regattaDto", toDto(regatta));
         return "regatta/update";
     }
 
     @PostMapping("/regatta/update/{id}")
     public String update(@PathVariable("id") long id, @Valid RegattaDto dto, BindingResult result, Model model) {
         Regatta regatta = regattaService.getRegatta(id);
-        System.out.println(id);
-        System.out.println(regatta);
         try {
             if(result.hasErrors()) {
                 model.addAttribute("regatta", toDto(regatta));
