@@ -11,4 +11,6 @@ public interface RegattaRepository extends JpaRepository<Regatta, Long> {
     Regatta findByClubNaamAndDatumAndWedstrijdNaam(String clubNaam, LocalDate datum, String wedstrijdNaam);
 
     List<Regatta> findByOrderByClubNaamAsc();
+
+    List<Regatta> findByOrderByDatumAsc();
 }

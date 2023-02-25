@@ -113,6 +113,14 @@ public class RegattaController {
         return "regatta/overview";
     }
 
+    @GetMapping("/regatta/sort/date")
+    public String orderByDate(Model model){
+        List<Regatta> regattasByDate = regattaService.sortByDate();
+
+        model.addAttribute("regattas", regattasByDate);
+        return "regatta/overview";
+    }
+
     public RegattaDto toDto(Regatta regatta) {
         RegattaDto regattaDto = new RegattaDto();
         regattaDto.setId(regatta.getId());
@@ -139,7 +147,15 @@ public class RegattaController {
         regatta2.setMaxTeams(3);
         regatta2.setCategorie("categorie2");
 
+        RegattaDto regatta3 = new RegattaDto();
+        regatta3.setWedstrijdNaam("wedstrijd2");
+        regatta3.setClubNaam("g_club2");
+        regatta3.setDatum(LocalDate.now().plusDays(1));
+        regatta3.setMaxTeams(3);
+        regatta3.setCategorie("categorie2");
+
         regattaService.createRegatta(regatta1);
         regattaService.createRegatta(regatta2);
+        regattaService.createRegatta(regatta3);
     }
 }

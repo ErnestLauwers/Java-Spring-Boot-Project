@@ -61,4 +61,8 @@ public class RegattaService {
     public List<Regatta> sortByName(){
         return regattaRepository.findByOrderByClubNaamAsc();
     }
+
+    public List<Regatta> sortByDate(){
+        return regattaRepository.findByOrderByDatumAsc();
+    }
 }
