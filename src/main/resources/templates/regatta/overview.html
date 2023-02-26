@@ -6,7 +6,38 @@
 <header th:replace="~{fragments/header :: header(current='regatta-overview')}"></header>
 <main>
     <div class="container mt-3">
-        <h1 class="h4">Overzicht</h1>
+        <div class="d-flex justify-content-between mb-2">
+            <h1 class="h4">Overzicht</h1>
+            <button th:if="${not regattas.isEmpty()}" class="btn btn-success" type="button" data-bs-toggle="collapse" data-bs-target="#collapse" aria-expanded="false" aria-controls="collapse">
+                Zoek regatta's
+            </button>
+        </div>
+        <div class="card mb-4 collapse" id="collapse">
+            <div class="card-body">
+                <h2 class="h5 card-title">Zoek regatta's</h2>
+                <p class="card-text">Zoek regatta's binnen een bepaalde periode, op een specifieke categorie of gebruik een combinatie van beide.</p>
+                <form action="">
+                    <div class="mb-3">
+                        <p class="fw-bold mb-0">Periode</p>
+                        <div class="row">
+                            <div class="col">
+                                <label for="startdatum">Startdatum</label>
+                                <input type="date" class="form-control" id="startdatum">
+                            </div>
+                            <div class="col">
+                                <label for="einddatum">Einddatum</label>
+                                <input type="date" class="form-control" id="einddatum">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="fw-bold" for="categorie">Categorie</label>
+                        <input type="text" class="form-control" id="categorie">
+                    </div>
+                    <input class="btn btn-success" type="submit" value="Zoek">
+                </form>
+            </div>
+        </div>
         <p th:if="${regattas.isEmpty()}">Er zijn momenteel nog geen regatta's.</p>
         <div th:if="${not regattas.isEmpty()}" class="table-responsive">
             <table class="table table-bordered text-center align-middle">
