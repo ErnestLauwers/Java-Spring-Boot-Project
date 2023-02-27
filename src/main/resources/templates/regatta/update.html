@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head::head(title='regatta.update')}">
+</head>
+<body>
+<header th:replace="~{fragments/header :: header(current='regatta-update')}"></header>
+<main>
+    <div class="container mt-3">
+        <div class="card">
+            <div class="card-body">
+                <h1 class="h4 card-title">Wijzig regatta</h1>
+                <div th:if="${error!=null}" class="alert alert-danger">
+                    <span th:text="${error}"></span>
+                </div>
+                <form method="post" th:action="@{/regatta/update/{id}(id=${regattaDto.id})}" th:object="${regattaDto}">
+                    <p class="mb-3">
+                        <label for="wedstrijdNaam" class="col-form-label">Naam wedstrijd</label>
+                        <input type="text" th:field="*{wedstrijdNaam}" id="wedstrijdNaam" placeholder="Naam wedstrijd" class="form-control col-sm-5">
+                        <span th:each="error:${#fields.errors('wedstrijdNaam')}" th:text="#{${error}}" class="text-danger"></span>
+                    </p>
+                    <p class="mb-3">
+                        <label for="clubNaam" class="col-form-label">Naam club</label>
+                        <input type="text" th:field="*{clubNaam}" id="clubNaam" placeholder="Naam club" class="form-control col-sm-5">
+                        <span th:each="error:${#fields.errors('clubNaam')}" th:text="#{${error}}" class="text-danger"></span>
+                    </p>
+                    <p class="mb-3">
+                        <label for="datum" class="col-form-label">Datum</label>
+                        <input type="date" th:field="*{datum}" id="datum" class="form-control col-sm-5">
+                        <span th:each="error:${#fields.errors('datum')}" th:text="#{${error}}" class="text-danger"></span>
+                    </p>
+                    <p class="mb-3">
+                        <label for="maxTeams" class="col-form-label">Max aantal teams</label>
+                        <input type="number" th:field="*{maxTeams}" id="maxTeams" placeholder="0" class="form-control col-sm-5">
+                        <span th:each="error:${#fields.errors('maxTeams')}" th:text="#{${error}}" class="text-danger"></span>
+                    </p>
+                    <p class="mb-3">
+                        <label for="categorie" class="col-form-label">Categorie</label>
+                        <input type="text" th:field="*{categorie}" id="categorie" placeholder="Categorie" class="form-control col-sm-5">
+                        <span th:each="error:${#fields.errors('categorie')}" th:text="#{${error}}" class="text-danger"></span>
+                    </p>
+                    <p>
+                        <input type="submit" value="Regatta toevoegen" class="btn btn-primary">
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+</body>
+</html>
