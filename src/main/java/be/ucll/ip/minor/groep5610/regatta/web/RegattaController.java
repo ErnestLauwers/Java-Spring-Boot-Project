@@ -129,6 +129,10 @@ public class RegattaController {
             List<Regatta> regattasWithinRange = regattaService.findWithinRange(dateAfter, dateBefore);
             model.addAttribute("regattas", regattasWithinRange);
         }
+        if (!category.isEmpty() && (dateAfter != null && dateBefore != null)) {
+            List<Regatta> regattasWithinRangeAndByCategory = regattaService.findWithinRangeAndByCategory(dateAfter, dateBefore, category);
+            model.addAttribute("regattas", regattasWithinRangeAndByCategory);
+        }
         return "regatta/overview";
     }
 

@@ -74,4 +74,8 @@ public class RegattaService {
     public List<Regatta> findWithinRange(LocalDate dateAfter, LocalDate dateBefore) {
         return regattaRepository.findWithinRange(dateAfter, dateBefore);
     }
+
+    public List<Regatta> findWithinRangeAndByCategory(LocalDate dateAfter, LocalDate dateBefore, String category) {
+        return regattaRepository.findWithinRangeAndByCategory(dateAfter, dateBefore, category);
+    }
 }
