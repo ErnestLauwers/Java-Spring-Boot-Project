@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -68,5 +69,9 @@ public class RegattaService {
 
     public List<Regatta> findByCategorie(String category) {
         return regattaRepository.findByCategorie(category);
+    }
+
+    public List<Regatta> findWithinRange(LocalDate dateAfter, LocalDate dateBefore) {
+        return regattaRepository.findWithinRange(dateAfter, dateBefore);
     }
 }

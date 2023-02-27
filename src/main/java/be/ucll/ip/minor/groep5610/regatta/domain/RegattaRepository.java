@@ -1,6 +1,7 @@
 package be.ucll.ip.minor.groep5610.regatta.domain;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
@@ -15,4 +16,7 @@ public interface RegattaRepository extends JpaRepository<Regatta, Long> {
     List<Regatta> findByOrderByDatumAsc();
 
     List<Regatta> findByCategorie(String category);
+
+    @Query("SELECT r FROM Regatta r WHERE r.datum BETWEEN :dateAfter AND :dateBefore")
+    List<Regatta> findWithinRange(LocalDate dateAfter, LocalDate dateBefore);
 }
