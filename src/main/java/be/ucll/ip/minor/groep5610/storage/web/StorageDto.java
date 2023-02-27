@@ -1,4 +1,4 @@
-package storage.web;
+package be.ucll.ip.minor.groep5610.storage.web;
 
 import jakarta.validation.constraints.*;
 

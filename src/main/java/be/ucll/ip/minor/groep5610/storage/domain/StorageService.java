@@ -1,8 +1,8 @@
-package storage.domain;
+package be.ucll.ip.minor.groep5610.storage.domain;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import storage.web.StorageDto;
+import be.ucll.ip.minor.groep5610.storage.web.StorageDto;
 
 import java.util.List;
 

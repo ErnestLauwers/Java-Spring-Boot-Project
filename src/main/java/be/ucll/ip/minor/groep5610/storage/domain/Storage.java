@@ -1,4 +1,4 @@
-package storage.domain;
+package be.ucll.ip.minor.groep5610.storage.domain;
 
 import jakarta.persistence.*;
 

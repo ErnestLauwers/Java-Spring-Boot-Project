@@ -1,5 +1,7 @@
-package storage.web;
+package be.ucll.ip.minor.groep5610.storage.web;
 
+import be.ucll.ip.minor.groep5610.storage.domain.Storage;
+import be.ucll.ip.minor.groep5610.storage.domain.StorageService;
 import org.springframework.stereotype.Controller;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
@@ -10,8 +12,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import storage.domain.Storage;
-import storage.domain.StorageService;
 
 import java.util.List;
 
