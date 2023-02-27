@@ -105,19 +105,11 @@ public class RegattaController {
         }
     }
 
-    @GetMapping("/regatta/sort/name")
-    public String orderByName(Model model){
-        List<Regatta> regattasByName = regattaService.sortByName();
+    @GetMapping(value = "/regatta/sort/{sort}")
+    public String orderByName(@PathVariable("sort") String sort, Model model){
+        List<Regatta> regattas = regattaService.sort(sort);
 
-        model.addAttribute("regattas", regattasByName);
-        return "regatta/overview";
-    }
-
-    @GetMapping("/regatta/sort/date")
-    public String orderByDate(Model model){
-        List<Regatta> regattasByDate = regattaService.sortByDate();
-
-        model.addAttribute("regattas", regattasByDate);
+        model.addAttribute("regattas", regattas);
         return "regatta/overview";
     }
 
