@@ -9,9 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.time.LocalDate;
@@ -118,6 +116,15 @@ public class RegattaController {
         List<Regatta> regattasByDate = regattaService.sortByDate();
 
         model.addAttribute("regattas", regattasByDate);
+        return "regatta/overview";
+    }
+
+    @GetMapping("/regatta/search")
+    public String search(@RequestParam(value = "dateAfter", required = false) LocalDate dateAfter, @RequestParam(value = "dateBefore", required = false) LocalDate dateBefore, @RequestParam(value = "category", required = false) String category, Model model){
+        if (category != null && (dateAfter == null && dateBefore == null)) {
+            List<Regatta> regattasByCategory = regattaService.findByCategorie(category);
+            model.addAttribute("regattas", regattasByCategory);
+        }
         return "regatta/overview";
     }
 

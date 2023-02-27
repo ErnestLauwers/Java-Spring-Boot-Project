@@ -13,4 +13,6 @@ public interface RegattaRepository extends JpaRepository<Regatta, Long> {
     List<Regatta> findByOrderByClubNaamAsc();
 
     List<Regatta> findByOrderByDatumAsc();
+
+    List<Regatta> findByCategorie(String category);
 }

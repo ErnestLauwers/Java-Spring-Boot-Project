@@ -65,4 +65,8 @@ public class RegattaService {
     public List<Regatta> sortByDate(){
         return regattaRepository.findByOrderByDatumAsc();
     }
+
+    public List<Regatta> findByCategorie(String category) {
+        return regattaRepository.findByCategorie(category);
+    }
 }

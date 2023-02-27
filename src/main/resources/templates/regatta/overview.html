@@ -16,23 +16,23 @@
             <div class="card-body">
                 <h2 class="h5 card-title">Zoek regatta's</h2>
                 <p class="card-text">Zoek regatta's binnen een bepaalde periode, op een specifieke categorie of gebruik een combinatie van beide.</p>
-                <form action="">
+                <form th:action="@{/regatta/search}" method="get">
                     <div class="mb-3">
                         <p class="fw-bold mb-0">Periode</p>
                         <div class="row">
                             <div class="col">
-                                <label for="startdatum">Startdatum</label>
-                                <input type="date" class="form-control" id="startdatum">
+                                <label for="dateAfter" class="form-label">Startdatum</label>
+                                <input type="date" class="form-control" id="dateAfter" name="dateAfter">
                             </div>
                             <div class="col">
-                                <label for="einddatum">Einddatum</label>
-                                <input type="date" class="form-control" id="einddatum">
+                                <label for="dateBefore" class="form-label">Einddatum</label>
+                                <input type="date" class="form-control" id="dateBefore" name="dateBefore">
                             </div>
                         </div>
                     </div>
                     <div class="mb-3">
-                        <label class="fw-bold" for="categorie">Categorie</label>
-                        <input type="text" class="form-control" id="categorie">
+                        <label for="category" class="form-label fw-bold">Categorie</label>
+                        <input type="text" class="form-control" id="category" name="category">
                     </div>
                     <input class="btn btn-success" type="submit" value="Zoek">
                 </form>
