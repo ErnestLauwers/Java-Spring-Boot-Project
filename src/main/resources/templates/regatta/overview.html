@@ -13,8 +13,8 @@
                 <thead class="table-light">
                 <tr>
                     <th>Wedstrijdnaam</th>
-                    <th><a th:href="@{/regatta/sort/{sort}(sort=clubNaam)}">Organiserende club</a></th>
-                    <th><a th:href="@{/regatta/sort/{sort}(sort=datum)}">Datum</a></th>
+                    <th><a th:href="@{/regatta/sort/{sort}(sort=clubNaam, sortDir=${reverseSortDir})}">Organiserende club</a></th>
+                    <th><a th:href="@{/regatta/sort/{sort}(sort=datum, sortDir=${reverseSortDir})}">Datum</a></th>
                     <th>Max aantal teams</th>
                     <th>Categorie</th>
                     <th>Wijzig</th>

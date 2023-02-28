@@ -59,7 +59,11 @@ public class RegattaService {
         regattaRepository.save(regatta);
     }
 
-    public List<Regatta> sort(String sort){
-        return regattaRepository.findAll(Sort.by(Sort.Direction.ASC, sort));
+    public List<Regatta> sort(String sort, String sortDir){
+        if(sortDir.equals("asc")) {
+            return regattaRepository.findAll(Sort.by(Sort.Direction.ASC, sort));
+        } else {
+            return regattaRepository.findAll(Sort.by(Sort.Direction.DESC, sort));
+        }
     }
 }
