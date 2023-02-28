@@ -15,11 +15,8 @@ public interface RegattaRepository extends JpaRepository<Regatta, Long> {
 
     List<Regatta> findByOrderByDatumAsc();
 
-    List<Regatta> findByCategorie(String category);
-
-    @Query("SELECT r FROM Regatta r WHERE r.datum BETWEEN :dateAfter AND :dateBefore")
-    List<Regatta> findWithinRange(LocalDate dateAfter, LocalDate dateBefore);
-
-    @Query("SELECT r FROM Regatta r WHERE r.datum BETWEEN :dateAfter AND :dateBefore AND r.categorie = :category")
-    List<Regatta> findWithinRangeAndByCategory(LocalDate dateAfter, LocalDate dateBefore, String category);
+    @Query("SELECT r FROM Regatta r WHERE"
+            + "((:dateAfter IS NULL OR :dateBefore IS NULL) OR r.datum BETWEEN :dateAfter AND :dateBefore)"
+            + "AND (:category = '' OR LOWER(r.categorie) LIKE LOWER(CONCAT('%', :category, '%') ))")
+    List<Regatta> searchBy(LocalDate dateAfter, LocalDate dateBefore, String category);
 }
