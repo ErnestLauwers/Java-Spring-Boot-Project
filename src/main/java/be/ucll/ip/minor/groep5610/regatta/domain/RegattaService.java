@@ -3,6 +3,7 @@ package be.ucll.ip.minor.groep5610.regatta.domain;
 import be.ucll.ip.minor.groep5610.regatta.web.RegattaDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -58,11 +59,11 @@ public class RegattaService {
         regattaRepository.save(regatta);
     }
 
-    public List<Regatta> sortByName(){
-        return regattaRepository.findByOrderByClubNaamAsc();
-    }
-
-    public List<Regatta> sortByDate(){
-        return regattaRepository.findByOrderByDatumAsc();
+    public List<Regatta> sort(String sort, String sortDir){
+        if(sortDir.equals("asc")) {
+            return regattaRepository.findAll(Sort.by(Sort.Direction.ASC, sort));
+        } else {
+            return regattaRepository.findAll(Sort.by(Sort.Direction.DESC, sort));
+        }
     }
 }

@@ -6,12 +6,11 @@ import jakarta.validation.Valid;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.time.LocalDate;
@@ -105,19 +104,13 @@ public class RegattaController {
         }
     }
 
-    @GetMapping("/regatta/sort/name")
-    public String orderByName(Model model){
-        List<Regatta> regattasByName = regattaService.sortByName();
+    @GetMapping(value = "/regatta/sort/{field}")
+    public String orderByName(@PathVariable("field")String field , @RequestParam(name = "sortDir", defaultValue = "asc") String sortDir, Model model){
+        List<Regatta> regattas = regattaService.sort(field, sortDir);
 
-        model.addAttribute("regattas", regattasByName);
-        return "regatta/overview";
-    }
-
-    @GetMapping("/regatta/sort/date")
-    public String orderByDate(Model model){
-        List<Regatta> regattasByDate = regattaService.sortByDate();
-
-        model.addAttribute("regattas", regattasByDate);
+        model.addAttribute("regattas", regattas);
+        model.addAttribute("sortDir", sortDir);
+        model.addAttribute("reverseSortDir", sortDir.equals("") || sortDir.equals("asc") ? "desc" : "asc"); // https://www.codejava.net/frameworks/spring-boot/spring-data-jpa-paging-and-sorting-examples
         return "regatta/overview";
     }
 
