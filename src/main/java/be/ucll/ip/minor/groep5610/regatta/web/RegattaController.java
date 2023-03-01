@@ -3,6 +3,7 @@ package be.ucll.ip.minor.groep5610.regatta.web;
 import be.ucll.ip.minor.groep5610.regatta.domain.Regatta;
 import be.ucll.ip.minor.groep5610.regatta.domain.RegattaService;
 import jakarta.validation.Valid;
+import org.hibernate.service.spi.ServiceException;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -68,7 +70,7 @@ public class RegattaController {
         }
     }
 
-    @GetMapping("/regatta/deleteConfirmation/{id}")
+    @GetMapping("/regatta/delete/{id}")
     public String delete(@PathVariable("id") long id, Model model) {
         Regatta regatta = regattaService.getRegatta(id);
         model.addAttribute("regatta", toDto(regatta));
@@ -112,6 +114,18 @@ public class RegattaController {
         model.addAttribute("sortDir", sortDir);
         model.addAttribute("reverseSortDir", sortDir.equals("") || sortDir.equals("asc") ? "desc" : "asc"); // https://www.codejava.net/frameworks/spring-boot/spring-data-jpa-paging-and-sorting-examples
         return "regatta/overview";
+    }
+
+    @GetMapping("/regatta/search")
+    public String search(@RequestParam(value = "dateAfter", required = false) LocalDate dateAfter, @RequestParam(value = "dateBefore", required = false) LocalDate dateBefore, @RequestParam(value = "category", required = false) String category, Model model, RedirectAttributes redirectAttributes){
+        try {
+            List<Regatta> foundRegattas = regattaService.searchBy(dateAfter, dateBefore, category);
+            model.addAttribute("regattas", foundRegattas);
+            return "regatta/overview";
+        } catch (ServiceException exc) {
+            redirectAttributes.addFlashAttribute("error", exc.getMessage());
+            return "redirect:/regatta/overview";
+        }
     }
 
     public RegattaDto toDto(Regatta regatta) {

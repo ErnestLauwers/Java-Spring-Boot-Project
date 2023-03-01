@@ -1,11 +1,13 @@
 package be.ucll.ip.minor.groep5610.regatta.domain;
 
 import be.ucll.ip.minor.groep5610.regatta.web.RegattaDto;
+import org.hibernate.service.spi.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -65,5 +67,18 @@ public class RegattaService {
         } else {
             return regattaRepository.findAll(Sort.by(Sort.Direction.DESC, sort));
         }
+    }
+
+    public List<Regatta> searchBy(LocalDate dateAfter, LocalDate dateBefore, String category) {
+        if (category.isEmpty() && dateAfter == null && dateBefore == null) {
+            throw new ServiceException("Om regatta's te zoeken moet u minstens een start- en einddatum invullen of een categorie. U kunt ook beide invullen.");
+        }
+        if ((dateAfter == null && dateBefore != null) || (dateBefore == null && dateAfter != null)) {
+            throw new ServiceException("Om te zoeken naar regatta's binnen een bepaalde periode, moeten zowel begin- als einddatum worden ingevuld.");
+        }
+        if (dateAfter != null && dateAfter.isAfter(dateBefore)) {
+            throw new ServiceException("Om te zoeken naar regatta's binnen een bepaalde periode, moet de startdatum voor de einddatum liggen.");
+        }
+        return regattaRepository.searchBy(dateAfter, dateBefore, category);
     }
 }
