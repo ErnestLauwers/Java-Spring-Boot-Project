@@ -5,7 +5,7 @@
 <header>
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-      <a class="navbar-brand" href="">Boten</a>
+      <a class="navbar-brand" href="/home" th:text="#{boats}"></a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -13,15 +13,23 @@
         <ul class="navbar-nav">
           <li class="nav-item"
               th:classappend="${current == 'home' ? 'active' : ''}">
-            <a class="nav-link" href="/home">Home</a>
+            <a class="nav-link" href="/home" th:text="#{home}">Home</a>
           </li>
           <li class="nav-item"
           th:classappend="${current == 'regatta-overview' ? 'active' : ''}">
-            <a class="nav-link" href="/regatta/overview">Regatta overzicht</a>
+            <a class="nav-link" href="/regatta/overview" th:text="#{regatta.overview}">Regatta overzicht</a>
           </li>
           <li class="nav-item"
           th:classappend="${current == 'add-regatta' ? 'active' : ''}">
-            <a class="nav-link" href="/regatta/add">Regatta toevoegen</a>
+            <a class="nav-link" href="/regatta/add" th:text="#{regatta.add}">Regatta toevoegen</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false" th:text="#{lang}">
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" th:href="@{?lang=en}">ENG</a></li>
+              <li><a class="dropdown-item" th:href="@{?lang=nl}">NL</a></li>
+            </ul>
           </li>
         </ul>
       </div>
