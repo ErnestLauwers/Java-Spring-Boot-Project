@@ -5,57 +5,56 @@ import jakarta.validation.constraints.*;
 public class StorageDto {
 
     private long id;
-
-    @NotBlank(message = "name.missing")
-    @Size(min = 5, message = "Name must be at least 5 characters long")
     private String name;
-
-    @Pattern(regexp = "\\d{4,}", message = "Postal code must be at least 4 digits long")
-    private int postalcode;
-
-    @Min(value = 1, message = "Capacity must be at least 1")
-    private int capacity;
-
-    @Min(value = 1, message = "Height must be at least 1")
-    private int height;
+    private Integer postalCode;
+    private Integer space;
+    private Integer height;
 
     public long getId() {
         return id;
+    }
+
+    @Size(min = 5, message = "name.short")
+    public String getName() {
+        return name;
+    }
+
+    @Min(value = 1000, message = "postalCode.invalid")
+    @Max(value = 9992, message = "postalCode.invalid")
+    @NotNull(message = "postalCode.null")
+    public Integer getPostalCode() {
+        return postalCode;
+    }
+
+    @Min(value = 1, message = "space.short")
+    @NotNull(message = "space.null")
+    public Integer getSpace() {
+        return space;
+    }
+
+    @Min(value = 1, message = "height.short")
+    @NotNull(message = "height.null")
+    public Integer getHeight() {
+        return height;
     }
 
     public void setId(long id) {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
-    }
-
     public void setName(String name) {
         this.name = name;
     }
 
-    public int getPostalcode() {
-        return postalcode;
+    public void setPostalCode(Integer postalCode) {
+        this.postalCode = postalCode;
     }
 
-    public void setPostalcode(int postalcode) {
-        this.postalcode = postalcode;
+    public void setSpace(Integer space) {
+        this.space = space;
     }
 
-    public int getCapacity() {
-        return capacity;
-    }
-
-    public void setCapacity(int capacity) {
-        this.capacity = capacity;
-    }
-
-    public int getHeight() {
-        return height;
-    }
-
-    public void setHeight(int height) {
+    public void setHeight(Integer height) {
         this.height = height;
     }
 

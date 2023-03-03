@@ -10,52 +10,55 @@ public class Storage {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "my_name")
     private String name;
 
-    private int postalcode;
+    private Integer postalCode;
 
-    private int capacity;
+    private Integer space;
 
-    private int height;
+    private Integer height;
 
     public long getId() {
         return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public Integer getPostalCode() {
+        return postalCode;
     }
 
-    public int getPostalcode() {
-        return postalcode;
+    public Integer getSpace() {
+        return space;
     }
 
-    public void setPostalcode(int postalcode) {
-        this.postalcode = postalcode;
-    }
-
-    public int getCapacity() {
-        return capacity;
-    }
-
-    public void setCapacity(int capacity) {
-        this.capacity = capacity;
-    }
-
-    public int getHeight() {
+    public Integer getHeight() {
         return height;
     }
 
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        if (name == null || name.isBlank() || name.length() < 5) throw new IllegalArgumentException();
+        this.name = name;
+    }
+
+    public void setPostalCode(Integer postalCode) {
+        if (postalCode < 1000 || postalCode > 9992) throw new IllegalArgumentException();
+        this.postalCode = postalCode;
+    }
+
+    public void setSpace(int space) {
+        if (space < 1) throw new IllegalArgumentException();
+        this.space = space;
+    }
+
     public void setHeight(int height) {
+        if (height < 1) throw new IllegalArgumentException();
         this.height = height;
     }
 

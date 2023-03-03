@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head::head(title='storage.update')}">
+</head>
+<body>
+<header th:replace="~{fragments/header :: header(current='update-storage')}"></header>
+<main>
+    <div class="container mt-3">
+        <div class="card">
+            <div class="card-body">
+                <h1 class="h4 card-title">Wijzig Stalling</h1>
+                <div th:if="${error!=null}" class="alert alert-danger">
+                    <span th:text="${error}"></span>
+                </div>
+                <form method="post" th:action="@{/storage/update/{id}(id=${storageDto.id})}" th:object="${storageDto}">
+                    <p class="mb-3">
+                        <label for="name" class="col-form-label">Naam</label>
+                        <input type="text" th:field="*{name}" id="name" placeholder="Naam..." class="form-control col-sm-5">
+                        <span th:each="error:${#fields.errors('name')}" th:text="#{${error}}" class="text-danger"></span>
+                    </p>
+                    <p class="mb-3">
+                        <label for="postalCode" class="col-form-label">Postcode</label>
+                        <input type="number" th:field="*{postalCode}" id="postalCode" placeholder="Postcode..." class="form-control col-sm-5">
+                        <span th:each="error:${#fields.errors('postalCode')}" th:text="#{${error}}" class="text-danger"></span>
+                    </p>
+                    <p class="mb-3">
+                        <label for="space" class="col-form-label">Ruimte</label>
+                        <input type="number" th:field="*{space}" id="space" placeholder="Ruimte..." class="form-control col-sm-5">
+                        <span th:each="error:${#fields.errors('space')}" th:text="#{${error}}" class="text-danger"></span>
+                    </p>
+                    <p class="mb-3">
+                        <label for="height" class="col-form-label">Hoogte</label>
+                        <input type="number" th:field="*{height}" id="height" placeholder="Hoogte..." class="form-control col-sm-5">
+                        <span th:each="error:${#fields.errors('height')}" th:text="#{${error}}" class="text-danger"></span>
+                    </p>
+                    <p>
+                        <input type="submit" value="Wijzig stalling" class="btn btn-primary">
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+</body>
+</html>
