@@ -135,19 +135,26 @@ public class StorageController {
 
     private void createSampleData() {
         StorageDto storage1 = new StorageDto();
-        storage1.setName("D18Q3");
+        storage1.setName("Q9561");
         storage1.setPostalCode(3000);
         storage1.setSpace(20);
-        storage1.setHeight(10);
+        storage1.setHeight(3);
 
         StorageDto storage2 = new StorageDto();
-        storage2.setName("Q0E435");
-        storage2.setPostalCode(3000);
-        storage2.setSpace(19);
-        storage2.setHeight(14);
+        storage2.setName("AKPON905B");
+        storage2.setPostalCode(1000);
+        storage2.setSpace(80);
+        storage2.setHeight(5);
+
+        StorageDto storage3 = new StorageDto();
+        storage3.setName("WAVRE975ZZ");
+        storage3.setPostalCode(1301);
+        storage3.setSpace(1023);
+        storage3.setHeight(17);
 
         storageService.createStorage(storage1);
         storageService.createStorage(storage2);
+        storageService.createStorage(storage3);
     }
 
 }

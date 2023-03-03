@@ -6,16 +6,20 @@
 <header th:replace="~{fragments/header :: header(current='storage-overview')}"></header>
 <main>
     <div class="container mt-3">
-        <h1 class="h4">Overzicht</h1>
-        <p th:if="${storages.isEmpty()}">Er zijn geen stallingen gevonden</p>
+        <h1 class="h4 mt-4 mb-4">Stalling overzicht</h1>
+        <p th:if="${storages.isEmpty()}">
+            Er zijn geen stallingen gevonden...
+            <p th:if="${storages.isEmpty()}"><a th:href="@{/storage/overview}" class="btn btn-secondary me-2 mt-3">Ga terug</a></p>
+        </p>
         <div th:if="${not storages.isEmpty()}" class="table-responsive">
             <div>
-                <h5>Zoeken</h5>
                 <form method="get" th:action="@{/storage/search}">
                     <div>
-                        <label for="searchValue">Welke stalling wilt u zoeken?</label>
-                        <input type="text" id="searchValue" placeholder="Stalling naam..." name="searchValue">
-                        <input type="submit" value="Zoeken">
+                        <h5 class="mb-0 h5">Zoeken</h5>
+                        <label for="searchValue" class="mt-0"></label>
+                        <input type="text" id="searchValue" placeholder="Naam..." name="searchValue" class="form-control col-sm-5 mb-3">
+                        <input type="submit" value="Zoek" class="btn btn-primary mt-2 mb-5">
+                        <a class="btn btn-success mt-2 mb-5 ms-2" th:href="@{/storage/overview}">Reset</a>
                     </div>
                 </form>
             </div>
@@ -36,8 +40,8 @@
                         <td th:text="${storage.postalCode}"></td>
                         <td th:text="${storage.space}"></td>
                         <td th:text="${storage.height}"></td>
-                        <td><a th:href="@{/storage/update/{id}(id=${storage.id})}" class="btn btn-outline-primary">Wijzig</a></td>
-                        <td><a th:href="@{/storage/delete/{id}(id=${storage.id})}" class="btn btn-outline-danger">Verwijder</a></td>
+                        <td><a th:href="@{/storage/update/{id}(id=${storage.id})}" class="btn btn-primary">Wijzig</a></td>
+                        <td><a th:href="@{/storage/delete/{id}(id=${storage.id})}" class="btn btn-danger">Verwijder</a></td>
                     </tr>
                 </tbody>
             </table>

@@ -6,15 +6,15 @@
 <header th:replace="~{fragments/header :: header(current='delete-storage')}"></header>
 <main>
     <div class="container mt-3">
-        <div class="card">
+        <div class="card mt-5">
             <div class="card-body">
-                <h1 class="h4 card-title">Verwijder Stalling</h1>
+                <h1 class="h4 card-title mb-3">Stalling verwijderen</h1>
                 <p class="card-text">Bent u zeker dat u de volgende stalling wilt verwijderen?</p>
                 <ul class="list-unstyled fw-bold">
-                    <li>Naam: <span class="fw-normal" th:text="${storage.name}"></span></li>
-                    <li>Postcode: <span class="fw-normal" th:text="${storage.postalCode}"></span></li>
-                    <li>Ruimte: <span class="fw-normal" th:text="${storage.space}"></span></li>
-                    <li>Hoogte: <span class="fw-normal" th:text="${storage.height}"></span></li>
+                    <li class="mb-2">Naam: <span class="fw-normal" th:text="${storage.name}"></span></li>
+                    <li class="mb-2">Postcode: <span class="fw-normal" th:text="${storage.postalCode}"></span></li>
+                    <li class="mb-2">Ruimte: <span class="fw-normal" th:text="${storage.space}"></span></li>
+                    <li class="mb-3">Hoogte: <span class="fw-normal" th:text="${storage.height}"></span></li>
                 </ul>
                 <div class="d-flex">
                     <a th:href="@{/storage/overview}" class="btn btn-secondary me-2">Ga terug</a>
