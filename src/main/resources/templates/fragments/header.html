@@ -23,6 +23,14 @@
           th:classappend="${current == 'add-regatta' ? 'active' : ''}">
             <a class="nav-link" href="/regatta/add">Regatta toevoegen</a>
           </li>
+          <li class="nav-item"
+              th:classappend="${current == 'overview-storage' ? 'active' : ''}">
+            <a class="nav-link" href="/storage/overview">Stalling overzicht</a>
+          </li>
+          <li class="nav-item"
+              th:classappend="${current == 'add-storage' ? 'active' : ''}">
+            <a class="nav-link" href="/storage/add">Stalling toevoegen</a>
+          </li>
         </ul>
       </div>
     </div>
