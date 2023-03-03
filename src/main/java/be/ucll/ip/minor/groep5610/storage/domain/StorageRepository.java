@@ -13,7 +13,7 @@ public interface StorageRepository extends JpaRepository<Storage, Long> {
     List<Storage> findByOrderByHeightDesc();
     Storage findByName(String name);
 
-    @Query ("SELECT s from Storage s WHERE s.name LIKE %?1%")
+    @Query ("SELECT s from Storage s WHERE LOWER(s.name) LIKE CONCAT('%', LOWER(:keyword), '%') ")
     List<Storage> findStoragesBySearch(String keyword);
 
 }

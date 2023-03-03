@@ -5,31 +5,31 @@
 <header>
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-      <a class="navbar-brand" href="">Boten</a>
+      <a class="navbar-brand ms-3 mt-2 mb-2 fs-3" href="/home">Boten</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+      <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
         <ul class="navbar-nav">
-          <li class="nav-item"
+          <li class="nav-item me-5"
               th:classappend="${current == 'home' ? 'active' : ''}">
-            <a class="nav-link" href="/home">Home</a>
+            <a class="nav-link fs-5" href="/home">Home</a>
           </li>
-          <li class="nav-item"
+          <li class="nav-item me-5"
           th:classappend="${current == 'regatta-overview' ? 'active' : ''}">
-            <a class="nav-link" href="/regatta/overview">Regatta overzicht</a>
+            <a class="nav-link fs-5" href="/regatta/overview">Regatta overzicht</a>
           </li>
-          <li class="nav-item"
+          <li class="nav-item me-5"
           th:classappend="${current == 'add-regatta' ? 'active' : ''}">
-            <a class="nav-link" href="/regatta/add">Regatta toevoegen</a>
+            <a class="nav-link fs-5" href="/regatta/add">Regatta toevoegen</a>
           </li>
-          <li class="nav-item"
+          <li class="nav-item me-5"
               th:classappend="${current == 'overview-storage' ? 'active' : ''}">
-            <a class="nav-link" href="/storage/overview">Stalling overzicht</a>
+            <a class="nav-link fs-5" href="/storage/overview">Stalling overzicht</a>
           </li>
           <li class="nav-item"
               th:classappend="${current == 'add-storage' ? 'active' : ''}">
-            <a class="nav-link" href="/storage/add">Stalling toevoegen</a>
+            <a class="nav-link fs-5" href="/storage/add">Stalling toevoegen</a>
           </li>
         </ul>
       </div>

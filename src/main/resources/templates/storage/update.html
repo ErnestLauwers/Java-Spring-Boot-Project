@@ -6,9 +6,9 @@
 <header th:replace="~{fragments/header :: header(current='update-storage')}"></header>
 <main>
     <div class="container mt-3">
-        <div class="card">
+        <div class="card mt-5">
             <div class="card-body">
-                <h1 class="h4 card-title">Wijzig Stalling</h1>
+                <h1 class="h4 card-title">Stalling wijzigen</h1>
                 <div th:if="${error!=null}" class="alert alert-danger">
                     <span th:text="${error}"></span>
                 </div>
@@ -34,7 +34,8 @@
                         <span th:each="error:${#fields.errors('height')}" th:text="#{${error}}" class="text-danger"></span>
                     </p>
                     <p>
-                        <input type="submit" value="Wijzig stalling" class="btn btn-primary">
+                        <a th:href="@{/storage/overview}" class="btn btn-secondary me-2">Ga terug</a>
+                        <input type="submit" value="Wijzig" class="btn btn-primary">
                     </p>
                 </form>
             </div>

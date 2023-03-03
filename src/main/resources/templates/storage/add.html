@@ -6,7 +6,7 @@
 <header th:replace="~{fragments/header :: header(current='add-storage')}"></header>
 <main>
     <div class="container-lg">
-        <h1 class="h4">Toevoegen</h1>
+        <h1 class="h4 mt-4 mb-3">Stalling toevoegen</h1>
         <div th:if="${error!=null}" class="alert alert-danger">
             <span th:text="${error}"></span>
         </div>
@@ -32,7 +32,7 @@
                 <span th:each="error:${#fields.errors('height')}" th:text="#{${error}}" class="text-danger"></span>
             </p>
             <p>
-                <input type="submit" value="Stalling toevoegen" class="btn btn-primary">
+                <input type="submit" value="Toevoegen" class="btn btn-primary mt-2">
             </p>
         </form>
     </div>
