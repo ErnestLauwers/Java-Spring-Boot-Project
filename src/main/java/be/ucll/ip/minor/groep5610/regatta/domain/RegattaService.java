@@ -4,6 +4,7 @@ import be.ucll.ip.minor.groep5610.regatta.web.RegattaDto;
 import org.hibernate.service.spi.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +27,7 @@ public class RegattaService {
     public Regatta createRegatta(RegattaDto dto) {
         Regatta existingRegatta = regattaRepository.findByClubNaamAndDatumAndWedstrijdNaam(dto.getClubNaam(), dto.getDatum(), dto.getWedstrijdNaam());
         if (existingRegatta != null) {
-            String message = messageSource.getMessage("combination.club.datum.wedstrijd.is.not.unique", null, null);
+            String message = messageSource.getMessage("combination.club.datum.wedstrijd.is.not.unique", null, LocaleContextHolder.getLocale());
             throw new IllegalArgumentException(message);
         }
 
@@ -71,13 +72,13 @@ public class RegattaService {
 
     public List<Regatta> searchBy(LocalDate dateAfter, LocalDate dateBefore, String category) {
         if (category.isEmpty() && dateAfter == null && dateBefore == null) {
-            throw new ServiceException("Om regatta's te zoeken moet u minstens een start- en einddatum invullen of een categorie. U kunt ook beide invullen.");
+            throw new ServiceException(messageSource.getMessage("regatta.search.fields.all.empty", null, LocaleContextHolder.getLocale()));
         }
         if ((dateAfter == null && dateBefore != null) || (dateBefore == null && dateAfter != null)) {
-            throw new ServiceException("Om te zoeken naar regatta's binnen een bepaalde periode, moeten zowel begin- als einddatum worden ingevuld.");
+            throw new ServiceException(messageSource.getMessage("regatta.search.dateAfter.or.dateBefore.empty", null, LocaleContextHolder.getLocale()));
         }
         if (dateAfter != null && dateAfter.isAfter(dateBefore)) {
-            throw new ServiceException("Om te zoeken naar regatta's binnen een bepaalde periode, moet de startdatum voor de einddatum liggen.");
+            throw new ServiceException(messageSource.getMessage("regatta.search.dateAfter.is.after.dateBefore", null, LocaleContextHolder.getLocale()));
         }
         return regattaRepository.searchBy(dateAfter, dateBefore, category);
     }

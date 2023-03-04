@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head::head(title='regatta.delete.confirmation')}">
+<head th:replace="~{fragments/head::head(title='regatta.delete')}">
 </head>
 <body>
 <header th:replace="~{fragments/header :: header(current='regatta-delete-confirmation')}"></header>
@@ -8,7 +8,7 @@
     <div class="container mt-3">
         <div class="card">
             <div class="card-body">
-                <h1 class="h4 card-title">Verwijder regatta</h1>
+                <h1 th:text="#{regatta.delete}" class="h4 card-title"></h1>
                 <p class="card-text">Bent u zeker dat u de volgende regatta wilt verwijderen?</p>
                 <ul class="list-unstyled fw-bold">
                     <li>Wedstrijdnaam: <span class="fw-normal" th:text="${regatta.wedstrijdNaam}"></span></li>

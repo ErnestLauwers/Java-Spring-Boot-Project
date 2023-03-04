@@ -6,7 +6,7 @@
 <header th:replace="~{fragments/header :: header(current='add-regatta')}"></header>
 <main>
     <div class="container-lg">
-        <h1 class="h4">Toevoegen</h1>
+        <h1 th:text="#{regatta.add}" class="h4"></h1>
         <div th:if="${error!=null}" class="alert alert-danger">
             <span th:text="${error}"></span>
         </div>

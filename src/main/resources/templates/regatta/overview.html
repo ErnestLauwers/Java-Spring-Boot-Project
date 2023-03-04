@@ -11,14 +11,14 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
         <div class="d-flex justify-content-between mb-2">
-            <h1 class="h4">Overzicht</h1>
+            <h1 th:text="#{regatta.overview}" class="h4"></h1>
             <button th:if="${not regattas.isEmpty()}" class="btn btn-success" type="button" data-bs-toggle="collapse" data-bs-target="#collapse" aria-expanded="false" aria-controls="collapse">
                 Zoek regatta's
             </button>
         </div>
         <div class="card mb-4 collapse" id="collapse">
             <div class="card-body">
-                <h2 class="h5 card-title">Zoek regatta's</h2>
+                <h2 th:text="#{regatta.search}" class="h5 card-title"></h2>
                 <p class="card-text">Zoek regatta's binnen een bepaalde periode, op een specifieke categorie of gebruik een combinatie van beide.</p>
                 <form th:action="@{/regatta/search}" method="get">
                     <div class="mb-3">
