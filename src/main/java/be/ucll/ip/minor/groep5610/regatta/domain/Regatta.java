@@ -15,10 +15,10 @@ public class Regatta {
     private String wedstrijdNaam;
 
     // naam club
-    private String clubNaam;
+    private String name;
 
     // datum
-    private LocalDate datum;
+    private LocalDate date;
 
     // max teams
     private Integer maxTeams;
@@ -36,12 +36,12 @@ public class Regatta {
         return wedstrijdNaam;
     }
 
-    public String getClubNaam() {
-        return clubNaam;
+    public String getName() {
+        return name;
     }
 
-    public LocalDate getDatum() {
-        return datum;
+    public LocalDate getDate() {
+        return date;
     }
 
     public Integer getMaxTeams() {
@@ -63,14 +63,14 @@ public class Regatta {
         this.wedstrijdNaam = wedstrijdNaam;
     }
 
-    public void setClubNaam(String clubNaam) {
+    public void setName(String clubNaam) {
         if(clubNaam.isEmpty() || clubNaam == null) throw new IllegalArgumentException();
-        this.clubNaam = clubNaam;
+        this.name = clubNaam;
     }
 
-    public void setDatum(LocalDate datum) {
+    public void setDate(LocalDate datum) {
         if(datum.isBefore(LocalDate.now()) || datum == null) throw new IllegalArgumentException();
-        this.datum = datum;
+        this.date = datum;
     }
 
     public void setMaxTeams(Integer maxTeams) {

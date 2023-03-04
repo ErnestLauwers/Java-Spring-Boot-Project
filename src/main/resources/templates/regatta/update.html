@@ -20,13 +20,13 @@
                     </p>
                     <p class="mb-3">
                         <label for="clubNaam" class="col-form-label">Naam club</label>
-                        <input type="text" th:field="*{clubNaam}" id="clubNaam" placeholder="Naam club" class="form-control col-sm-5">
-                        <span th:each="error:${#fields.errors('clubNaam')}" th:text="#{${error}}" class="text-danger"></span>
+                        <input type="text" th:field="*{name}" id="clubNaam" placeholder="Naam club" class="form-control col-sm-5">
+                        <span th:each="error:${#fields.errors('name')}" th:text="#{${error}}" class="text-danger"></span>
                     </p>
                     <p class="mb-3">
                         <label for="datum" class="col-form-label">Datum</label>
-                        <input type="date" th:field="*{datum}" id="datum" class="form-control col-sm-5">
-                        <span th:each="error:${#fields.errors('datum')}" th:text="#{${error}}" class="text-danger"></span>
+                        <input type="date" th:field="*{date}" id="datum" class="form-control col-sm-5">
+                        <span th:each="error:${#fields.errors('date')}" th:text="#{${error}}" class="text-danger"></span>
                     </p>
                     <p class="mb-3">
                         <label for="maxTeams" class="col-form-label">Max aantal teams</label>

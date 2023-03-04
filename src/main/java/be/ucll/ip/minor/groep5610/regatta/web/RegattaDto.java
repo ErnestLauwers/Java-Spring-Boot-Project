@@ -11,8 +11,8 @@ import java.time.LocalDate;
 public class RegattaDto {
     private long id;
     private String wedstrijdNaam;
-    private String clubNaam;
-    private LocalDate datum;
+    private String name;
+    private LocalDate date;
     private Integer maxTeams;
     private String categorie;
 
@@ -28,14 +28,14 @@ public class RegattaDto {
     }
 
     @NotBlank(message = "club.naam.missing")
-    public String getClubNaam() {
-        return clubNaam;
+    public String getName() {
+        return name;
     }
 
     @FutureOrPresent(message = "date.in.past")
     @NotNull(message = "date.not.null")
-    public LocalDate getDatum() {
-        return datum;
+    public LocalDate getDate() {
+        return date;
     }
 
     @NotNull(message = "teams.not.null")
@@ -59,12 +59,12 @@ public class RegattaDto {
         this.wedstrijdNaam = wedstrijdnaam;
     }
 
-    public void setClubNaam(String clubNaam) {
-        this.clubNaam = clubNaam;
+    public void setName(String clubNaam) {
+        this.name = clubNaam;
     }
 
-    public void setDatum(LocalDate datum) {
-        this.datum = datum;
+    public void setDate(LocalDate datum) {
+        this.date = datum;
     }
 
     public void setMaxTeams(Integer maxTeams) {

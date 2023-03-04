@@ -47,8 +47,8 @@
                 <thead class="table-light">
                 <tr>
                     <th>Wedstrijdnaam</th>
-                    <th><a th:href="@{/regatta/sort/{sort}(sort=clubNaam, sortDir=${reverseSortDir})}">Organiserende club</a></th>
-                    <th><a th:href="@{/regatta/sort/{sort}(sort=datum, sortDir=${reverseSortDir})}">Datum</a></th>
+                    <th><a th:href="@{/regatta/sort/{sort}(sort=name)}">Organiserende club</a></th>
+                    <th><a th:href="@{/regatta/sort/{sort}(sort=date)}">Datum</a></th>
                     <th>Max aantal teams</th>
                     <th>Categorie</th>
                     <th>Wijzig</th>
@@ -58,8 +58,8 @@
                 <tbody>
                 <tr th:each="regatta:${regattas}">
                     <td th:text="${regatta.wedstrijdNaam}"></td>
-                    <td th:text="${regatta.clubNaam}"></td>
-                    <td th:text="${regatta.datum}"></td>
+                    <td th:text="${regatta.name}"></td>
+                    <td th:text="${regatta.date}"></td>
                     <td th:text="${regatta.maxTeams}"></td>
                     <td th:text="${regatta.categorie}"></td>
                     <td><a th:href="@{/regatta/update(id=${regatta.id})}" class="btn btn-outline-primary">Wijzig</a></td>

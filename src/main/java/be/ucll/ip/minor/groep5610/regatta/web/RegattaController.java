@@ -24,6 +24,7 @@ public class RegattaController {
 
 
     private final RegattaService regattaService;
+    boolean sortDirAsc = true;
 
     @Autowired
     public RegattaController(RegattaService regattaService) {
@@ -106,12 +107,18 @@ public class RegattaController {
     }
 
     @GetMapping(value = "/regatta/sort/{field}")
-    public String orderByName(@PathVariable("field")String field , @RequestParam(name = "sortDir", defaultValue = "asc") String sortDir, Model model){
-        List<Regatta> regattas = regattaService.sort(field, sortDir);
-
-        model.addAttribute("regattas", regattas);
-        model.addAttribute("sortDir", sortDir);
-        model.addAttribute("reverseSortDir", sortDir.equals("") || sortDir.equals("asc") ? "desc" : "asc"); // https://www.codejava.net/frameworks/spring-boot/spring-data-jpa-paging-and-sorting-examples
+    public String orderByName(@PathVariable("field")String field , Model model){
+        if(sortDirAsc) {
+            sortDirAsc = false;
+            List<Regatta> regattas = regattaService.sort(field, "asc");
+            model.addAttribute("regattas", regattas);
+        } else {
+            sortDirAsc = true;
+            List<Regatta> regattas = regattaService.sort(field, "desc");
+            model.addAttribute("regattas", regattas);
+        }
+        //model.addAttribute("sortDir", sortDir);
+        //model.addAttribute("reverseSortDir", sortDir.equals("") || sortDir.equals("asc") ? "desc" : "asc"); // https://www.codejava.net/frameworks/spring-boot/spring-data-jpa-paging-and-sorting-examples
         return "regatta/overview";
     }
 
@@ -131,8 +138,8 @@ public class RegattaController {
         RegattaDto regattaDto = new RegattaDto();
         regattaDto.setId(regatta.getId());
         regattaDto.setWedstrijdNaam(regatta.getWedstrijdNaam());
-        regattaDto.setClubNaam(regatta.getClubNaam());
-        regattaDto.setDatum(regatta.getDatum());
+        regattaDto.setName(regatta.getName());
+        regattaDto.setDate(regatta.getDate());
         regattaDto.setMaxTeams(regatta.getMaxTeams());
         regattaDto.setCategorie(regatta.getCategorie());
         return regattaDto;
@@ -141,22 +148,22 @@ public class RegattaController {
     private void createSampleData() {
         RegattaDto regatta1 = new RegattaDto();
         regatta1.setWedstrijdNaam("wedstrijd1");
-        regatta1.setClubNaam("d_club1");
-        regatta1.setDatum(LocalDate.now());
+        regatta1.setName("d_club1");
+        regatta1.setDate(LocalDate.now());
         regatta1.setMaxTeams(5);
         regatta1.setCategorie("categorie1");
 
         RegattaDto regatta2 = new RegattaDto();
         regatta2.setWedstrijdNaam("wedstrijd2");
-        regatta2.setClubNaam("a_club2");
-        regatta2.setDatum(LocalDate.now().plusDays(5));
+        regatta2.setName("a_club2");
+        regatta2.setDate(LocalDate.now().plusDays(5));
         regatta2.setMaxTeams(3);
         regatta2.setCategorie("categorie2");
 
         RegattaDto regatta3 = new RegattaDto();
         regatta3.setWedstrijdNaam("wedstrijd2");
-        regatta3.setClubNaam("g_club2");
-        regatta3.setDatum(LocalDate.now().plusDays(1));
+        regatta3.setName("g_club2");
+        regatta3.setDate(LocalDate.now().plusDays(1));
         regatta3.setMaxTeams(3);
         regatta3.setCategorie("categorie2");
 

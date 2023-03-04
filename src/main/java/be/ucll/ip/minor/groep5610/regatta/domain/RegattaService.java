@@ -25,7 +25,7 @@ public class RegattaService {
     }
 
     public Regatta createRegatta(RegattaDto dto) {
-        Regatta existingRegatta = regattaRepository.findByClubNaamAndDatumAndWedstrijdNaam(dto.getClubNaam(), dto.getDatum(), dto.getWedstrijdNaam());
+        Regatta existingRegatta = regattaRepository.findByNameAndDateAndWedstrijdNaam(dto.getName(), dto.getDate(), dto.getWedstrijdNaam());
         if (existingRegatta != null) {
             String message = messageSource.getMessage("combination.club.datum.wedstrijd.is.not.unique", null, LocaleContextHolder.getLocale());
             throw new IllegalArgumentException(message);
@@ -33,8 +33,8 @@ public class RegattaService {
 
         Regatta regatta = new Regatta();
         regatta.setWedstrijdNaam(dto.getWedstrijdNaam());
-        regatta.setClubNaam(dto.getClubNaam());
-        regatta.setDatum(dto.getDatum());
+        regatta.setName(dto.getName());
+        regatta.setDate(dto.getDate());
         regatta.setMaxTeams(dto.getMaxTeams());
         regatta.setCategorie(dto.getCategorie());
         return regattaRepository.save(regatta);
@@ -49,14 +49,14 @@ public class RegattaService {
     }
 
     public void updateRegatta(RegattaDto dto, Regatta regatta){
-        Regatta existingRegatta = regattaRepository.findByClubNaamAndDatumAndWedstrijdNaam(dto.getClubNaam(), dto.getDatum(), dto.getWedstrijdNaam());
+        Regatta existingRegatta = regattaRepository.findByNameAndDateAndWedstrijdNaam(dto.getName(), dto.getDate(), dto.getWedstrijdNaam());
         if (existingRegatta != null) {
             String message = messageSource.getMessage("combination.club.datum.wedstrijd.is.not.unique", null, null);
             throw new IllegalArgumentException(message);
         }
         regatta.setWedstrijdNaam(dto.getWedstrijdNaam());
-        regatta.setClubNaam(dto.getClubNaam());
-        regatta.setDatum(dto.getDatum());
+        regatta.setName(dto.getName());
+        regatta.setDate(dto.getDate());
         regatta.setMaxTeams(dto.getMaxTeams());
         regatta.setCategorie(dto.getCategorie());
         regattaRepository.save(regatta);
