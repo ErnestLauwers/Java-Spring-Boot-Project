@@ -10,6 +10,8 @@ import java.util.List;
 public interface StorageRepository extends JpaRepository<Storage, Long> {
     Storage findByNameAndPostalCode(String name, Integer postalCode);
     List<Storage> findByOrderByNameAsc();
+    List<Storage> findByOrderByNameDesc();
+    List<Storage> findByOrderByHeightAsc();
     List<Storage> findByOrderByHeightDesc();
     Storage findByName(String name);
 

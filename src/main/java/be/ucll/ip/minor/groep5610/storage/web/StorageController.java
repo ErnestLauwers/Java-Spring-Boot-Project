@@ -27,6 +27,9 @@ public class StorageController {
 
     private final StorageService storageService;
 
+    boolean ascendingName = false;
+    boolean descendingHeight = false;
+
     @Autowired
     public StorageController(StorageService storageService) {
         this.storageService = storageService;
@@ -104,14 +107,28 @@ public class StorageController {
 
     @GetMapping("/storage/sort/name")
     public String sortByName(Model model) {
-        List<Storage> storages = storageService.sortByName();
+        List<Storage> storages;
+        if (!ascendingName) {
+            ascendingName = true;
+            storages = storageService.sortByNameAsc();
+        } else {
+            ascendingName = false;
+            storages = storageService.sortByNameDesc();
+        }
         model.addAttribute("storages", storages);
         return "/storage/overview";
     }
 
     @GetMapping("/storage/sort/height")
     public String sortByHeight(Model model) {
-        List<Storage> storages = storageService.sortByHeight();
+        List<Storage> storages;
+        if (!descendingHeight) {
+            descendingHeight = true;
+            storages = storageService.sortByHeightDesc();
+        } else {
+            descendingHeight = false;
+            storages = storageService.sortByHeightAsc();
+        }
         model.addAttribute("storages", storages);
         return "/storage/overview";
     }

@@ -49,11 +49,19 @@ public class StorageService {
         storageRepository.save(storage);
     }
 
-    public List<Storage> sortByName() {
+    public List<Storage> sortByNameAsc() {
         return storageRepository.findByOrderByNameAsc();
     }
 
-    public List<Storage> sortByHeight() {
+    public List<Storage> sortByNameDesc() {
+        return storageRepository.findByOrderByNameDesc();
+    }
+
+    public List<Storage> sortByHeightAsc() {
+        return storageRepository.findByOrderByHeightAsc();
+    }
+
+    public List<Storage> sortByHeightDesc() {
         return storageRepository.findByOrderByHeightDesc();
     }
 
