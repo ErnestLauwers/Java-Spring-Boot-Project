@@ -8,7 +8,7 @@
     <div class="container mt-3">
         <div class="card">
             <div class="card-body">
-                <h1 class="h4 card-title">Wijzig regatta</h1>
+                <h1 th:text="#{regatta.update}" class="h4 card-title"></h1>
                 <div th:if="${error!=null}" class="alert alert-danger">
                     <span th:text="${error}"></span>
                 </div>
