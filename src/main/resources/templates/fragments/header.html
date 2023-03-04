@@ -27,16 +27,16 @@
               th:classappend="${current == 'overview-storage' ? 'active' : ''}">
             <a class="nav-link fs-5" href="/storage/overview">Stalling overzicht</a>
           </li>
-          <li class="nav-item"
+          <li class="nav-item me-5"
               th:classappend="${current == 'add-storage' ? 'active' : ''}">
             <a class="nav-link fs-5" href="/storage/add">Stalling toevoegen</a>
           </li>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false" th:text="#{lang}">
+            <a th:text="#{lang}" class="nav-link dropdown-toggle fs-5" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             </a>
             <ul class="dropdown-menu">
-              <li><a class="dropdown-item" th:href="@{?lang=en}">ENG</a></li>
-              <li><a class="dropdown-item" th:href="@{?lang=nl}">NL</a></li>
+              <li><a class="dropdown-item fs-5" th:href="@{?lang=en}">ENG</a></li>
+              <li><a class="dropdown-item fs-5" th:href="@{?lang=nl}">NL</a></li>
             </ul>
           </li>
         </ul>

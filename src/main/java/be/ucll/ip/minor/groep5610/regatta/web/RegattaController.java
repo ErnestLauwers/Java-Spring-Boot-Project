@@ -7,7 +7,6 @@ import org.hibernate.service.spi.ServiceException;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -83,15 +82,15 @@ public class RegattaController {
         return "redirect:/regatta/overview";
     }
 
-    @GetMapping("/regatta/update/{id}")
-    public String update(@PathVariable("id") long id, Model model){
+    @GetMapping("/regatta/update")
+    public String update(@RequestParam("id") long id, Model model){
         Regatta regatta = regattaService.getRegatta(id);
         model.addAttribute("regattaDto", toDto(regatta));
         return "regatta/update";
     }
 
-    @PostMapping("/regatta/update/{id}")
-    public String update(@PathVariable("id") long id, @Valid RegattaDto dto, BindingResult result, Model model) {
+    @PostMapping("/regatta/update")
+    public String update(@RequestParam("id") long id, @Valid RegattaDto dto, BindingResult result, Model model) {
         Regatta regatta = regattaService.getRegatta(id);
         try {
             if(result.hasErrors()) {

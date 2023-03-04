@@ -12,7 +12,7 @@
                 <div th:if="${error!=null}" class="alert alert-danger">
                     <span th:text="${error}"></span>
                 </div>
-                <form method="post" th:action="@{/regatta/update/{id}(id=${regattaDto.id})}" th:object="${regattaDto}">
+                <form method="post" th:action="@{/regatta/update(id=${regattaDto.id})}" th:object="${regattaDto}">
                     <p class="mb-3">
                         <label for="wedstrijdNaam" class="col-form-label">Naam wedstrijd</label>
                         <input type="text" th:field="*{wedstrijdNaam}" id="wedstrijdNaam" placeholder="Naam wedstrijd" class="form-control col-sm-5">
@@ -39,7 +39,7 @@
                         <span th:each="error:${#fields.errors('categorie')}" th:text="#{${error}}" class="text-danger"></span>
                     </p>
                     <p>
-                        <input type="submit" value="Regatta toevoegen" class="btn btn-primary">
+                        <input type="submit" value="Regatta wijzigen" class="btn btn-primary">
                     </p>
                 </form>
             </div>

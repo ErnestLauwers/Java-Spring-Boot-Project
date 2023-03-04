@@ -41,7 +41,7 @@
                 </form>
             </div>
         </div>
-        <p th:if="${regattas.isEmpty()}">Er zijn momenteel nog geen regatta's.</p>
+        <p th:if="${regattas.isEmpty()}">Er zijn geen regatta's.</p>
         <div th:if="${not regattas.isEmpty()}" class="table-responsive">
             <table class="table table-bordered text-center align-middle">
                 <thead class="table-light">
@@ -62,7 +62,7 @@
                     <td th:text="${regatta.datum}"></td>
                     <td th:text="${regatta.maxTeams}"></td>
                     <td th:text="${regatta.categorie}"></td>
-                    <td><a th:href="@{/regatta/update/{id}(id=${regatta.id})}" class="btn btn-outline-primary">Wijzig</a></td>
+                    <td><a th:href="@{/regatta/update(id=${regatta.id})}" class="btn btn-outline-primary">Wijzig</a></td>
                     <td><a th:href="@{/regatta/delete/{id}(id=${regatta.id})}" class="btn btn-outline-danger">Verwijder</a></td>
                 </tr>
                 </tbody>
