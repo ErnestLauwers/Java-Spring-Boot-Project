@@ -6,7 +6,7 @@
 <header th:replace="~{fragments/header :: header(current='add-storage')}"></header>
 <main>
     <div class="container-lg">
-        <h1 class="h4 mt-4 mb-3">Stalling toevoegen</h1>
+        <h1 th:text="#{storage.add}" class="h4 mt-4 mb-3"></h1>
         <div th:if="${error!=null}" class="alert alert-danger">
             <span th:text="${error}"></span>
         </div>

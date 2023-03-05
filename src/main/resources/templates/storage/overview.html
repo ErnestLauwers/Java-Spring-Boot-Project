@@ -6,7 +6,7 @@
 <header th:replace="~{fragments/header :: header(current='storage-overview')}"></header>
 <main>
     <div class="container mt-3">
-        <h1 class="h4 mt-4 mb-4">Stalling overzicht</h1>
+        <h1 th:text="#{storage.overview}" class="h4 mt-4 mb-4"></h1>
         <p th:if="${storages.isEmpty()}">
             Er zijn geen stallingen gevonden...
             <p th:if="${storages.isEmpty()}"><a th:href="@{/storage/overview}" class="btn btn-secondary me-2 mt-3">Ga terug</a></p>
