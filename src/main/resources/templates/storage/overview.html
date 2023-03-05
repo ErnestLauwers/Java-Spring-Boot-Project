@@ -41,7 +41,7 @@
                         <td th:text="${storage.space}"></td>
                         <td th:text="${storage.height}"></td>
                         <td><a th:href="@{/storage/update/{id}(id=${storage.id})}" class="btn btn-primary">Wijzig</a></td>
-                        <td><a th:href="@{/storage/delete/{id}(id=${storage.id})}" class="btn btn-danger">Verwijder</a></td>
+                        <td><a th:href="@{/storage/delete(id=${storage.id})}" class="btn btn-danger">Verwijder</a></td>
                     </tr>
                 </tbody>
             </table>

@@ -69,16 +69,17 @@ public class StorageController {
         }
     }
 
-    @GetMapping("/storage/delete/{id}")
-    public String delete(@PathVariable("id") long id, Model model) {
+    @GetMapping("/storage/delete")
+    public String delete(@RequestParam(value = "id") long id, Model model) {
         Storage storage = storageService.getStorage(id);
         model.addAttribute("storage", toDto(storage));
         return "/storage/delete";
     }
 
-    @PostMapping("/storage/delete/{id}")
-    public String delete(@PathVariable("id") long id) {
+    @PostMapping("/storage/delete")
+    public String delete(@RequestParam(value = "id") long id) {
         storageService.deleteStorage(id);
+
         return "redirect:/storage/overview";
     }
 
@@ -101,7 +102,7 @@ public class StorageController {
             return "redirect:/storage/overview";
         } catch (IllegalArgumentException exc) {
             model.addAttribute("error", exc.getMessage());
-            return "regatta/update";
+            return "storage/update";
         }
     }
 

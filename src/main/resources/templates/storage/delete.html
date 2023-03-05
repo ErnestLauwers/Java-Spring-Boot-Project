@@ -18,7 +18,7 @@
                 </ul>
                 <div class="d-flex">
                     <a th:href="@{/storage/overview}" class="btn btn-secondary me-2">Ga terug</a>
-                    <form th:action="@{/storage/delete/{id}(id=${storage.id})}" method="post">
+                    <form th:action="@{/storage/delete(id=${storage.id})}" method="post">
                         <input type="submit" class="btn btn-danger" value="Verwijder">
                     </form>
                 </div>
