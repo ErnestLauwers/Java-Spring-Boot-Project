@@ -10,6 +10,7 @@
         <div th:if="${error!=null}" class="alert alert-danger">
             <span th:text="${error}"></span>
         </div>
+        <p>Voeg een stalling toe. Alle velden zijn verplicht</p>
         <form method="post" th:action="@{/storage/add}" th:object="${storageDto}">
             <p class="mb-3">
                 <label for="name" class="col-form-label">Naam</label>

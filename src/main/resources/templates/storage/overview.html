@@ -11,6 +11,7 @@
             Er zijn geen stallingen gevonden...
             <p th:if="${storages.isEmpty()}"><a th:href="@{/storage/overview}" class="btn btn-secondary me-2 mt-3">Ga terug</a></p>
         </p>
+        <p>Een overzicht van stallingen. Er kan gezocht worden op naam en er kan gesorteerd worden op naam en hoogte.</p>
         <div th:if="${not storages.isEmpty()}" class="table-responsive">
             <div>
                 <form method="get" th:action="@{/storage/search}">
