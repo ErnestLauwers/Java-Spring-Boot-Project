@@ -5,6 +5,8 @@ import org.hibernate.service.spi.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -20,8 +22,8 @@ public class RegattaService {
     @Autowired
     private MessageSource messageSource;
 
-    public List<Regatta> getRegattas() {
-        return regattaRepository.findAll();
+    public Page<Regatta> getRegattaPage(int page, int size) {
+        return regattaRepository.findAll(PageRequest.of(page, size));
     }
 
     public Regatta createRegatta(RegattaDto dto) {

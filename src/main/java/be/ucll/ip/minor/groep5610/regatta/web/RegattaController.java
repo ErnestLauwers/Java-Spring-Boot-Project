@@ -7,6 +7,7 @@ import org.hibernate.service.spi.ServiceException;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -37,15 +38,15 @@ public class RegattaController {
     }
 
     @GetMapping("/regatta/overview")
-    public String overview(Model model){
-        List<Regatta> allRegattas = regattaService.getRegattas();
+    public String overview(@RequestParam(value = "page", defaultValue = "0") int page, @RequestParam(value = "size", defaultValue = "1") int size ,Model model){
+        Page<Regatta> regattaPage = regattaService.getRegattaPage(page, size);
 
-        if (allRegattas.isEmpty()) {
+        if (regattaPage.isEmpty()) {
             createSampleData();
-            allRegattas = regattaService.getRegattas();
+            regattaPage = regattaService.getRegattaPage(page, size);
         }
 
-        model.addAttribute("regattas", allRegattas);
+        model.addAttribute("regattas", regattaPage);
         return "regatta/overview";
     }
 
