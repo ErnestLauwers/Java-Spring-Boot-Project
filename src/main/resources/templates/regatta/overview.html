@@ -85,6 +85,26 @@
                     </li>
                 </ul>
             </nav>
+<!--            <nav aria-label="Page navigation">-->
+<!--                <ul class="pagination">-->
+<!--                    <li class="page-item" th:classappend="${regattas.number eq 0} ? 'disabled' : ''">-->
+<!--                        <a class="page-link" th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"-->
+<!--                           th:href="${urlBuilder.replaceQueryParam('page', regattas.number - 1).toUriString()}" aria-label="Previous">-->
+<!--                            <span aria-hidden="true">&laquo;</span>-->
+<!--                        </a>-->
+<!--                    </li>-->
+<!--                    <li th:each="pageNumber: ${#numbers.sequence(1, regattas.totalPages)}" class="page-item" th:classappend="${pageNumber eq (regattas.number + 1) ? 'active': ''}" >-->
+<!--                        <a th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"-->
+<!--                           th:href="${urlBuilder.replaceQueryParam('page', pageNumber - 1).toUriString()}" th:text="${pageNumber}" class="page-link"></a>-->
+<!--                    </li>-->
+<!--                    <li class="page-item" th:classappend="${regattas.number eq (regattas.totalPages - 1)} ? 'disabled': ''">-->
+<!--                        <a class="page-link" th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"-->
+<!--                           th:href="${urlBuilder.replaceQueryParam('page', regattas.number + 1).toUriString()}" aria-label="Next">-->
+<!--                            <span aria-hidden="true">&raquo;</span>-->
+<!--                        </a>-->
+<!--                    </li>-->
+<!--                </ul>-->
+<!--            </nav>-->
         </div>
     </div>
 </main>

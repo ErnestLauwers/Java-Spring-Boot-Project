@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Controller
 public class RegattaController {
@@ -108,14 +107,14 @@ public class RegattaController {
     }
 
     @GetMapping(value = "/regatta/sort/{field}")
-    public String orderByName(@PathVariable("field")String field , Model model){
+    public String orderByName(@PathVariable("field")String field, @RequestParam(value = "page", defaultValue = "0") int page, @RequestParam(value = "size", defaultValue = "1") int size, Model model){
         if(sortDirAsc) {
             sortDirAsc = false;
-            List<Regatta> regattas = regattaService.sort(field, "asc");
+            Page<Regatta> regattas = regattaService.sort(page, size, field, "asc");
             model.addAttribute("regattas", regattas);
         } else {
             sortDirAsc = true;
-            List<Regatta> regattas = regattaService.sort(field, "desc");
+            Page<Regatta> regattas = regattaService.sort(page, size, field, "desc");
             model.addAttribute("regattas", regattas);
         }
         //model.addAttribute("sortDir", sortDir);
@@ -124,9 +123,9 @@ public class RegattaController {
     }
 
     @GetMapping("/regatta/search")
-    public String search(@RequestParam(value = "dateAfter", required = false) LocalDate dateAfter, @RequestParam(value = "dateBefore", required = false) LocalDate dateBefore, @RequestParam(value = "category", required = false) String category, Model model, RedirectAttributes redirectAttributes){
+    public String search(@RequestParam(value = "dateAfter", required = false) LocalDate dateAfter, @RequestParam(value = "dateBefore", required = false) LocalDate dateBefore, @RequestParam(value = "category", required = false) String category, @RequestParam(value = "page", defaultValue = "0") int page, @RequestParam(value = "size", defaultValue = "1") int size, Model model, RedirectAttributes redirectAttributes){
         try {
-            List<Regatta> foundRegattas = regattaService.searchBy(dateAfter, dateBefore, category);
+            Page<Regatta> foundRegattas = regattaService.searchBy(dateAfter, dateBefore, category, page, size);
             model.addAttribute("regattas", foundRegattas);
             return "regatta/overview";
         } catch (ServiceException exc) {
