@@ -3,19 +3,29 @@ package be.ucll.ip.minor.groep5610.boat.web;
 import be.ucll.ip.minor.groep5610.boat.domain.Boat;
 import be.ucll.ip.minor.groep5610.boat.domain.BoatRepository;
 import be.ucll.ip.minor.groep5610.boat.domain.BoatService;
+import be.ucll.ip.minor.groep5610.regatta.web.RegattaController;
 import be.ucll.ip.minor.groep5610.storage.domain.Storage;
 import be.ucll.ip.minor.groep5610.storage.web.StorageDto;
+import jakarta.validation.Valid;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.logging.Logger;
+import java.util.Map;
 
-@Controller
+@RestController
+@RequestMapping("/api/boat")
 public class BoatController {
+
+    private static Logger LOGGER = LoggerFactory.getLogger(BoatController.class);
 
     private final BoatService boatService;
 
@@ -24,7 +34,7 @@ public class BoatController {
         this.boatService = boatService;
     }
 
-    @GetMapping("/api/boat/overview")
+    @GetMapping("/overview")
     public ResponseEntity<List<Boat>> overview() {
         List<Boat> boats = boatService.getAllBoats();
         if (boats.isEmpty()) {
@@ -34,57 +44,69 @@ public class BoatController {
         return ResponseEntity.ok().body(boats);
     }
 
-    @DeleteMapping("/api/boat/delete")
-    public ResponseEntity<Boat> delete(@RequestParam("id") Long id) {
-        if (boatService.getBoat(id) != null) {
+    @DeleteMapping("/delete")
+    public ResponseEntity<?> delete(@RequestParam("id") Long id) {
+        try {
             Boat deletedBoat = boatService.getBoat(id);
             boatService.deleteBoatById(id);
             return ResponseEntity.ok().body(deletedBoat);
+        } catch (RuntimeException exc) {
+            return ResponseEntity.badRequest().body(exc.getMessage());
+        }
+    }
+
+    @PostMapping("/add")
+    public ResponseEntity<?> add(@Valid @RequestBody BoatDto boatDto, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            List<String> errors = new ArrayList<>();
+            for (FieldError error : bindingResult.getFieldErrors()) {
+                errors.add(error.getDefaultMessage());
+            }
+            return ResponseEntity.badRequest().body(errors);
         } else {
-            return ResponseEntity.notFound().build();
+            try {
+                Boat newBoat = boatService.createBoat(boatDto);
+                return ResponseEntity.ok().body(newBoat);
+            } catch (IllegalArgumentException exc) {
+                return ResponseEntity.badRequest().body(exc.getMessage());
+            }
         }
     }
 
-    @PostMapping("/api/boat/add")
-    public ResponseEntity<?> add(@RequestBody Boat boat) {
-        try {
-            Boat newBoat = boatService.createBoat(toDto(boat));
-            return ResponseEntity.ok().body(newBoat);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
-
-    @PutMapping("/api/boat/update")
-    public ResponseEntity<?> update(@RequestParam("id") Long id, @RequestBody Boat boat) {
-        if (boatService.getBoat(id) != null) {
+    @PutMapping("/update")
+    public ResponseEntity<?> update(@RequestParam("id") Long id, @Valid @RequestBody Boat boat, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            List<String> errors = new ArrayList<>();
+            for (FieldError error : bindingResult.getFieldErrors()) {
+                errors.add(error.getDefaultMessage());
+            }
+            return ResponseEntity.badRequest().body(errors);
+        } else {
             try {
                 boatService.updateBoat(id, boat);
                 Boat updatedBoat = boatService.getBoat(id);
                 return ResponseEntity.ok().body(updatedBoat);
-            } catch (IllegalArgumentException e) {
-                return ResponseEntity.badRequest().body(e.getMessage());
+            } catch (RuntimeException exc) {
+                return ResponseEntity.badRequest().body(exc.getMessage());
             }
-        } else {
-            return ResponseEntity.notFound().build();
         }
     }
 
-    @GetMapping("api/boat/search")
-    public ResponseEntity<Boat> searchByInsurance(@RequestParam("insurance") String insurance) {
-        if (boatService.getBoatByInsurance(insurance) != null) {
+    @GetMapping("/search")
+    public ResponseEntity<?> searchByInsurance(@RequestParam("insurance") String insurance) {
+        try {
             return ResponseEntity.ok().body(boatService.getBoatByInsurance(insurance));
-        } else {
-            return ResponseEntity.notFound().build();
+        } catch (RuntimeException exc) {
+            return ResponseEntity.badRequest().body(exc.getMessage());
         }
     }
 
-    @GetMapping("api/boat/search/{height}/{width}")
-    public ResponseEntity<Boat> searchByHeightWidth(@PathVariable("height") int height, @PathVariable("width") int width) {
-        if (boatService.getBoatByHeightWidth(height, width) != null) {
+    @GetMapping("/search/{height}/{width}")
+    public ResponseEntity<?> searchByHeightWidth(@PathVariable("height") int height, @PathVariable("width") int width) {
+        try {
             return ResponseEntity.ok().body(boatService.getBoatByHeightWidth(height, width));
-        } else {
-            return ResponseEntity.notFound().build();
+        } catch (RuntimeException exc) {
+            return ResponseEntity.badRequest().body(exc.getMessage());
         }
     }
 

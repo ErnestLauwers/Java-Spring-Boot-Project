@@ -22,19 +22,29 @@ public class BoatService {
     }
 
     public Boat getBoat(Long id) {
-        return boatRepository.findById(id).orElseThrow(() -> new RuntimeException("Boat with id " + id + " not found"));
+        return boatRepository.findById(id).orElseThrow(() -> new RuntimeException(("Boat with id " + id + " not found")));
     }
 
     public Boat getBoatByInsurance(String insuranceNumber) {
-        return boatRepository.findBoatByInsurance(insuranceNumber);
+        Boat foundBoat = boatRepository.findBoatByInsurance(insuranceNumber);
+        if (foundBoat == null) {
+            throw new RuntimeException("There is no Boat with " + insuranceNumber + " as insurance number.");
+        } else {
+            return boatRepository.findBoatByInsurance(insuranceNumber);
+        }
     }
 
     public void deleteBoatById(Long id) {
         boatRepository.deleteById(id);
     }
 
-    public Boat getBoatByHeightWidth(int height, int width) {
-        return boatRepository.findBoatByHeightWidth(height, width);
+    public List<Boat> getBoatByHeightWidth(int height, int width) {
+        List<Boat> foundBoat = boatRepository.findBoatByHeightWidth(height, width);
+        if (foundBoat.isEmpty()) {
+            throw new RuntimeException("There is no Boat with " + height + " as height and " + width + " as width.");
+        } else {
+            return boatRepository.findBoatByHeightWidth(height, width);
+        }
     }
 
     public Boat createBoat(BoatDto dto) {
