@@ -61,9 +61,7 @@ public class TeamBuilder {
         team.setName(name);
         team.setCategory(category);
         team.setPassengers(passengers);
-        if (club != null) {
-            team.setClub(club);
-        }
+        team.setClub(club);
         return team;
     }
 }
