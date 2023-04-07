@@ -10,10 +10,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.MessageSource;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
@@ -25,6 +24,9 @@ public class TeamServiceTest {
 
     @Mock
     TeamRepository teamRepository;
+
+    @Mock
+    MessageSource messageSource;
 
     @InjectMocks
     TeamService teamService;
@@ -58,6 +60,7 @@ public class TeamServiceTest {
 
         //mocking
         when(teamRepository.findByNameAndCategory(teamAlphaDto.getName(), teamAlphaDto.getCategory())).thenReturn(teamAlpha);
+        when(messageSource.getMessage(eq("team.combination.name.and.category.not.unique"), any(), any())).thenReturn("team.combination.name.and.category.not.unique");
 
         //when
         final Throwable exception = catchThrowable(() -> teamService.createTeam(teamAlphaDto));
@@ -122,7 +125,8 @@ public class TeamServiceTest {
         Team teamAlpha = TeamBuilder.aValidTeamAlpha().build();
 
         //mocking
-        when(teamRepository.findById(teamAlpha.getId())).thenReturn(null);
+        when(teamRepository.findById(teamAlpha.getId())).thenReturn(Optional.empty());
+        when(messageSource.getMessage(eq("no.team.with.this.id"), any(), any())).thenReturn("no.team.with.this.id");
 
         //when
         final Throwable exception = catchThrowable(() -> teamService.getTeam(teamAlpha.getId()));
@@ -164,6 +168,7 @@ public class TeamServiceTest {
         //mocking
         when(teamRepository.findById(teamAlpha.getId())).thenReturn(Optional.of(teamAlpha));
         when(teamRepository.findByNameAndCategory(dto.getName(), dto.getCategory())).thenReturn(teamDelta);
+        when(messageSource.getMessage(eq("team.combination.name.and.category.not.unique"), any(), any())).thenReturn("team.combination.name.and.category.not.unique");
 
         //when
         final Throwable exception = catchThrowable(() -> teamService.updateTeam(teamAlpha.getId(), dto));
@@ -180,7 +185,8 @@ public class TeamServiceTest {
         TeamDto dto = TeamDtoBuilder.aValidTeamDelta().build();
 
         //mocking
-        when(teamRepository.findById(nonExistentTeam.getId())).thenReturn(null);
+        when(teamRepository.findById(nonExistentTeam.getId())).thenReturn(Optional.empty());
+        when(messageSource.getMessage(eq("no.team.with.this.id"), any(), any())).thenReturn("no.team.with.this.id");
 
         //when
         final Throwable exception = catchThrowable(() -> teamService.updateTeam(nonExistentTeam.getId(), dto));
@@ -197,13 +203,13 @@ public class TeamServiceTest {
 
         //mocking
         when(teamRepository.findById(teamAlpha.getId())).thenReturn(Optional.of(teamAlpha));
-        doNothing().when(teamRepository).deleteById(teamAlpha.getId());
+        doNothing().when(teamRepository).delete(teamAlpha);
 
         //when
         teamService.deleteTeamById(teamAlpha.getId());
 
         //then
-        verify(teamRepository, times(1)).deleteById(teamAlpha.getId());
+        verify(teamRepository, times(1)).delete(teamAlpha);
     }
 
     @Test
@@ -212,7 +218,8 @@ public class TeamServiceTest {
         Team nonExistentTeam = TeamBuilder.aValidTeamAlpha().build();
 
         //mocking
-        when(teamRepository.findById(nonExistentTeam.getId())).thenReturn(null);
+        when(teamRepository.findById(nonExistentTeam.getId())).thenReturn(Optional.empty());
+        when(messageSource.getMessage(eq("no.team.with.this.id"), any(), any())).thenReturn("no.team.with.this.id");
 
         //when
         final Throwable exception = catchThrowable(() -> teamService.deleteTeamById(nonExistentTeam.getId()));
