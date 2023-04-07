@@ -50,8 +50,8 @@ public class RegattaService {
 
     public void updateRegatta(RegattaDto dto, Regatta regatta){
         Regatta existingRegatta = regattaRepository.findByNameAndDateAndWedstrijdNaam(dto.getName(), dto.getDate(), dto.getWedstrijdNaam());
-        if (existingRegatta != null) {
-            String message = messageSource.getMessage("combination.club.datum.wedstrijd.is.not.unique", null, null);
+        if (existingRegatta != null && existingRegatta.getId() != regatta.getId()) {
+            String message = messageSource.getMessage("combination.club.datum.wedstrijd.is.not.unique", null, LocaleContextHolder.getLocale());
             throw new IllegalArgumentException(message);
         }
         regatta.setWedstrijdNaam(dto.getWedstrijdNaam());
