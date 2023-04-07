@@ -3,13 +3,13 @@ package be.ucll.ip.minor.groep5610.team;
 import be.ucll.ip.minor.groep5610.team.domain.Team;
 
 public class TeamBuilder {
+    private long id;
     private String name;
     private String category;
     private Integer passengers;
     private String club;
 
     private TeamBuilder() {
-
     }
 
     public static TeamBuilder aTeam() {
@@ -17,7 +17,11 @@ public class TeamBuilder {
     }
 
     public static TeamBuilder aValidTeamAlpha() {
-        return aTeam().withName("Alpha").withCategory("AbCd123").withPassengers(5).withClub("ClubA");
+        return aTeam().withId(1).withName("Alpha").withCategory("AbCd123").withPassengers(5).withClub("ClubA");
+    }
+
+    public static TeamBuilder aValidTeamDelta() {
+        return aTeam().withId(2).withName("Delta").withCategory("qztg581").withPassengers(4).withClub("ClubB");
     }
 
     public static TeamBuilder aTeamWithNoName() {
@@ -34,6 +38,11 @@ public class TeamBuilder {
 
     public static TeamBuilder aTeamWithNoClub() {
         return aTeam().withName("Alpha").withCategory("AbCd123").withPassengers(5);
+    }
+
+    public TeamBuilder withId(long id) {
+        this.id = id;
+        return this;
     }
 
     public TeamBuilder withName(String name) {
@@ -58,6 +67,7 @@ public class TeamBuilder {
 
     public Team build() {
         Team team = new Team();
+        team.setId(id);
         team.setName(name);
         team.setCategory(category);
         team.setPassengers(passengers);
