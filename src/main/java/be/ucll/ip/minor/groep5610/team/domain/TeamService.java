@@ -64,6 +64,6 @@ public class TeamService {
     }
 
     public List<Team> getTeamsWithLessPassengersThan(int passengers) {
-        return teamRepository.findByPassengersLessThan(passengers);
+        return teamRepository.findByPassengersLessThanOrderByPassengers(passengers);
     }
 }

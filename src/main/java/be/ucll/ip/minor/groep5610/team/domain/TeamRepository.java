@@ -12,5 +12,5 @@ public interface TeamRepository extends JpaRepository<Team, Long>{
 
     List<Team> findByCategory(String category);
 
-    List<Team> findByPassengersLessThan(int passengers);
+    List<Team> findByPassengersLessThanOrderByPassengers(int passengers);
 }

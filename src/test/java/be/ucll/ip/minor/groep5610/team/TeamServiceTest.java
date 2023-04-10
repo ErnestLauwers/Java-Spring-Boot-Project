@@ -271,7 +271,7 @@ public class TeamServiceTest {
         int passengers = 6;
 
         //mocking
-        when(teamRepository.findByPassengersLessThan(passengers)).thenReturn(List.of(teamAlpha, teamDelta));
+        when(teamRepository.findByPassengersLessThanOrderByPassengers(passengers)).thenReturn(List.of(teamDelta, teamAlpha));
 
         //when
         List<Team> teams = teamService.getTeamsWithLessPassengersThan(passengers);
@@ -280,6 +280,7 @@ public class TeamServiceTest {
         assertThat(teams).isNotEmpty();
         assertThat(teams).hasSize(2);
         assertThat(teams).contains(teamAlpha, teamDelta);
+        assertThat(teams).isEqualTo(List.of(teamDelta, teamAlpha));
     }
 
     @Test
@@ -288,7 +289,7 @@ public class TeamServiceTest {
         int passengers = 6;
 
         //mocking
-        when(teamRepository.findByPassengersLessThan(passengers)).thenReturn(Collections.emptyList());
+        when(teamRepository.findByPassengersLessThanOrderByPassengers(passengers)).thenReturn(Collections.emptyList());
 
         //when
         List<Team> teams = teamService.getTeamsWithLessPassengersThan(passengers);

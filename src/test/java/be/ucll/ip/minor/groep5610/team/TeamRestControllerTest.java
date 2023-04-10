@@ -200,7 +200,7 @@ public class TeamRestControllerTest {
     @Test
     public void givenTeams_whenGetRequestToSearchTeamsWithLessPassengers_thenJSONWithFoundTeamsIsReturned() throws Exception {
         //given
-        List<Team> teams = Arrays.asList(alpha, delta);
+        List<Team> teams = Arrays.asList(delta, alpha);
         int passengers = 6;
 
         //mocking
@@ -211,8 +211,8 @@ public class TeamRestControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 //then
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].name", Is.is(alpha.getName())))
-                .andExpect(jsonPath("$[1].name", Is.is(delta.getName())));
+                .andExpect(jsonPath("$[0].name", Is.is(delta.getName())))
+                .andExpect(jsonPath("$[1].name", Is.is(alpha.getName())));
     }
 
     @Test
