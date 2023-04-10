@@ -2,14 +2,16 @@ package be.ucll.ip.minor.groep5610.team.web;
 
 import be.ucll.ip.minor.groep5610.team.domain.Team;
 import be.ucll.ip.minor.groep5610.team.domain.TeamService;
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -33,6 +35,25 @@ public class TeamRestController {
             teams = teamService.getTeams();
         }
         return ResponseEntity.ok().body(teams);
+    }
+
+    @PostMapping("/add")
+    public ResponseEntity<?> add(@Valid @RequestBody TeamDto teamDto, BindingResult result){
+        System.out.println("add done");
+        if(result.hasErrors()){
+            List<String> errors = new ArrayList<>();
+            for(FieldError error : result.getFieldErrors()){
+                errors.add(error.getDefaultMessage());
+            }
+            return ResponseEntity.badRequest().body(errors);
+        } else {
+            try {
+                Team team = teamService.createTeam(teamDto);
+                return ResponseEntity.ok().body(team);
+            } catch (IllegalArgumentException e){
+                return ResponseEntity.badRequest().body(e.getMessage());
+            }
+        }
     }
 
     private void createSampleData() {

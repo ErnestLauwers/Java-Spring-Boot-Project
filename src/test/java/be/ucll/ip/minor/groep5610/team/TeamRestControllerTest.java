@@ -103,7 +103,7 @@ public class TeamRestControllerTest {
                 //then
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$[0].name", Is.is(alphaDto.getName())));
+                .andExpect(jsonPath("$.name", Is.is(alphaDto.getName())));
     }
 
     @Test
