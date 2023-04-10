@@ -31,7 +31,7 @@ public class TeamRestController {
         List<Team> teams = teamService.getTeams();
 
         if(teams.isEmpty()){
-            createSampleData();
+            //createSampleData();
             teams = teamService.getTeams();
         }
         return ResponseEntity.ok().body(teams);
@@ -39,7 +39,6 @@ public class TeamRestController {
 
     @PostMapping("/add")
     public ResponseEntity<?> add(@Valid @RequestBody TeamDto teamDto, BindingResult result){
-        System.out.println("add done");
         if(result.hasErrors()){
             List<String> errors = new ArrayList<>();
             for(FieldError error : result.getFieldErrors()){
