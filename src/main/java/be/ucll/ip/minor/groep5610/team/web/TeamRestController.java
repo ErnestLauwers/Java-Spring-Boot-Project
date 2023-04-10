@@ -58,10 +58,16 @@ public class TeamRestController {
     @GetMapping("/search")
     public ResponseEntity<?> searchByCategory(@RequestParam("category") String category){
         try {
-            System.out.println(category);
-            System.out.println(teamService.getTeams().get(0).getCategory());
-            System.out.println(teamService.getTeamsByCategory(category));
             return ResponseEntity.ok().body(teamService.getTeamsByCategory(category));
+        } catch (RuntimeException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/search/{number}")
+    public ResponseEntity<?> searchByPassengers(@PathVariable("number") int passengers) {
+        try {
+            return ResponseEntity.ok().body(teamService.getTeamsWithLessPassengersThan(passengers));
         } catch (RuntimeException e){
             return ResponseEntity.badRequest().body(e.getMessage());
         }
