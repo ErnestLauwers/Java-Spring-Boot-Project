@@ -56,10 +56,7 @@ public class TeamService {
     }
 
     public void deleteTeamById(Long id) {
-        System.out.println(getTeam(id));
-        if(getTeam(id) != null) {
-            teamRepository.delete(getTeam(id));
-        }
+        teamRepository.delete(getTeam(id));
     }
 
     public List<Team> getTeamsByCategory(String category) {
