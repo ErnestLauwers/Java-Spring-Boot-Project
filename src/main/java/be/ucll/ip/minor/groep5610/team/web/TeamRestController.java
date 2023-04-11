@@ -7,11 +7,8 @@ import org.hibernate.service.spi.ServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
@@ -36,37 +33,27 @@ public class TeamRestController {
         List<Team> teams = teamService.getTeams();
 
         if(teams.isEmpty()){
-            //createSampleData();
+            createSampleData();
             teams = teamService.getTeams();
         }
         return ResponseEntity.ok().body(teams);
     }
 
     @PostMapping("/add")
-    public Iterable<Team> add(@Valid @RequestBody TeamDto teamDto){
-        teamService.createTeam(teamDto);
-        return teamService.getTeams();
-
+    public Team add(@Valid @RequestBody TeamDto teamDto) {
+        return teamService.createTeam(teamDto);
     }
 
     @PutMapping("/update/{id}")
-    public Iterable<Team> update(@PathVariable("id") Long id, @Valid @RequestBody TeamDto teamDto){
-        try {
-            teamService.updateTeam(id, teamDto);
-            return teamService.getTeams();
-        } catch (ServiceException e){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-        }
+    public Team update(@PathVariable("id") Long id, @Valid @RequestBody TeamDto teamDto) {
+        return teamService.updateTeam(id, teamDto);
     }
 
     @DeleteMapping("/delete/{id}")
-    public Iterable<?> delete(@PathVariable("id") Long id){
-        try {
-            teamService.deleteTeamById(id);
-            return teamService.getTeams();
-        } catch (ServiceException e){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-        }
+    public Team delete(@PathVariable("id") Long id){
+        Team deletedTeam = teamService.getTeam(id);
+        teamService.deleteTeamById(id);
+        return deletedTeam;
     }
 
     @GetMapping("/search")
@@ -115,13 +102,12 @@ public class TeamRestController {
                 errors.put(fieldName, errorMessage);
             });
         }
-        /*else if (ex instanceof ServiceException) {
-            errors.put(((ServiceException) ex).getAction(), ex.getMessage());
-        }*/
+        else if (ex instanceof ServiceException) {
+            errors.put("error", ex.getMessage());
+        }
         else {
             errors.put(((ResponseStatusException) ex).getReason(), ex.getCause().getMessage());
         }
         return errors;
     }
-
 }

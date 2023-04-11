@@ -6,7 +6,7 @@ import be.ucll.ip.minor.groep5610.team.domain.TeamService;
 import be.ucll.ip.minor.groep5610.team.web.TeamDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.core.Is;
-import org.hibernate.cfg.NotYetImplementedException;
+import org.hibernate.service.spi.ServiceException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,6 +23,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -75,7 +77,6 @@ public class TeamRestControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].name", Is.is(alphaDto.getName())))
                 .andExpect(jsonPath("$[1].name", Is.is(deltaDto.getName())));
-
     }
 
     @Test
@@ -98,11 +99,9 @@ public class TeamRestControllerTest {
     @Test
     public void givenNoTeams_whenPostRequestToAddAValidTeam_thenJSONWithAddedTeamIsReturned() throws Exception {
         // given
-        List<Team> teams = Arrays.asList(alpha);
 
         // mocking
-        given(service.createTeam(alphaDto)).willReturn(alpha);
-        given(service.getTeams()).willReturn(teams);
+        given(service.createTeam(any())).willReturn(alpha);
 
         //when
         teamRestController.perform(post("/api/team/add")
@@ -111,8 +110,7 @@ public class TeamRestControllerTest {
                 // then
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$[0].name", Is.is(alphaDto.getName())));
-
+                .andExpect(jsonPath("$.name", Is.is(alphaDto.getName())));
     }
 
     @Test
@@ -136,13 +134,9 @@ public class TeamRestControllerTest {
     @Test
     public void givenTeams_whenPutRequestToUpdateATeamWithValidValues_thenJSONWithUpdatedTeamIsReturned() throws Exception {
         //given
-        List<Team> teams = Arrays.asList(delta);
 
         //mocking
-        given(service.createTeam(alphaDto)).willReturn(alpha);
-        given(service.updateTeam(alpha.getId(), deltaDto)).willReturn(delta);
-        given(service.getTeams()).willReturn(teams);
-
+        given(service.updateTeam(eq(alpha.getId()), any())).willReturn(delta);
 
         //when
         teamRestController.perform(put("/api/team/update/" + alpha.getId())
@@ -150,14 +144,13 @@ public class TeamRestControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 // then
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].name", Is.is(deltaDto.getName())));
-
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.name", Is.is(deltaDto.getName())));
     }
 
     @Test
     public void givenTeams_whenPutRequestToUpdateATeamWithInvalidValues_thenErrorInJSONFormatIsReturned() throws Exception {
         //given
-        //mocking
 
         //when
         teamRestController.perform(put("/api/team/update/" + alpha.getId())
@@ -165,6 +158,7 @@ public class TeamRestControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 // then
                 .andExpect(status().isBadRequest())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.name", Is.is("team.name.invalid")))
                 .andExpect(jsonPath("$.category", Is.is("team.category.invalid")))
                 .andExpect(jsonPath("$.passengers", Is.is("team.number.of.passengers.invalid")));
@@ -174,14 +168,18 @@ public class TeamRestControllerTest {
     @Test
     public void givenNoTeams_whenPutRequestToUpdateATeamWithNonExistentId_thenErrorInJSONFormatIsReturned() throws Exception {
         //given
+
         //mocking
+        given(service.updateTeam(eq(alpha.getId()), any())).willThrow(new ServiceException("no.team.with.this.id"));
 
         //when
-        teamRestController.perform(put("/api/team/update/" + 500)
-                .content(mapper.writeValueAsString(invalidTeamDto))
+        teamRestController.perform(put("/api/team/update/" + alpha.getId())
+                .content(mapper.writeValueAsString(alphaDto))
                 .contentType(MediaType.APPLICATION_JSON))
                 // then
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.error", Is.is("no.team.with.this.id")));
     }
 
     // DELETE
@@ -189,38 +187,32 @@ public class TeamRestControllerTest {
     @Test
     public void givenTeams_whenDeleteRequestToDeleteATeamWithValidId_thenJSONWithDeletedTeamIsReturned() throws Exception {
         //given
-        List<Team> teams = Arrays.asList(delta);
 
         //mocking
-        given(service.createTeam(alphaDto)).willReturn(alpha);
-        given(service.createTeam(alphaDto)).willReturn(delta);
-        given(service.getTeams()).willReturn(teams);
-
+        given(service.getTeam(alpha.getId())).willReturn(alpha);
 
         //when
         teamRestController.perform(delete("/api/team/delete/" + alpha.getId())
-                 .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON))
                 //then
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$[0].name", Is.is(deltaDto.getName())));
+                .andExpect(jsonPath("$.name", Is.is(alpha.getName())));
     }
 
     @Test
     public void givenNoTeams_whenDeleteRequestToDeleteATeamWithNonExistentId_thenErrorInJSONFormatIsReturned() throws Exception {
         //given
-        List<Team> teams = Arrays.asList(alpha, delta);
 
         //mocking
-        given(service.createTeam(alphaDto)).willReturn(alpha);
-        given(service.createTeam(alphaDto)).willReturn(delta);
-        given(service.getTeams()).willReturn(teams);
+        given(service.getTeam(500L)).willThrow(new ServiceException("no.team.with.this.id"));
 
         //when
-        teamRestController.perform(delete("/api/team/delete/" + (service.getTeams().size()))
-                 .contentType(MediaType.APPLICATION_JSON))
-                //then
-                .andExpect(status().isBadRequest());
+        teamRestController.perform(delete("/api/team/delete/" + 500)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.error", Is.is("no.team.with.this.id")));
     }
 
     // SEARCH CATEGORY
