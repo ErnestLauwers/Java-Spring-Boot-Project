@@ -3,18 +3,21 @@ package be.ucll.ip.minor.groep5610.team.web;
 import be.ucll.ip.minor.groep5610.team.domain.Team;
 import be.ucll.ip.minor.groep5610.team.domain.TeamService;
 import jakarta.validation.Valid;
+import org.hibernate.service.spi.ServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/team")
@@ -40,22 +43,10 @@ public class TeamRestController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<?> add(@Valid @RequestBody TeamDto teamDto, BindingResult result){
-        if(result.hasErrors()){
-            List<String> errors = new ArrayList<>();
-            for(FieldError error : result.getFieldErrors()){
-                errors.add(error.getDefaultMessage());
-            }
-            return ResponseEntity.badRequest().body(errors);
-        } else {
-            try {
-                teamService.createTeam(teamDto);
-                System.out.println(teamService.getTeams());
-                return ResponseEntity.ok().body(teamService.getTeams());
-            } catch (IllegalArgumentException e){
-                return ResponseEntity.badRequest().body(e.getMessage());
-            }
-        }
+    public Iterable<Team> add(@Valid @RequestBody TeamDto teamDto){
+        teamService.createTeam(teamDto);
+        return teamService.getTeams();
+
     }
 
     @PutMapping("/update/{id}")
@@ -121,6 +112,26 @@ public class TeamRestController {
 
         teamService.createTeam(team1);
         teamService.createTeam(team2);
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler({MethodArgumentNotValidException.class, ServiceException.class, ResponseStatusException.class})
+    public Map<String, String> handleValidationExceptions(Exception ex) {
+        Map<String, String> errors = new HashMap<>();
+        if (ex instanceof MethodArgumentNotValidException) {
+            ((MethodArgumentNotValidException)ex).getBindingResult().getAllErrors().forEach((error) -> {
+                String fieldName = ((FieldError) error).getField();
+                String errorMessage = error.getDefaultMessage();
+                errors.put(fieldName, errorMessage);
+            });
+        }
+        /*else if (ex instanceof ServiceException) {
+            errors.put(((ServiceException) ex).getAction(), ex.getMessage());
+        }*/
+        else {
+            errors.put(((ResponseStatusException) ex).getReason(), ex.getCause().getMessage());
+        }
+        return errors;
     }
 
 }

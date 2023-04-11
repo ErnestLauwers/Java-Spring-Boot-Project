@@ -120,11 +120,10 @@ public class TeamRestControllerTest {
         //given
 
         //when
-        teamRestController.perform(
-                post("/api/team/add")
+        teamRestController.perform(post("/api/team/add")
                 .content(mapper.writeValueAsString(invalidTeamDto))
                 .contentType(MediaType.APPLICATION_JSON))
-                //then
+                // then
                 .andExpect(status().isBadRequest())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.name", Is.is("team.name.invalid")))
