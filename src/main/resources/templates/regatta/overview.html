@@ -21,7 +21,7 @@
             <div class="card-body">
                 <h2 th:text="#{regatta.search}" class="h5 card-title"></h2>
                 <p class="card-text">Zoek regatta's binnen een bepaalde periode, op een specifieke categorie of gebruik een combinatie van beide.</p>
-                <form th:action="@{/regatta/search}" method="get">
+                <form th:action="@{/regatta/searchAndSort}" th:object="${searchDto}" method="get">
                     <div class="mb-3">
                         <div class="row">
                             <div class="col">
@@ -48,8 +48,8 @@
                 <thead class="table-light">
                 <tr>
                     <th>Wedstrijdnaam</th>
-                    <th><a th:href="@{/regatta/sort/{sort}(sort=name)}">Organiserende club</a></th>
-                    <th><a th:href="@{/regatta/sort/{sort}(sort=date)}">Datum</a></th>
+                    <th><a th:href="@{/regatta/searchAndSort(sort=name, dateAfter=${searchDto.getDateAfter()}, dateBefore=${searchDto.getDateBefore()}, category=${searchDto.category})}">Organiserende club</a></th>
+                    <th><a th:href="@{/regatta/searchAndSort(sort=date, dateAfter=${searchDto.getDateAfter()}, dateBefore=${searchDto.getDateBefore()}, category=${searchDto.category})}">Datum</a></th>
                     <th>Max aantal teams</th>
                     <th>Categorie</th>
                     <th>Wijzig</th>
@@ -71,40 +71,20 @@
             <nav aria-label="Page navigation">
                 <ul class="pagination">
                     <li class="page-item" th:classappend="${regattas.number eq 0} ? 'disabled' : ''">
-                        <a class="page-link" th:href="@{/regatta/overview(page=${regattas.number - 1})}" aria-label="Previous">
+                        <a class="page-link" th:href="@{${searchAndSortUrl}(page=${regattas.number - 1})}" aria-label="Previous">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
                     <li th:each="pageNumber: ${#numbers.sequence(1, regattas.totalPages)}" class="page-item" th:classappend="${pageNumber eq (regattas.number + 1) ? 'active': ''}" >
-                        <a th:text="${pageNumber}" class="page-link" th:href="@{/regatta/overview(page=${pageNumber - 1})}"></a>
+                        <a th:text="${pageNumber}" class="page-link" th:href="@{${searchAndSortUrl}(page=${pageNumber - 1})}"></a>
                     </li>
                     <li class="page-item" th:classappend="${regattas.number eq (regattas.totalPages - 1)} ? 'disabled': ''">
-                        <a class="page-link" th:href="@{/regatta/overview(page=${regattas.number + 1})}" aria-label="Next">
+                        <a class="page-link" th:href="@{${searchAndSortUrl}(page=${regattas.number + 1})}" aria-label="Next">
                             <span aria-hidden="true">&raquo;</span>
                         </a>
                     </li>
                 </ul>
             </nav>
-<!--            <nav aria-label="Page navigation">-->
-<!--                <ul class="pagination">-->
-<!--                    <li class="page-item" th:classappend="${regattas.number eq 0} ? 'disabled' : ''">-->
-<!--                        <a class="page-link" th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"-->
-<!--                           th:href="${urlBuilder.replaceQueryParam('page', regattas.number - 1).toUriString()}" aria-label="Previous">-->
-<!--                            <span aria-hidden="true">&laquo;</span>-->
-<!--                        </a>-->
-<!--                    </li>-->
-<!--                    <li th:each="pageNumber: ${#numbers.sequence(1, regattas.totalPages)}" class="page-item" th:classappend="${pageNumber eq (regattas.number + 1) ? 'active': ''}" >-->
-<!--                        <a th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"-->
-<!--                           th:href="${urlBuilder.replaceQueryParam('page', pageNumber - 1).toUriString()}" th:text="${pageNumber}" class="page-link"></a>-->
-<!--                    </li>-->
-<!--                    <li class="page-item" th:classappend="${regattas.number eq (regattas.totalPages - 1)} ? 'disabled': ''">-->
-<!--                        <a class="page-link" th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"-->
-<!--                           th:href="${urlBuilder.replaceQueryParam('page', regattas.number + 1).toUriString()}" aria-label="Next">-->
-<!--                            <span aria-hidden="true">&raquo;</span>-->
-<!--                        </a>-->
-<!--                    </li>-->
-<!--                </ul>-->
-<!--            </nav>-->
         </div>
     </div>
 </main>

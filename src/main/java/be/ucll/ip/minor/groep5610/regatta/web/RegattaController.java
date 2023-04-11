@@ -37,14 +37,14 @@ public class RegattaController {
     }
 
     @GetMapping("/regatta/overview")
-    public String overview(@RequestParam(value = "page", defaultValue = "0") int page, @RequestParam(value = "size", defaultValue = "1") int size ,Model model){
+    public String overview(@RequestParam(value = "page", defaultValue = "0") int page, @RequestParam(value = "size", defaultValue = "2") int size , Model model){
         Page<Regatta> regattaPage = regattaService.getRegattaPage(page, size);
 
         if (regattaPage.isEmpty()) {
             createSampleData();
             regattaPage = regattaService.getRegattaPage(page, size);
         }
-
+        model.addAttribute("searchDto", new RegattaSearchDto());
         model.addAttribute("regattas", regattaPage);
         return "regatta/overview";
     }
@@ -106,27 +106,52 @@ public class RegattaController {
         }
     }
 
-    @GetMapping(value = "/regatta/sort/{field}")
-    public String orderByName(@PathVariable("field")String field, @RequestParam(value = "page", defaultValue = "0") int page, @RequestParam(value = "size", defaultValue = "1") int size, Model model){
-        if(sortDirAsc) {
-            sortDirAsc = false;
-            Page<Regatta> regattas = regattaService.sort(page, size, field, "asc");
-            model.addAttribute("regattas", regattas);
-        } else {
-            sortDirAsc = true;
-            Page<Regatta> regattas = regattaService.sort(page, size, field, "desc");
-            model.addAttribute("regattas", regattas);
-        }
-        //model.addAttribute("sortDir", sortDir);
-        //model.addAttribute("reverseSortDir", sortDir.equals("") || sortDir.equals("asc") ? "desc" : "asc"); // https://www.codejava.net/frameworks/spring-boot/spring-data-jpa-paging-and-sorting-examples
-        return "regatta/overview";
-    }
+//    @GetMapping(value = "/regatta/sort/{field}")
+//    public String orderByName(@PathVariable("field")String field, @RequestParam(value = "page", defaultValue = "0") int page, @RequestParam(value = "size", defaultValue = "1") int size, Model model){
+//        if(sortDirAsc) {
+//            sortDirAsc = false;
+//            Page<Regatta> regattas = regattaService.sort(page, size, field, "asc");
+//            model.addAttribute("regattas", regattas);
+//        } else {
+//            sortDirAsc = true;
+//            Page<Regatta> regattas = regattaService.sort(page, size, field, "desc");
+//            model.addAttribute("regattas", regattas);
+//        }
+//        //model.addAttribute("sortDir", sortDir);
+//        //model.addAttribute("reverseSortDir", sortDir.equals("") || sortDir.equals("asc") ? "desc" : "asc"); // https://www.codejava.net/frameworks/spring-boot/spring-data-jpa-paging-and-sorting-examples
+//        return "regatta/overview";
+//    }
+//
+//    @GetMapping("/regatta/search")
+//    public String search(@RequestParam(value = "dateAfter", required = false) LocalDate dateAfter, @RequestParam(value = "dateBefore", required = false) LocalDate dateBefore, @RequestParam(value = "category", required = false) String category, @RequestParam(value = "page", defaultValue = "0") int page, @RequestParam(value = "size", defaultValue = "1") int size, Model model, RedirectAttributes redirectAttributes){
+//        try {
+//            Page<Regatta> foundRegattas = regattaService.searchBy(dateAfter, dateBefore, category, page, size);
+//            model.addAttribute("regattas", foundRegattas);
+//            return "regatta/overview";
+//        } catch (ServiceException exc) {
+//            redirectAttributes.addFlashAttribute("error", exc.getMessage());
+//            return "redirect:/regatta/overview";
+//        }
+//    }
 
-    @GetMapping("/regatta/search")
-    public String search(@RequestParam(value = "dateAfter", required = false) LocalDate dateAfter, @RequestParam(value = "dateBefore", required = false) LocalDate dateBefore, @RequestParam(value = "category", required = false) String category, @RequestParam(value = "page", defaultValue = "0") int page, @RequestParam(value = "size", defaultValue = "1") int size, Model model, RedirectAttributes redirectAttributes){
+    @GetMapping("/regatta/searchAndSort")
+    public String searchAndSort(@ModelAttribute(value = "searchDto") RegattaSearchDto searchDto,
+                                @RequestParam(value = "sort", defaultValue = "id") String sort,
+                                @RequestParam(value = "page", defaultValue = "0") int page,
+                                @RequestParam(value = "size", defaultValue = "2") int size,
+                                Model model,
+                                RedirectAttributes redirectAttributes) {
         try {
-            Page<Regatta> foundRegattas = regattaService.searchBy(dateAfter, dateBefore, category, page, size);
-            model.addAttribute("regattas", foundRegattas);
+            if(sortDirAsc) {
+                sortDirAsc = false;
+                Page<Regatta> regattas = regattaService.searchAndSort(searchDto, sort, "asc", page, size);
+                model.addAttribute("regattas", regattas);
+            } else {
+                sortDirAsc = true;
+                Page<Regatta> regattas = regattaService.searchAndSort(searchDto, sort,  "desc", page, size);
+                model.addAttribute("regattas", regattas);
+            }
+            model.addAttribute("searchAndSortUrl", searchAndSortUrl(searchDto, sort));
             return "regatta/overview";
         } catch (ServiceException exc) {
             redirectAttributes.addFlashAttribute("error", exc.getMessage());
@@ -170,5 +195,13 @@ public class RegattaController {
         regattaService.createRegatta(regatta1);
         regattaService.createRegatta(regatta2);
         regattaService.createRegatta(regatta3);
+    }
+
+    private String searchAndSortUrl(RegattaSearchDto searchDto, String sort) {
+        return "/regatta/searchAndSort?"
+                + "sort=" + sort
+                + "&dateAfter=" + searchDto.getDateAfter()
+                + "&dateBefore=" + searchDto.getDateBefore()
+                + "&category=" + searchDto.getCategory();
     }
 }
