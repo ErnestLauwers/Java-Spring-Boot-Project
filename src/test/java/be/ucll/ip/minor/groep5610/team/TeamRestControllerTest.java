@@ -174,20 +174,30 @@ public class TeamRestControllerTest {
 
     @Test
     public void givenTeams_whenDeleteRequestToDeleteATeamWithValidId_thenJSONWithDeletedTeamIsReturned() throws Exception {
-        throw new NotYetImplementedException();
         //given
+
         //mocking
+
         //when
-        //then
+        teamRestController.perform(delete("/api/team/delete/" + alpha.getId())
+                        .contentType(MediaType.APPLICATION_JSON))
+                //then
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.name", Is.is(alphaDto.getName())));
     }
 
     @Test
     public void givenNoTeams_whenDeleteRequestToDeleteATeamWithNonExistentId_thenErrorInJSONFormatIsReturned() throws Exception {
-        throw new NotYetImplementedException();
         //given
+
         //mocking
+
         //when
-        //then
+        teamRestController.perform(delete("/api/team/delete/" + 500)
+                        .contentType(MediaType.APPLICATION_JSON))
+                //then
+                .andExpect(status().isNotFound());
     }
 
     @Test
