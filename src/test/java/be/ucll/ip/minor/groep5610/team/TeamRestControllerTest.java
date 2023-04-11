@@ -143,9 +143,9 @@ public class TeamRestControllerTest {
         given(service.updateTeam(alpha.getId(), deltaDto)).willReturn(delta);
         given(service.getTeams()).willReturn(teams);
 
+
         //when
-        teamRestController.perform(
-                put("/api/team/update/" + alpha.getId())
+        teamRestController.perform(put("/api/team/update/" + alpha.getId())
                 .content(mapper.writeValueAsString(deltaDto))
                 .contentType(MediaType.APPLICATION_JSON))
                 // then
@@ -181,7 +181,7 @@ public class TeamRestControllerTest {
                 .content(mapper.writeValueAsString(invalidTeamDto))
                 .contentType(MediaType.APPLICATION_JSON))
                 // then
-                .andExpect(status().isNotFound());
+                .andExpect(status().isBadRequest());
     }
 
     // DELETE
@@ -189,29 +189,38 @@ public class TeamRestControllerTest {
     @Test
     public void givenTeams_whenDeleteRequestToDeleteATeamWithValidId_thenJSONWithDeletedTeamIsReturned() throws Exception {
         //given
+        List<Team> teams = Arrays.asList(delta);
 
         //mocking
+        given(service.createTeam(alphaDto)).willReturn(alpha);
+        given(service.createTeam(alphaDto)).willReturn(delta);
+        given(service.getTeams()).willReturn(teams);
+
 
         //when
         teamRestController.perform(delete("/api/team/delete/" + alpha.getId())
-                        .contentType(MediaType.APPLICATION_JSON))
+                 .contentType(MediaType.APPLICATION_JSON))
                 //then
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.name", Is.is(alphaDto.getName())));
+                .andExpect(jsonPath("$[0].name", Is.is(deltaDto.getName())));
     }
 
     @Test
     public void givenNoTeams_whenDeleteRequestToDeleteATeamWithNonExistentId_thenErrorInJSONFormatIsReturned() throws Exception {
         //given
+        List<Team> teams = Arrays.asList(alpha, delta);
 
         //mocking
+        given(service.createTeam(alphaDto)).willReturn(alpha);
+        given(service.createTeam(alphaDto)).willReturn(delta);
+        given(service.getTeams()).willReturn(teams);
 
         //when
-        teamRestController.perform(delete("/api/team/delete/" + 500)
-                        .contentType(MediaType.APPLICATION_JSON))
+        teamRestController.perform(delete("/api/team/delete/" + (service.getTeams().size()))
+                 .contentType(MediaType.APPLICATION_JSON))
                 //then
-                .andExpect(status().isNotFound());
+                .andExpect(status().isBadRequest());
     }
 
     // SEARCH CATEGORY

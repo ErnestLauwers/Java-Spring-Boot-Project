@@ -51,33 +51,21 @@ public class TeamRestController {
 
     @PutMapping("/update/{id}")
     public Iterable<Team> update(@PathVariable("id") Long id, @Valid @RequestBody TeamDto teamDto){
-        /*if (teamService.getTeam(id) != null) {
-            try {
-                teamService.updateTeam(id, teamDto);
-                Team updatedTeam = teamService.getTeam(id);
-                return ResponseEntity.ok().body(updatedTeam);
-            } catch (IllegalArgumentException e){
-                return ResponseEntity.badRequest().body(e.getMessage());
-            }
-        } else {
-            return ResponseEntity.notFound().build();
-        }*/
-        teamService.updateTeam(id, teamDto);
-        return teamService.getTeams();
+        try {
+            teamService.updateTeam(id, teamDto);
+            return teamService.getTeams();
+        } catch (ServiceException e){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> delete(@PathVariable("id") Long id){
-        if(teamService.getTeam(id) != null){
-            try {
-                Team deletedTeam = teamService.getTeam(id);
-                teamService.deleteTeamById(id);
-                return ResponseEntity.ok().body(deletedTeam);
-            } catch (IllegalArgumentException e){
-                return ResponseEntity.badRequest().body(e.getMessage());
-            }
-        } else {
-            return ResponseEntity.notFound().build();
+    public Iterable<?> delete(@PathVariable("id") Long id){
+        try {
+            teamService.deleteTeamById(id);
+            return teamService.getTeams();
+        } catch (ServiceException e){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
     }
 
