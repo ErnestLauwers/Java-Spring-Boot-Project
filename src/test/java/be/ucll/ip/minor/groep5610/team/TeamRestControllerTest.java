@@ -6,6 +6,7 @@ import be.ucll.ip.minor.groep5610.team.domain.TeamService;
 import be.ucll.ip.minor.groep5610.team.web.TeamDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.core.Is;
+import org.hibernate.cfg.NotYetImplementedException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -72,6 +73,7 @@ public class TeamRestControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].name", Is.is(alphaDto.getName())))
                 .andExpect(jsonPath("$[1].name", Is.is(deltaDto.getName())));
+
     }
 
     @Test
@@ -94,7 +96,7 @@ public class TeamRestControllerTest {
         //given
 
         //mocking
-        given(service.createTeam(alphaDto)).willReturn(alpha);
+
 
         //when
         teamRestController.perform(post("/api/team/add")
@@ -111,7 +113,8 @@ public class TeamRestControllerTest {
         //given
 
         //when
-        teamRestController.perform(post("/api/team/add")
+        teamRestController.perform(
+                post("/api/team/add")
                 .content(mapper.writeValueAsString(invalidTeamDto))
                 .contentType(MediaType.APPLICATION_JSON))
                 //then
@@ -126,28 +129,52 @@ public class TeamRestControllerTest {
     public void givenTeams_whenPutRequestToUpdateATeamWithValidValues_thenJSONWithUpdatedTeamIsReturned() throws Exception {
         //given
         //mocking
+        given(service.updateTeam(alpha.getId(), deltaDto)).willReturn(delta);
+
         //when
-        //then
+        teamRestController.perform(
+                put("/api/team/update/" + alpha.getId())
+                .content(mapper.writeValueAsString(deltaDto))
+                .contentType(MediaType.APPLICATION_JSON))
+                // then
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name", Is.is("Deta")));
+
     }
 
     @Test
     public void givenTeams_whenPutRequestToUpdateATeamWithInvalidValues_thenErrorInJSONFormatIsReturned() throws Exception {
         //given
         //mocking
+
         //when
-        //then
+        teamRestController.perform(put("/api/team/update/" + alpha.getId())
+                .content(mapper.writeValueAsString(invalidTeamDto))
+                .contentType(MediaType.APPLICATION_JSON))
+                // then
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.name", Is.is("team.name.invalid")))
+                .andExpect(jsonPath("$.category", Is.is("team.category.invalid")))
+                .andExpect(jsonPath("$.passengers", Is.is("team.number.of.passengers.invalid")));
+
     }
 
     @Test
     public void givenNoTeams_whenPutRequestToUpdateATeamWithNonExistentId_thenErrorInJSONFormatIsReturned() throws Exception {
         //given
         //mocking
+
         //when
-        //then
+        teamRestController.perform(put("/api/team/update/" + 500)
+                .content(mapper.writeValueAsString(invalidTeamDto))
+                .contentType(MediaType.APPLICATION_JSON))
+                // then
+                .andExpect(status().isNotFound());
     }
 
     @Test
     public void givenTeams_whenDeleteRequestToDeleteATeamWithValidId_thenJSONWithDeletedTeamIsReturned() throws Exception {
+        throw new NotYetImplementedException();
         //given
         //mocking
         //when
@@ -156,6 +183,7 @@ public class TeamRestControllerTest {
 
     @Test
     public void givenNoTeams_whenDeleteRequestToDeleteATeamWithNonExistentId_thenErrorInJSONFormatIsReturned() throws Exception {
+        throw new NotYetImplementedException();
         //given
         //mocking
         //when

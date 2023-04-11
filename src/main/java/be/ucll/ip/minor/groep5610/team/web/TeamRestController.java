@@ -6,6 +6,8 @@ import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -48,10 +50,29 @@ public class TeamRestController {
         } else {
             try {
                 Team team = teamService.createTeam(teamDto);
-                return ResponseEntity.ok().body(team);
+                HttpHeaders headers = new HttpHeaders();
+                headers.setContentType(MediaType.APPLICATION_JSON);
+                return ResponseEntity.ok().headers(headers).body(team);
             } catch (IllegalArgumentException e){
                 return ResponseEntity.badRequest().body(e.getMessage());
             }
+        }
+    }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<?> update(@PathVariable("id") Long id, @Valid @RequestBody TeamDto teamDto){
+        System.out.println(id);
+        System.out.println(teamService.getTeam(id));
+        if (teamService.getTeam(id) != null) {
+            try {
+                teamService.updateTeam(id, teamDto);
+                Team updatedTeam = teamService.getTeam(id);
+                return ResponseEntity.ok().body(updatedTeam);
+            } catch (IllegalArgumentException e){
+                return ResponseEntity.badRequest().body(e.getMessage());
+            }
+        } else {
+            return ResponseEntity.notFound().build();
         }
     }
 
