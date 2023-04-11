@@ -49,10 +49,9 @@ public class TeamRestController {
             return ResponseEntity.badRequest().body(errors);
         } else {
             try {
-                Team team = teamService.createTeam(teamDto);
-                HttpHeaders headers = new HttpHeaders();
-                headers.setContentType(MediaType.APPLICATION_JSON);
-                return ResponseEntity.ok().headers(headers).body(team);
+                teamService.createTeam(teamDto);
+                System.out.println(teamService.getTeams());
+                return ResponseEntity.ok().body(teamService.getTeams());
             } catch (IllegalArgumentException e){
                 return ResponseEntity.badRequest().body(e.getMessage());
             }

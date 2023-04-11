@@ -58,6 +58,8 @@ public class TeamRestControllerTest {
         invalidTeamDto = TeamDtoBuilder.aTeam().withName("").withPassengers(0).withCategory("").build();
     }
 
+    // OVERVIEW
+
     @Test
     public void givenTeams_whenGetRequestToAllTeams_thenJSONWithAllTeamsIsReturned() throws Exception {
         //given
@@ -91,21 +93,26 @@ public class TeamRestControllerTest {
                 .andExpect(jsonPath("$").isEmpty());
     }
 
+    // ADD
+
     @Test
     public void givenNoTeams_whenPostRequestToAddAValidTeam_thenJSONWithAddedTeamIsReturned() throws Exception {
-        //given
+        // given
+        List<Team> teams = Arrays.asList(alpha);
 
-        //mocking
-
+        // mocking
+        given(service.createTeam(alphaDto)).willReturn(alpha);
+        given(service.getTeams()).willReturn(teams);
 
         //when
         teamRestController.perform(post("/api/team/add")
                 .content(mapper.writeValueAsString(alphaDto))
                 .contentType(MediaType.APPLICATION_JSON))
-                //then
+                // then
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.name", Is.is(alphaDto.getName())));
+                .andExpect(jsonPath("$[0].name", Is.is(alphaDto.getName())));
+
     }
 
     @Test
@@ -124,6 +131,8 @@ public class TeamRestControllerTest {
                 .andExpect(jsonPath("$.category", Is.is("team.category.invalid")))
                 .andExpect(jsonPath("$.passengers", Is.is("team.number.of.passengers.invalid")));
     }
+
+    // UPDATE
 
     @Test
     public void givenTeams_whenPutRequestToUpdateATeamWithValidValues_thenJSONWithUpdatedTeamIsReturned() throws Exception {
@@ -172,6 +181,8 @@ public class TeamRestControllerTest {
                 .andExpect(status().isNotFound());
     }
 
+    // DELETE
+
     @Test
     public void givenTeams_whenDeleteRequestToDeleteATeamWithValidId_thenJSONWithDeletedTeamIsReturned() throws Exception {
         //given
@@ -199,6 +210,8 @@ public class TeamRestControllerTest {
                 //then
                 .andExpect(status().isNotFound());
     }
+
+    // SEARCH CATEGORY
 
     @Test
     public void givenTeams_whenGetRequestToSearchTeamsByCategory_thenJSONWithTeamsWithFoundTeamsIsReturned() throws Exception {
@@ -234,6 +247,8 @@ public class TeamRestControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isEmpty());
     }
+
+    // SEARCH PASSENGERS
 
     @Test
     public void givenTeams_whenGetRequestToSearchTeamsWithLessPassengers_thenJSONWithFoundTeamsIsReturned() throws Exception {
