@@ -1,6 +1,7 @@
 package be.ucll.ip.minor.groep5610.boat.web;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 
@@ -22,8 +23,7 @@ public class BoatDto {
         this.id = id;
     }
 
-    @Size(min = 5, message = "name.short")
-    @NotBlank(message = "boat.name.missing")
+    @Size(min = 5, message = "{name.short}")
     public String getName() {
         return name;
     }
@@ -32,7 +32,7 @@ public class BoatDto {
         this.name = name;
     }
 
-    @NotBlank(message = "boat.email.missing")
+    @NotBlank(message = "{boat.email.missing}")
     public String getEmail() {
         return email;
     }
@@ -41,7 +41,8 @@ public class BoatDto {
         this.email = email;
     }
 
-    @Positive(message = "length.must.be.positive")
+    @NotNull(message = "{boat.length.missing}")
+    @Positive(message = "{length.must.be.positive}")
     public Integer getLength() {
         return length;
     }
@@ -50,7 +51,8 @@ public class BoatDto {
         this.length = length;
     }
 
-    @Positive(message = "width.must.be.positive")
+    @NotNull(message = "{boat.width.missing}")
+    @Positive(message = "{width.must.be.positive}")
     public Integer getWidth() {
         return width;
     }
@@ -59,7 +61,8 @@ public class BoatDto {
         this.width = width;
     }
 
-    @Positive(message = "height.must.be.positive")
+    @NotNull(message = "{boat.height.missing}")
+    @Positive(message = "{height.must.be.positive}")
     public Integer getHeight() {
         return height;
     }
@@ -68,7 +71,7 @@ public class BoatDto {
         this.height = height;
     }
 
-    @Size(max = 10, min = 10, message = "insurance.number.incorrect")
+    @Size(max = 10, min = 10, message = "{insurance.number.incorrect}")
     public String getInsuranceNumber() {
         return insuranceNumber;
     }

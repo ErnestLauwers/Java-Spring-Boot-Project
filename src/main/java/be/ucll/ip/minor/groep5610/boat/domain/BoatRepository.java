@@ -8,6 +8,8 @@ import java.util.List;
 
 @Repository
 public interface BoatRepository extends JpaRepository<Boat, Long> {
+    Boat findByNameAndEmail(String name, String email);
+
     @Query("SELECT b from Boat b WHERE b.insuranceNumber LIKE :keyword")
     Boat findBoatByInsurance(String keyword);
 

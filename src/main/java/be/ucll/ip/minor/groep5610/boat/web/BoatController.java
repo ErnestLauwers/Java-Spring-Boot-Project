@@ -74,7 +74,7 @@ public class BoatController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<?> update(@RequestParam("id") Long id, @Valid @RequestBody Boat boat, BindingResult bindingResult) {
+    public ResponseEntity<?> update(@RequestParam("id") Long id, @Valid @RequestBody BoatDto boatDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             List<String> errors = new ArrayList<>();
             for (FieldError error : bindingResult.getFieldErrors()) {
@@ -83,7 +83,7 @@ public class BoatController {
             return ResponseEntity.badRequest().body(errors);
         } else {
             try {
-                boatService.updateBoat(id, boat);
+                boatService.updateBoat(id, boatDto);
                 Boat updatedBoat = boatService.getBoat(id);
                 return ResponseEntity.ok().body(updatedBoat);
             } catch (RuntimeException exc) {

@@ -48,6 +48,15 @@ public class BoatService {
     }
 
     public Boat createBoat(BoatDto dto) {
+        Boat existingBoat = boatRepository.findByNameAndEmail(dto.getName(), dto.getEmail());
+        if (existingBoat != null) {
+            String message = messageSource.getMessage("boat.combination.not.unique", null, null);
+            throw new IllegalArgumentException(message);
+        }
+        if (boatRepository.findBoatByInsurance(dto.getInsuranceNumber()) != null) {
+            String message = messageSource.getMessage("boat.insurance.number.unique", null, null);
+            throw new IllegalArgumentException(message);
+        }
         Boat boat = new Boat();
         boat.setName(dto.getName());
         boat.setEmail(dto.getEmail());
@@ -58,7 +67,25 @@ public class BoatService {
         return boatRepository.save(boat);
     }
 
-    public void updateBoat(Long id, Boat updatedBoat) {
+    public void updateBoat(Long id, BoatDto updatedBoat) {
+        Boat existingBoat = boatRepository.findByNameAndEmail(updatedBoat.getName(), updatedBoat.getEmail());
+        if (existingBoat != null) {
+            if (existingBoat.getId() == id) {
+                existingBoat = null;
+            } else {
+                String message = messageSource.getMessage("boat.combination.not.unique", null, null);
+                throw new IllegalArgumentException(message);
+            }
+        }
+        existingBoat = boatRepository.findBoatByInsurance(updatedBoat.getInsuranceNumber());
+        if (existingBoat != null) {
+            if (existingBoat.getId() == id) {
+                existingBoat = null;
+            } else {
+                String message = messageSource.getMessage("boat.insurance.number.unique", null, null);
+                throw new IllegalArgumentException(message);
+            }
+        }
         Boat oldBoat = getBoat(id);
         if (oldBoat != null) {
             oldBoat.setName(updatedBoat.getName());

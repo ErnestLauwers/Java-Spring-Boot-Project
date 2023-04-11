@@ -22,7 +22,6 @@ public class Boat {
 
     private String insuranceNumber;
 
-
     public long getId() {
         return id;
     }
