@@ -136,8 +136,12 @@ public class TeamRestControllerTest {
     @Test
     public void givenTeams_whenPutRequestToUpdateATeamWithValidValues_thenJSONWithUpdatedTeamIsReturned() throws Exception {
         //given
+        List<Team> teams = Arrays.asList(delta);
+
         //mocking
+        given(service.createTeam(alphaDto)).willReturn(alpha);
         given(service.updateTeam(alpha.getId(), deltaDto)).willReturn(delta);
+        given(service.getTeams()).willReturn(teams);
 
         //when
         teamRestController.perform(
@@ -146,7 +150,7 @@ public class TeamRestControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 // then
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name", Is.is("Deta")));
+                .andExpect(jsonPath("$[0].name", Is.is(deltaDto.getName())));
 
     }
 

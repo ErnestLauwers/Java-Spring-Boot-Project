@@ -50,8 +50,8 @@ public class TeamRestController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<?> update(@PathVariable("id") Long id, @Valid @RequestBody TeamDto teamDto){
-        if (teamService.getTeam(id) != null) {
+    public Iterable<Team> update(@PathVariable("id") Long id, @Valid @RequestBody TeamDto teamDto){
+        /*if (teamService.getTeam(id) != null) {
             try {
                 teamService.updateTeam(id, teamDto);
                 Team updatedTeam = teamService.getTeam(id);
@@ -61,7 +61,9 @@ public class TeamRestController {
             }
         } else {
             return ResponseEntity.notFound().build();
-        }
+        }*/
+        teamService.updateTeam(id, teamDto);
+        return teamService.getTeams();
     }
 
     @DeleteMapping("/delete/{id}")
