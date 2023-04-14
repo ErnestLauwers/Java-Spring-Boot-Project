@@ -236,7 +236,7 @@ public class TeamServiceTest {
         String category = "abcd123";
 
         //mocking
-        when(teamRepository.findByCategory(category)).thenReturn(List.of(teamAlpha));
+        when(teamRepository.findByCategoryIgnoreCase(category)).thenReturn(List.of(teamAlpha));
 
         //when
         List<Team> teams = teamService.getTeamsByCategory(category);
@@ -253,7 +253,7 @@ public class TeamServiceTest {
         String category = "abcd123";
 
         //mocking
-        when(teamRepository.findByCategory(category)).thenReturn(Collections.emptyList());
+        when(teamRepository.findByCategoryIgnoreCase(category)).thenReturn(Collections.emptyList());
 
         //when
         List<Team> teams = teamService.getTeamsByCategory(category);

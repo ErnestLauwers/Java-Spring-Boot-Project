@@ -10,7 +10,7 @@ public interface TeamRepository extends JpaRepository<Team, Long>{
 
     Team findByNameAndCategory(String name, String category);
 
-    List<Team> findByCategory(String category);
+    List<Team> findByCategoryIgnoreCase(String category);
 
     List<Team> findByPassengersLessThanOrderByPassengers(int passengers);
 }

@@ -60,7 +60,7 @@ public class TeamService {
     }
 
     public List<Team> getTeamsByCategory(String category) {
-        return teamRepository.findByCategory(category);
+        return teamRepository.findByCategoryIgnoreCase(category);
     }
 
     public List<Team> getTeamsWithLessPassengersThan(int passengers) {
