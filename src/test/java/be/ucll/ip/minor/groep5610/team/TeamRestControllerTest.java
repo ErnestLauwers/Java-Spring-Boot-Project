@@ -129,6 +129,23 @@ public class TeamRestControllerTest {
                 .andExpect(jsonPath("$.passengers", Is.is("team.number.of.passengers.invalid")));
     }
 
+    @Test
+    public void givenTeams_whenPostRequestToAddATeamWithAlreadyUsedNameAndCategory_thenErrorInJSONFormatIsReturned() throws Exception {
+        //given
+
+        //mocking
+        given(service.createTeam(any())).willThrow(new ServiceException("team.combination.name.and.category.not.unique"));
+
+        //when
+        teamRestController.perform(post("/api/team/add")
+                .content(mapper.writeValueAsString(alphaDto))
+                .contentType(MediaType.APPLICATION_JSON))
+                //then
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.error", Is.is("team.combination.name.and.category.not.unique")));
+    }
+
     // UPDATE
 
     @Test
@@ -162,7 +179,6 @@ public class TeamRestControllerTest {
                 .andExpect(jsonPath("$.name", Is.is("team.name.invalid")))
                 .andExpect(jsonPath("$.category", Is.is("team.category.invalid")))
                 .andExpect(jsonPath("$.passengers", Is.is("team.number.of.passengers.invalid")));
-
     }
 
     @Test
