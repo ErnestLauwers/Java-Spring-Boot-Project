@@ -14,19 +14,19 @@ public class TeamDto {
         return id;
     }
 
-    @Size(min = 5, message = "team.name.invalid")
+    @Size(min = 5, message = "{team.name.invalid}")
     public String getName() {
         return name;
     }
 
-    @Pattern(regexp = "^[a-zA-Z0-9]{7}$", message = "team.category.invalid")
+    @Pattern(regexp = "^[a-zA-Z0-9]{7}$", message = "{team.category.invalid}")
     public String getCategory() {
         return category;
     }
 
-    @NotNull(message = "team.number.of.passengers.missing")
-    @Min(value = 1, message = "team.number.of.passengers.invalid")
-    @Max(value = 12, message = "team.number.of.passengers.invalid")
+    @NotNull(message = "{team.number.of.passengers.missing}")
+    @Min(value = 1, message = "{team.number.of.passengers.invalid}")
+    @Max(value = 12, message = "{team.number.of.passengers.invalid}")
     public Integer getPassengers() {
         return passengers;
     }
