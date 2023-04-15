@@ -124,9 +124,9 @@ public class TeamRestControllerTest {
                 // then
                 .andExpect(status().isBadRequest())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.name", Is.is("team.name.invalid")))
-                .andExpect(jsonPath("$.category", Is.is("team.category.invalid")))
-                .andExpect(jsonPath("$.passengers", Is.is("team.number.of.passengers.invalid")));
+                .andExpect(jsonPath("$.name", Is.is("Team name must be at least 5 characters long")))
+                .andExpect(jsonPath("$.category", Is.is("Category must be a sequence of 7 characters containing only letters (a-z, A-Z) and / or digits (0-9)")))
+                .andExpect(jsonPath("$.passengers", Is.is("Number of passengers must be between 1 and 12")));
     }
 
     @Test
@@ -176,9 +176,9 @@ public class TeamRestControllerTest {
                 // then
                 .andExpect(status().isBadRequest())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.name", Is.is("team.name.invalid")))
-                .andExpect(jsonPath("$.category", Is.is("team.category.invalid")))
-                .andExpect(jsonPath("$.passengers", Is.is("team.number.of.passengers.invalid")));
+                .andExpect(jsonPath("$.name", Is.is("Team name must be at least 5 characters long")))
+                .andExpect(jsonPath("$.category", Is.is("Category must be a sequence of 7 characters containing only letters (a-z, A-Z) and / or digits (0-9)")))
+                .andExpect(jsonPath("$.passengers", Is.is("Number of passengers must be between 1 and 12")));
     }
 
     @Test

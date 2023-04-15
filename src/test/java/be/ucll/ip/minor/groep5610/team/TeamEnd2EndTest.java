@@ -52,9 +52,9 @@ public class TeamEnd2EndTest {
                 .exchange()
                 .expectStatus().isBadRequest()
                 .expectBody()
-                .json("{\"name\": \"team.name.invalid\", "
-                        + "\"category\": \"team.category.invalid\", "
-                        + "\"passengers\": \"team.number.of.passengers.invalid\" }");
+                .json("{\"name\": \"Team name must be at least 5 characters long\", "
+                        + "\"category\": \"Category must be a sequence of 7 characters containing only letters (a-z, A-Z) and / or digits (0-9)\", "
+                        + "\"passengers\": \"Number of passengers must be between 1 and 12\" }");
     }
 
     @Test
@@ -120,9 +120,9 @@ public class TeamEnd2EndTest {
                 .exchange()
                 .expectStatus().isBadRequest()
                 .expectBody()
-                .json("{\"name\": \"team.name.invalid\", "
-                        + "\"category\": \"team.category.invalid\", "
-                        + "\"passengers\": \"team.number.of.passengers.invalid\" }");
+                .json("{\"name\": \"Team name must be at least 5 characters long\", "
+                        + "\"category\": \"Category must be a sequence of 7 characters containing only letters (a-z, A-Z) and / or digits (0-9)\", "
+                        + "\"passengers\": \"Number of passengers must be between 1 and 12\" }");
     }
 
     @Test

@@ -63,7 +63,7 @@ public class TeamDtoTest {
         //then
         assertEquals(violations.size(), 1);
         ConstraintViolation<TeamDto> violation = violations.iterator().next();
-        assertEquals("team.name.invalid", violation.getMessage());
+        assertEquals("{team.name.invalid}", violation.getMessage());
         assertEquals("name", violation.getPropertyPath().toString());
         assertEquals("Beta", violation.getInvalidValue());
     }
@@ -79,7 +79,7 @@ public class TeamDtoTest {
         //then
         assertEquals(violations.size(), 1);
         ConstraintViolation<TeamDto> violation = violations.iterator().next();
-        assertEquals("team.name.invalid", violation.getMessage());
+        assertEquals("{team.name.invalid}", violation.getMessage());
         assertEquals("name", violation.getPropertyPath().toString());
         assertEquals("", violation.getInvalidValue());
     }
@@ -95,7 +95,7 @@ public class TeamDtoTest {
         //then
         assertEquals(violations.size(), 1);
         ConstraintViolation<TeamDto> violation = violations.iterator().next();
-        assertEquals("team.category.invalid", violation.getMessage());
+        assertEquals("{team.category.invalid}", violation.getMessage());
         assertEquals("category", violation.getPropertyPath().toString());
         assertEquals("ABCD1?!", violation.getInvalidValue());
     }
@@ -111,7 +111,7 @@ public class TeamDtoTest {
         //then
         assertEquals(violations.size(), 1);
         ConstraintViolation<TeamDto> violation = violations.iterator().next();
-        assertEquals("team.category.invalid", violation.getMessage());
+        assertEquals("{team.category.invalid}", violation.getMessage());
         assertEquals("category", violation.getPropertyPath().toString());
         assertEquals("123456", violation.getInvalidValue());
     }
@@ -127,7 +127,7 @@ public class TeamDtoTest {
         //then
         assertEquals(violations.size(), 1);
         ConstraintViolation<TeamDto> violation = violations.iterator().next();
-        assertEquals("team.category.invalid", violation.getMessage());
+        assertEquals("{team.category.invalid}", violation.getMessage());
         assertEquals("category", violation.getPropertyPath().toString());
         assertEquals("12345678", violation.getInvalidValue());
     }
@@ -143,7 +143,7 @@ public class TeamDtoTest {
         //then
         assertEquals(violations.size(), 1);
         ConstraintViolation<TeamDto> violation = violations.iterator().next();
-        assertEquals("team.category.invalid", violation.getMessage());
+        assertEquals("{team.category.invalid}", violation.getMessage());
         assertEquals("category", violation.getPropertyPath().toString());
         assertEquals("", violation.getInvalidValue());
     }
@@ -159,7 +159,7 @@ public class TeamDtoTest {
         //then
         assertEquals(violations.size(), 1);
         ConstraintViolation<TeamDto> violation = violations.iterator().next();
-        assertEquals("team.number.of.passengers.invalid", violation.getMessage());
+        assertEquals("{team.number.of.passengers.invalid}", violation.getMessage());
         assertEquals("passengers", violation.getPropertyPath().toString());
         assertEquals(0, violation.getInvalidValue());
     }
@@ -175,7 +175,7 @@ public class TeamDtoTest {
         //then
         assertEquals(violations.size(), 1);
         ConstraintViolation<TeamDto> violation = violations.iterator().next();
-        assertEquals("team.number.of.passengers.invalid", violation.getMessage());
+        assertEquals("{team.number.of.passengers.invalid}", violation.getMessage());
         assertEquals("passengers", violation.getPropertyPath().toString());
         assertEquals(13, violation.getInvalidValue());
     }
@@ -191,7 +191,7 @@ public class TeamDtoTest {
         //then
         assertEquals(violations.size(), 1);
         ConstraintViolation<TeamDto> violation = violations.iterator().next();
-        assertEquals("team.number.of.passengers.missing", violation.getMessage());
+        assertEquals("{team.number.of.passengers.missing}", violation.getMessage());
         assertEquals("passengers", violation.getPropertyPath().toString());
         assertNull(violation.getInvalidValue());
     }
