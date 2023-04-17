@@ -1,8 +1,10 @@
 package be.ucll.ip.minor.groep5610.boat.domain;
 
 import be.ucll.ip.minor.groep5610.boat.web.BoatDto;
+import org.hibernate.service.spi.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -22,13 +24,14 @@ public class BoatService {
     }
 
     public Boat getBoat(Long id) {
-        return boatRepository.findById(id).orElseThrow(() -> new RuntimeException(("Boat with id " + id + " not found")));
+        return boatRepository.findById(id).orElseThrow(() -> new ServiceException(messageSource.getMessage("no.boat.with.this.id", null, LocaleContextHolder.getLocale())));
     }
 
     public Boat getBoatByInsurance(String insuranceNumber) {
         Boat foundBoat = boatRepository.findBoatByInsurance(insuranceNumber);
         if (foundBoat == null) {
-            throw new RuntimeException("There is no Boat with " + insuranceNumber + " as insurance number.");
+            String message = messageSource.getMessage("no.boat.insurance.found", null, LocaleContextHolder.getLocale());
+            throw new ServiceException(message);
         } else {
             return boatRepository.findBoatByInsurance(insuranceNumber);
         }
@@ -41,7 +44,8 @@ public class BoatService {
     public List<Boat> getBoatByHeightWidth(int height, int width) {
         List<Boat> foundBoat = boatRepository.findBoatByHeightWidth(height, width);
         if (foundBoat.isEmpty()) {
-            throw new RuntimeException("There is no Boat with " + height + " as height and " + width + " as width.");
+            String message = messageSource.getMessage("no.height.width.found", null, LocaleContextHolder.getLocale());
+            throw new ServiceException(message);
         } else {
             return boatRepository.findBoatByHeightWidth(height, width);
         }
@@ -51,11 +55,11 @@ public class BoatService {
         Boat existingBoat = boatRepository.findByNameAndEmail(dto.getName(), dto.getEmail());
         if (existingBoat != null) {
             String message = messageSource.getMessage("boat.combination.not.unique", null, null);
-            throw new IllegalArgumentException(message);
+            throw new ServiceException(message);
         }
         if (boatRepository.findBoatByInsurance(dto.getInsuranceNumber()) != null) {
             String message = messageSource.getMessage("boat.insurance.number.unique", null, null);
-            throw new IllegalArgumentException(message);
+            throw new ServiceException(message);
         }
         Boat boat = new Boat();
         boat.setName(dto.getName());
@@ -67,34 +71,24 @@ public class BoatService {
         return boatRepository.save(boat);
     }
 
-    public void updateBoat(Long id, BoatDto updatedBoat) {
-        Boat existingBoat = boatRepository.findByNameAndEmail(updatedBoat.getName(), updatedBoat.getEmail());
-        if (existingBoat != null) {
-            if (existingBoat.getId() == id) {
-                existingBoat = null;
-            } else {
-                String message = messageSource.getMessage("boat.combination.not.unique", null, null);
-                throw new IllegalArgumentException(message);
-            }
+    public void updateBoat(Long id, BoatDto dto) {
+        Boat boat = getBoat(id);
+        Boat existingBoat = boatRepository.findByNameAndEmail(dto.getName(), dto.getEmail());
+        if (existingBoat != null && existingBoat.getId() != id) {
+            String message = messageSource.getMessage("boat.combination.not.unique", null, LocaleContextHolder.getLocale());
+            throw new ServiceException(message);
         }
-        existingBoat = boatRepository.findBoatByInsurance(updatedBoat.getInsuranceNumber());
-        if (existingBoat != null) {
-            if (existingBoat.getId() == id) {
-                existingBoat = null;
-            } else {
-                String message = messageSource.getMessage("boat.insurance.number.unique", null, null);
-                throw new IllegalArgumentException(message);
-            }
+        existingBoat = boatRepository.findBoatByInsurance(dto.getInsuranceNumber());
+        if (existingBoat != null && existingBoat.getId() != id) {
+           String message = messageSource.getMessage("boat.insurance.number.unique", null, LocaleContextHolder.getLocale());
+           throw new ServiceException(message);
         }
-        Boat oldBoat = getBoat(id);
-        if (oldBoat != null) {
-            oldBoat.setName(updatedBoat.getName());
-            oldBoat.setEmail(updatedBoat.getEmail());
-            oldBoat.setLength(updatedBoat.getLength());
-            oldBoat.setWidth(updatedBoat.getWidth());
-            oldBoat.setHeight(updatedBoat.getHeight());
-            oldBoat.setInsuranceNumber(updatedBoat.getInsuranceNumber());
-            boatRepository.save(oldBoat);
-        }
+        boat.setName(dto.getName());
+        boat.setEmail(dto.getEmail());
+        boat.setLength(dto.getLength());
+        boat.setWidth(dto.getWidth());
+        boat.setHeight(dto.getHeight());
+        boat.setInsuranceNumber(dto.getInsuranceNumber());
+        boatRepository.save(boat);
     }
 }

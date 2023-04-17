@@ -31,9 +31,6 @@ public class Boat {
     }
 
     public void setName(String name) {
-        if (name == null || name.isBlank() || name.length() < 5) {
-            throw new IllegalArgumentException();
-        }
         this.name = name;
     }
 
@@ -42,9 +39,6 @@ public class Boat {
     }
 
     public void setEmail(String email) {
-        if (email == null || email.isBlank()) {
-            throw new IllegalArgumentException();
-        }
         this.email = email;
     }
 
@@ -53,9 +47,6 @@ public class Boat {
     }
 
     public void setLength(Integer length) {
-        if (length <= 0) {
-            throw new IllegalArgumentException();
-        }
         this.length = length;
     }
 
@@ -64,9 +55,6 @@ public class Boat {
     }
 
     public void setWidth(Integer width) {
-        if (width <= 0) {
-            throw new IllegalArgumentException();
-        }
         this.width = width;
     }
 
@@ -75,9 +63,6 @@ public class Boat {
     }
 
     public void setHeight(Integer height) {
-        if (height <= 0) {
-            throw new IllegalArgumentException();
-        }
         this.height = height;
     }
 
@@ -86,9 +71,6 @@ public class Boat {
     }
 
     public void setInsuranceNumber(String insuranceNumber) {
-        if (insuranceNumber == null || insuranceNumber.isBlank() || insuranceNumber.length() > 10) {
-            throw new IllegalArgumentException();
-        }
         this.insuranceNumber = insuranceNumber;
     }
 }

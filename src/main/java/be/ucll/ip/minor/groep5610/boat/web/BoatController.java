@@ -7,14 +7,18 @@ import be.ucll.ip.minor.groep5610.regatta.web.RegattaController;
 import be.ucll.ip.minor.groep5610.storage.domain.Storage;
 import be.ucll.ip.minor.groep5610.storage.web.StorageDto;
 import jakarta.validation.Valid;
+import org.hibernate.service.spi.ServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -45,31 +49,34 @@ public class BoatController {
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<?> delete(@RequestParam("id") Long id) {
-        try {
+    public Boat delete(@RequestParam("id") Long id) {
+
             Boat deletedBoat = boatService.getBoat(id);
             boatService.deleteBoatById(id);
-            return ResponseEntity.ok().body(deletedBoat);
+            return deletedBoat;
+
+    }
+
+    @PostMapping("/add")
+    public Boat add(@Valid @RequestBody BoatDto boatDto) {
+        return boatService.createBoat(boatDto);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<?> searchByInsurance(@RequestParam("insurance") String insurance) {
+        try {
+            return ResponseEntity.ok().body(boatService.getBoatByInsurance(insurance));
         } catch (RuntimeException exc) {
             return ResponseEntity.badRequest().body(exc.getMessage());
         }
     }
 
-    @PostMapping("/add")
-    public ResponseEntity<?> add(@Valid @RequestBody BoatDto boatDto, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            List<String> errors = new ArrayList<>();
-            for (FieldError error : bindingResult.getFieldErrors()) {
-                errors.add(error.getDefaultMessage());
-            }
-            return ResponseEntity.badRequest().body(errors);
-        } else {
-            try {
-                Boat newBoat = boatService.createBoat(boatDto);
-                return ResponseEntity.ok().body(newBoat);
-            } catch (IllegalArgumentException exc) {
-                return ResponseEntity.badRequest().body(exc.getMessage());
-            }
+    @GetMapping("/search/{height}/{width}")
+    public ResponseEntity<?> searchByHeightWidth(@PathVariable("height") int height, @PathVariable("width") int width) {
+        try {
+            return ResponseEntity.ok().body(boatService.getBoatByHeightWidth(height, width));
+        } catch (RuntimeException exc) {
+            return ResponseEntity.badRequest().body(exc.getMessage());
         }
     }
 
@@ -89,24 +96,6 @@ public class BoatController {
             } catch (RuntimeException exc) {
                 return ResponseEntity.badRequest().body(exc.getMessage());
             }
-        }
-    }
-
-    @GetMapping("/search")
-    public ResponseEntity<?> searchByInsurance(@RequestParam("insurance") String insurance) {
-        try {
-            return ResponseEntity.ok().body(boatService.getBoatByInsurance(insurance));
-        } catch (RuntimeException exc) {
-            return ResponseEntity.badRequest().body(exc.getMessage());
-        }
-    }
-
-    @GetMapping("/search/{height}/{width}")
-    public ResponseEntity<?> searchByHeightWidth(@PathVariable("height") int height, @PathVariable("width") int width) {
-        try {
-            return ResponseEntity.ok().body(boatService.getBoatByHeightWidth(height, width));
-        } catch (RuntimeException exc) {
-            return ResponseEntity.badRequest().body(exc.getMessage());
         }
     }
 
@@ -141,5 +130,25 @@ public class BoatController {
 
         boatService.createBoat(boat1);
         boatService.createBoat(boat2);
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler({MethodArgumentNotValidException.class, ServiceException.class, ResponseStatusException.class})
+    public Map<String, String> handleValidationExceptions(Exception ex) {
+        Map<String, String> errors = new HashMap<>();
+        if (ex instanceof MethodArgumentNotValidException) {
+            ((MethodArgumentNotValidException)ex).getBindingResult().getAllErrors().forEach((error) -> {
+                String fieldName = ((FieldError) error).getField();
+                String errorMessage = error.getDefaultMessage();
+                errors.put(fieldName, errorMessage);
+            });
+        }
+        else if (ex instanceof ServiceException) {
+            errors.put("error", ex.getMessage());
+        }
+        else {
+            errors.put(((ResponseStatusException) ex).getReason(), ex.getCause().getMessage());
+        }
+        return errors;
     }
 }
