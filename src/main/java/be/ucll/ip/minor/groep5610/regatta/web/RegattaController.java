@@ -192,9 +192,33 @@ public class RegattaController {
         regatta3.setMaxTeams(3);
         regatta3.setCategorie("categorie2");
 
+        RegattaDto regatta4 = new RegattaDto();
+        regatta4.setWedstrijdNaam("wedstrijd4");
+        regatta4.setName("z_club1");
+        regatta4.setDate(LocalDate.now());
+        regatta4.setMaxTeams(5);
+        regatta4.setCategorie("categorie1");
+
+        RegattaDto regatta5 = new RegattaDto();
+        regatta5.setWedstrijdNaam("wedstrijd5");
+        regatta5.setName("e_club2");
+        regatta5.setDate(LocalDate.now().plusDays(5));
+        regatta5.setMaxTeams(3);
+        regatta5.setCategorie("categorie2");
+
+        RegattaDto regatta6 = new RegattaDto();
+        regatta6.setWedstrijdNaam("wedstrijd6");
+        regatta6.setName("y_club2");
+        regatta6.setDate(LocalDate.now().plusDays(1));
+        regatta6.setMaxTeams(3);
+        regatta6.setCategorie("categorie2");
+
         regattaService.createRegatta(regatta1);
         regattaService.createRegatta(regatta2);
         regattaService.createRegatta(regatta3);
+        regattaService.createRegatta(regatta4);
+        regattaService.createRegatta(regatta5);
+        regattaService.createRegatta(regatta6);
     }
 
     private String searchAndSortUrl(RegattaSearchDto searchDto, String sort) {
