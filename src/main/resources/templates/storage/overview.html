@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="~{fragments/head::head(title='storage.overview')}">
 </head>
 <body>
@@ -31,8 +32,8 @@
                     <th>Postcode</th>
                     <th>Ruimte</th>
                     <th><a th:href="@{/storage/sort/height}">Hoogte</a></th>
-                    <th>Wijzig</th>
-                    <th>Verwijder</th>
+                    <th sec:authorize="hasRole('ADMIN')">Wijzig</th>
+                    <th sec:authorize="hasRole('ADMIN')">Verwijder</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -41,8 +42,8 @@
                         <td th:text="${storage.postalCode}"></td>
                         <td th:text="${storage.space}"></td>
                         <td th:text="${storage.height}"></td>
-                        <td><a th:href="@{/storage/update/{id}(id=${storage.id})}" class="btn btn-primary">Wijzig</a></td>
-                        <td><a th:href="@{/storage/delete(id=${storage.id})}" class="btn btn-danger">Verwijder</a></td>
+                        <td sec:authorize="hasRole('ADMIN')"><a th:href="@{/storage/update/{id}(id=${storage.id})}" class="btn btn-primary">Wijzig</a></td>
+                        <td sec:authorize="hasRole('ADMIN')"><a th:href="@{/storage/delete(id=${storage.id})}" class="btn btn-danger">Verwijder</a></td>
                     </tr>
                 </tbody>
             </table>

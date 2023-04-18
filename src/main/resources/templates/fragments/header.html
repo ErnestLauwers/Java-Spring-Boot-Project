@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head></head>
 <body>
 <header>
@@ -15,27 +16,27 @@
               th:classappend="${current == 'home' ? 'active' : ''}">
             <a th:text="#{home}" class="nav-link fs-5" href="/home"></a>
           </li>
-          <li class="nav-item me-5"
+          <li sec:authorize="hasAnyRole('ADMIN', 'USER')" class="nav-item me-5"
           th:classappend="${current == 'regatta-overview' ? 'active' : ''}">
             <a th:text="#{regatta.overview}" class="nav-link fs-5" href="/regatta/overview"></a>
           </li>
-          <li class="nav-item me-5"
+          <li sec:authorize="hasRole('ADMIN')" class="nav-item me-5"
           th:classappend="${current == 'add-regatta' ? 'active' : ''}">
             <a th:text="#{regatta.add}" class="nav-link fs-5" href="/regatta/add"></a>
           </li>
-          <li class="nav-item me-5"
+          <li sec:authorize="hasAnyRole('ADMIN', 'USER')" class="nav-item me-5"
               th:classappend="${current == 'overview-storage' ? 'active' : ''}">
             <a th:text="#{storage.overview}"class="nav-link fs-5" href="/storage/overview"></a>
           </li>
-          <li class="nav-item me-5"
+          <li sec:authorize="hasRole('ADMIN')" class="nav-item me-5"
               th:classappend="${current == 'add-storage' ? 'active' : ''}">
             <a th:text="#{storage.add}" class="nav-link fs-5" href="/storage/add"></a>
           </li>
-          <li class="nav-item me-5"
+          <li sec:authorize="isAnonymous()" class="nav-item me-5"
               th:classappend="${current == 'login' ? 'active' : ''}">
             <a th:text="#{login}" class="nav-link fs-5" href="/login"></a>
           </li>
-          <li class="nav-item me-5">
+          <li sec:authorize="isAuthenticated()" class="nav-item me-5">
             <form method="post" th:action="@{/perform_logout}">
               <input type="submit" value="Logout" class="btn btn-link nav-link fs-5 ">
             </form>

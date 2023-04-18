@@ -47,6 +47,14 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+                .authorizeHttpRequests()
+                .requestMatchers("/regatta/add", "/regatta/update", "/regatta/delete/*").hasRole("ADMIN")
+                .requestMatchers("/storage/add", "/storage/update/*", "/storage/delete").hasRole("ADMIN")
+                .requestMatchers("/regatta/overview", "/storage/overview", "/regatta/searchAndSort", "/storage/search").hasAnyRole("ADMIN", "USER")
+                .requestMatchers("/logout").authenticated()
+                .requestMatchers("/login").anonymous()
+                .requestMatchers("/","/home").permitAll()
+                .and()
                 .formLogin()
                 .loginPage("/login")
                 .loginProcessingUrl("/perform_login")
@@ -57,7 +65,9 @@ public class SecurityConfig {
                 .logoutUrl("/perform_logout")
                 .logoutSuccessUrl("/login")
                 .invalidateHttpSession(true)
-                .deleteCookies("JSESSIONID");
+                .deleteCookies("JSESSIONID")
+                .and()
+                .headers().frameOptions().disable();
         return http.build();
     }
 }
