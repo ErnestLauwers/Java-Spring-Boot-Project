@@ -35,6 +35,11 @@
               th:classappend="${current == 'login' ? 'active' : ''}">
             <a th:text="#{login}" class="nav-link fs-5" href="/login"></a>
           </li>
+          <li class="nav-item me-5">
+            <form method="post" th:action="@{/perform_logout}">
+              <input type="submit" value="Logout" class="btn btn-link nav-link fs-5 ">
+            </form>
+          </li>
           <li class="nav-item dropdown">
             <a th:text="#{lang}" class="nav-link dropdown-toggle fs-5" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             </a>
