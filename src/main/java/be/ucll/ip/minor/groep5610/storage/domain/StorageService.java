@@ -3,6 +3,9 @@ package be.ucll.ip.minor.groep5610.storage.domain;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import be.ucll.ip.minor.groep5610.storage.web.StorageDto;
 
@@ -23,6 +26,17 @@ public class StorageService {
 
     public Storage getStorage(Long id) {
         return storageRepository.findById(id).orElseThrow(() -> new RuntimeException("Stalling met id " + id + " niet gevonden"));
+    }
+
+    public List<Storage> getStorage(int page, int size ) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Storage> storagePage = storageRepository.findAll(pageable);
+        return storagePage.getContent();
+    }
+
+    public int getStorageCount()
+    {
+        return (int)storageRepository.count();
     }
 
     public Storage createStorage(StorageDto dto) {
