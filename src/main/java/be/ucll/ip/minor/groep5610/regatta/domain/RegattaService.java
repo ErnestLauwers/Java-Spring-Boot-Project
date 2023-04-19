@@ -1,15 +1,16 @@
 package be.ucll.ip.minor.groep5610.regatta.domain;
 
 import be.ucll.ip.minor.groep5610.regatta.web.RegattaDto;
+import be.ucll.ip.minor.groep5610.regatta.web.RegattaSearchDto;
 import org.hibernate.service.spi.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDate;
-import java.util.List;
 
 @Service
 public class RegattaService {
@@ -20,8 +21,9 @@ public class RegattaService {
     @Autowired
     private MessageSource messageSource;
 
-    public List<Regatta> getRegattas() {
-        return regattaRepository.findAll();
+    public Page<Regatta> getRegattaPage(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return regattaRepository.findAll(pageable);
     }
 
     public Regatta createRegatta(RegattaDto dto) {
@@ -62,24 +64,33 @@ public class RegattaService {
         regattaRepository.save(regatta);
     }
 
-    public List<Regatta> sort(String sort, String sortDir){
-        if(sortDir.equals("asc")) {
-            return regattaRepository.findAll(Sort.by(Sort.Direction.ASC, sort));
-        } else {
-            return regattaRepository.findAll(Sort.by(Sort.Direction.DESC, sort));
-        }
-    }
+//    public Page<Regatta> sort(int page, int size, String sort, String sortDir){
+//        if(sortDir.equals("asc")) {
+//            return regattaRepository.findAll(PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, sort)));
+//        } else {
+//            return regattaRepository.findAll(PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, sort)));
+//        }
+//    }
+//
+//    public Page<Regatta> searchBy(LocalDate dateAfter, LocalDate dateBefore, String category, int page, int size) {
+//        Pageable pageable = PageRequest.of(page, size);
+//        if (category.isEmpty() && dateAfter == null && dateBefore == null) {
+//            throw new ServiceException(messageSource.getMessage("regatta.search.fields.all.empty", null, LocaleContextHolder.getLocale()));
+//        }
+//        if ((dateAfter == null && dateBefore != null) || (dateBefore == null && dateAfter != null)) {
+//            throw new ServiceException(messageSource.getMessage("regatta.search.dateAfter.or.dateBefore.empty", null, LocaleContextHolder.getLocale()));
+//        }
+//        if (dateAfter != null && dateAfter.isAfter(dateBefore)) {
+//            throw new ServiceException(messageSource.getMessage("regatta.search.dateAfter.is.after.dateBefore", null, LocaleContextHolder.getLocale()));
+//        }
+//        return regattaRepository.searchBy(dateAfter, dateBefore, category, pageable);
+//    }
 
-    public List<Regatta> searchBy(LocalDate dateAfter, LocalDate dateBefore, String category) {
-        if (category.isEmpty() && dateAfter == null && dateBefore == null) {
-            throw new ServiceException(messageSource.getMessage("regatta.search.fields.all.empty", null, LocaleContextHolder.getLocale()));
-        }
-        if ((dateAfter == null && dateBefore != null) || (dateBefore == null && dateAfter != null)) {
-            throw new ServiceException(messageSource.getMessage("regatta.search.dateAfter.or.dateBefore.empty", null, LocaleContextHolder.getLocale()));
-        }
-        if (dateAfter != null && dateAfter.isAfter(dateBefore)) {
+    public Page<Regatta> searchAndSort(RegattaSearchDto searchDto, String sort, String sortDir, int page, int size) {
+        if (searchDto.getDateAfter() != null && searchDto.getDateAfter().isAfter(searchDto.getDateBefore())) {
             throw new ServiceException(messageSource.getMessage("regatta.search.dateAfter.is.after.dateBefore", null, LocaleContextHolder.getLocale()));
         }
-        return regattaRepository.searchBy(dateAfter, dateBefore, category);
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(sortDir), sort));
+        return regattaRepository.searchBy(searchDto.getDateAfter(), searchDto.getDateBefore(), searchDto.getCategory(), pageable);
     }
 }

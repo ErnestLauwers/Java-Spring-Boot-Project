@@ -7,6 +7,7 @@ import org.hibernate.service.spi.ServiceException;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -15,7 +16,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Controller
 public class RegattaController {
@@ -37,15 +37,15 @@ public class RegattaController {
     }
 
     @GetMapping("/regatta/overview")
-    public String overview(Model model){
-        List<Regatta> allRegattas = regattaService.getRegattas();
+    public String overview(@RequestParam(value = "page", defaultValue = "0") int page, @RequestParam(value = "size", defaultValue = "2") int size , Model model){
+        Page<Regatta> regattaPage = regattaService.getRegattaPage(page, size);
 
-        if (allRegattas.isEmpty()) {
+        if (regattaPage.isEmpty()) {
             createSampleData();
-            allRegattas = regattaService.getRegattas();
+            regattaPage = regattaService.getRegattaPage(page, size);
         }
-
-        model.addAttribute("regattas", allRegattas);
+        model.addAttribute("searchDto", new RegattaSearchDto());
+        model.addAttribute("regattas", regattaPage);
         return "regatta/overview";
     }
 
@@ -106,27 +106,52 @@ public class RegattaController {
         }
     }
 
-    @GetMapping(value = "/regatta/sort/{field}")
-    public String orderByName(@PathVariable("field")String field , Model model){
-        if(sortDirAsc) {
-            sortDirAsc = false;
-            List<Regatta> regattas = regattaService.sort(field, "asc");
-            model.addAttribute("regattas", regattas);
-        } else {
-            sortDirAsc = true;
-            List<Regatta> regattas = regattaService.sort(field, "desc");
-            model.addAttribute("regattas", regattas);
-        }
-        //model.addAttribute("sortDir", sortDir);
-        //model.addAttribute("reverseSortDir", sortDir.equals("") || sortDir.equals("asc") ? "desc" : "asc"); // https://www.codejava.net/frameworks/spring-boot/spring-data-jpa-paging-and-sorting-examples
-        return "regatta/overview";
-    }
+//    @GetMapping(value = "/regatta/sort/{field}")
+//    public String orderByName(@PathVariable("field")String field, @RequestParam(value = "page", defaultValue = "0") int page, @RequestParam(value = "size", defaultValue = "1") int size, Model model){
+//        if(sortDirAsc) {
+//            sortDirAsc = false;
+//            Page<Regatta> regattas = regattaService.sort(page, size, field, "asc");
+//            model.addAttribute("regattas", regattas);
+//        } else {
+//            sortDirAsc = true;
+//            Page<Regatta> regattas = regattaService.sort(page, size, field, "desc");
+//            model.addAttribute("regattas", regattas);
+//        }
+//        //model.addAttribute("sortDir", sortDir);
+//        //model.addAttribute("reverseSortDir", sortDir.equals("") || sortDir.equals("asc") ? "desc" : "asc"); // https://www.codejava.net/frameworks/spring-boot/spring-data-jpa-paging-and-sorting-examples
+//        return "regatta/overview";
+//    }
+//
+//    @GetMapping("/regatta/search")
+//    public String search(@RequestParam(value = "dateAfter", required = false) LocalDate dateAfter, @RequestParam(value = "dateBefore", required = false) LocalDate dateBefore, @RequestParam(value = "category", required = false) String category, @RequestParam(value = "page", defaultValue = "0") int page, @RequestParam(value = "size", defaultValue = "1") int size, Model model, RedirectAttributes redirectAttributes){
+//        try {
+//            Page<Regatta> foundRegattas = regattaService.searchBy(dateAfter, dateBefore, category, page, size);
+//            model.addAttribute("regattas", foundRegattas);
+//            return "regatta/overview";
+//        } catch (ServiceException exc) {
+//            redirectAttributes.addFlashAttribute("error", exc.getMessage());
+//            return "redirect:/regatta/overview";
+//        }
+//    }
 
-    @GetMapping("/regatta/search")
-    public String search(@RequestParam(value = "dateAfter", required = false) LocalDate dateAfter, @RequestParam(value = "dateBefore", required = false) LocalDate dateBefore, @RequestParam(value = "category", required = false) String category, Model model, RedirectAttributes redirectAttributes){
+    @GetMapping("/regatta/searchAndSort")
+    public String searchAndSort(@ModelAttribute(value = "searchDto") RegattaSearchDto searchDto,
+                                @RequestParam(value = "sort", defaultValue = "id") String sort,
+                                @RequestParam(value = "page", defaultValue = "0") int page,
+                                @RequestParam(value = "size", defaultValue = "2") int size,
+                                Model model,
+                                RedirectAttributes redirectAttributes) {
         try {
-            List<Regatta> foundRegattas = regattaService.searchBy(dateAfter, dateBefore, category);
-            model.addAttribute("regattas", foundRegattas);
+            if(sortDirAsc) {
+                sortDirAsc = false;
+                Page<Regatta> regattas = regattaService.searchAndSort(searchDto, sort, "asc", page, size);
+                model.addAttribute("regattas", regattas);
+            } else {
+                sortDirAsc = true;
+                Page<Regatta> regattas = regattaService.searchAndSort(searchDto, sort,  "desc", page, size);
+                model.addAttribute("regattas", regattas);
+            }
+            model.addAttribute("searchAndSortUrl", searchAndSortUrl(searchDto, sort));
             return "regatta/overview";
         } catch (ServiceException exc) {
             redirectAttributes.addFlashAttribute("error", exc.getMessage());
@@ -167,8 +192,40 @@ public class RegattaController {
         regatta3.setMaxTeams(3);
         regatta3.setCategorie("categorie2");
 
+        RegattaDto regatta4 = new RegattaDto();
+        regatta4.setWedstrijdNaam("wedstrijd4");
+        regatta4.setName("z_club1");
+        regatta4.setDate(LocalDate.now());
+        regatta4.setMaxTeams(5);
+        regatta4.setCategorie("categorie1");
+
+        RegattaDto regatta5 = new RegattaDto();
+        regatta5.setWedstrijdNaam("wedstrijd5");
+        regatta5.setName("e_club2");
+        regatta5.setDate(LocalDate.now().plusDays(5));
+        regatta5.setMaxTeams(3);
+        regatta5.setCategorie("categorie2");
+
+        RegattaDto regatta6 = new RegattaDto();
+        regatta6.setWedstrijdNaam("wedstrijd6");
+        regatta6.setName("y_club2");
+        regatta6.setDate(LocalDate.now().plusDays(1));
+        regatta6.setMaxTeams(3);
+        regatta6.setCategorie("categorie2");
+
         regattaService.createRegatta(regatta1);
         regattaService.createRegatta(regatta2);
         regattaService.createRegatta(regatta3);
+        regattaService.createRegatta(regatta4);
+        regattaService.createRegatta(regatta5);
+        regattaService.createRegatta(regatta6);
+    }
+
+    private String searchAndSortUrl(RegattaSearchDto searchDto, String sort) {
+        return "/regatta/searchAndSort?"
+                + "sort=" + sort
+                + "&dateAfter=" + searchDto.getDateAfter()
+                + "&dateBefore=" + searchDto.getDateBefore()
+                + "&category=" + searchDto.getCategory();
     }
 }
