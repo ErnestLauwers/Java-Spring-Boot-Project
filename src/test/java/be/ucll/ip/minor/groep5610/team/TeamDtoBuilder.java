@@ -9,8 +9,7 @@ public class TeamDtoBuilder {
     private Integer passengers;
     private String club;
 
-    private TeamDtoBuilder() {
-    }
+    private TeamDtoBuilder() {}
 
     public static TeamDtoBuilder aTeam() {
         return new TeamDtoBuilder();

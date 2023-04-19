@@ -71,7 +71,7 @@ public class BoatService {
         return boatRepository.save(boat);
     }
 
-    public void updateBoat(Long id, BoatDto dto) {
+    public Boat updateBoat(Long id, BoatDto dto) {
         Boat boat = getBoat(id);
         Boat existingBoat = boatRepository.findByNameAndEmail(dto.getName(), dto.getEmail());
         if (existingBoat != null && existingBoat.getId() != id) {
@@ -89,6 +89,6 @@ public class BoatService {
         boat.setWidth(dto.getWidth());
         boat.setHeight(dto.getHeight());
         boat.setInsuranceNumber(dto.getInsuranceNumber());
-        boatRepository.save(boat);
+        return boatRepository.save(boat);
     }
 }

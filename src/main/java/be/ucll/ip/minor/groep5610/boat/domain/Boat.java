@@ -54,6 +54,10 @@ public class Boat {
         return width;
     }
 
+    public void setId(long id) {
+        this.id = id;
+    }
+
     public void setWidth(Integer width) {
         this.width = width;
     }

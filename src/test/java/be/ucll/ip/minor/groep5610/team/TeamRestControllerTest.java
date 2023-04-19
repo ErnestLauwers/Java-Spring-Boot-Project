@@ -247,7 +247,7 @@ public class TeamRestControllerTest {
                 .param("category", category)
                 .contentType(MediaType.APPLICATION_JSON))
                 //then
-                .andExpect(status().isOk())
+                .andExpect(status() .isOk())
                 .andExpect(jsonPath("$[0].name", Is.is(alpha.getName())));
     }
 

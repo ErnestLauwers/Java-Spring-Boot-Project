@@ -33,15 +33,40 @@ public class StorageController {
     }
 
     @GetMapping("/storage/overview")
-    public String overview (Model model) {
-        List<Storage> allStorages = storageService.getStorages();
+    public String overview(
+            @RequestParam(name = "page", required = false,defaultValue = "1") Integer page,
+            @RequestParam(name = "size", required = false,defaultValue = "2") Integer size,
+            Model model) {
 
-        if (allStorages.isEmpty()) {
+        //Make sure there is data to show
+        if(storageService.getStorages().size() == 0){
             createSampleData();
-            allStorages = storageService.getStorages();
         }
 
+        //Make sure the size is not out of bounds
+        if(size < 1){
+            size = 1;
+        }
+
+        //Make sure the pages are not out of bounds
+        page -= 1;
+        int totalPages = (int) Math.ceil(storageService.getStorageCount() / (double) size);
+        if(page < 0){
+            page = 0;
+        }
+        if(page > totalPages){
+            page = totalPages;
+        }
+
+        //Get the data
+        List<Storage> allStorages;
+        allStorages = storageService.getStorage(page, size);
+
+
+        //Send everything to the frontend
         model.addAttribute("storages", allStorages);
+        model.addAttribute("currentPage",page);
+        model.addAttribute("size",size);
         return "/storage/overview";
     }
 

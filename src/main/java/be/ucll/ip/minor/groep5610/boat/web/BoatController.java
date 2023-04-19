@@ -48,18 +48,18 @@ public class BoatController {
         return ResponseEntity.ok().body(boats);
     }
 
-    @DeleteMapping("/delete")
-    public Boat delete(@RequestParam("id") Long id) {
-
-            Boat deletedBoat = boatService.getBoat(id);
-            boatService.deleteBoatById(id);
-            return deletedBoat;
-
-    }
-
     @PostMapping("/add")
     public Boat add(@Valid @RequestBody BoatDto boatDto) {
         return boatService.createBoat(boatDto);
+    }
+
+    @DeleteMapping("/delete")
+    public Boat delete(@RequestParam("id") Long id) {
+
+        Boat deletedBoat = boatService.getBoat(id);
+        boatService.deleteBoatById(id);
+        return deletedBoat;
+
     }
 
     @GetMapping("/search")
@@ -80,23 +80,9 @@ public class BoatController {
         }
     }
 
-    @PutMapping("/update")
-    public ResponseEntity<?> update(@RequestParam("id") Long id, @Valid @RequestBody BoatDto boatDto, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            List<String> errors = new ArrayList<>();
-            for (FieldError error : bindingResult.getFieldErrors()) {
-                errors.add(error.getDefaultMessage());
-            }
-            return ResponseEntity.badRequest().body(errors);
-        } else {
-            try {
-                boatService.updateBoat(id, boatDto);
-                Boat updatedBoat = boatService.getBoat(id);
-                return ResponseEntity.ok().body(updatedBoat);
-            } catch (RuntimeException exc) {
-                return ResponseEntity.badRequest().body(exc.getMessage());
-            }
-        }
+    @PutMapping("/update/{id}")
+    public Boat update(@PathVariable("id") Long id, @Valid @RequestBody BoatDto boatDto) {
+        return boatService.updateBoat(id, boatDto);
     }
 
     public BoatDto toDto(Boat boat) {
