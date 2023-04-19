@@ -12,11 +12,11 @@
           <div th:if="${param.error}" th:text="#{invalid.credentials}" class="alert alert-danger" role="alert"></div>
           <div class="mb-3">
             <label for="username" class="form-label">Username</label>
-            <input type="text" name="username" class="form-control" id="username" aria-describedby="emailHelp">
+            <input type="text" name="username" class="form-control" id="username" aria-describedby="username" placeholder="admin or user">
           </div>
           <div class="mb-3">
             <label for="password" class="form-label">Password</label>
-            <input type="password" name="password" class="form-control" id="password">
+            <input type="password" name="password" class="form-control" id="password" placeholder="t">
           </div>
           <input type="submit" value="Log in" class="btn btn-primary">
         </form>
