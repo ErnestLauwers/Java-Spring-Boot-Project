@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="~{fragments/head::head(title='regatta.overview')}">
 </head>
 <body>
@@ -52,8 +53,8 @@
                     <th><a th:href="@{/regatta/searchAndSort(sort=date, dateAfter=${searchDto.getDateAfter()}, dateBefore=${searchDto.getDateBefore()}, category=${searchDto.category})}">Datum</a></th>
                     <th>Max aantal teams</th>
                     <th>Categorie</th>
-                    <th>Wijzig</th>
-                    <th>Verwijder</th>
+                    <th sec:authorize="hasRole('ADMIN')">Wijzig</th>
+                    <th sec:authorize="hasRole('ADMIN')">Verwijder</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -63,8 +64,8 @@
                     <td th:text="${regatta.date}"></td>
                     <td th:text="${regatta.maxTeams}"></td>
                     <td th:text="${regatta.categorie}"></td>
-                    <td><a th:href="@{/regatta/update(id=${regatta.id})}" class="btn btn-outline-primary">Wijzig</a></td>
-                    <td><a th:href="@{/regatta/delete/{id}(id=${regatta.id})}" class="btn btn-outline-danger">Verwijder</a></td>
+                    <td sec:authorize="hasRole('ADMIN')"><a th:href="@{/regatta/update(id=${regatta.id})}" class="btn btn-outline-primary">Wijzig</a></td>
+                    <td sec:authorize="hasRole('ADMIN')"><a th:href="@{/regatta/delete/{id}(id=${regatta.id})}" class="btn btn-outline-danger">Verwijder</a></td>
                 </tr>
                 </tbody>
             </table>
