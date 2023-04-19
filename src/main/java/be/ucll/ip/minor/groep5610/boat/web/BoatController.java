@@ -80,8 +80,8 @@ public class BoatController {
         }
     }
 
-    @PutMapping("/update/{id}")
-    public Boat update(@PathVariable("id") Long id, @Valid @RequestBody BoatDto boatDto) {
+    @PutMapping("/update")
+    public Boat update(@RequestParam("id") Long id, @Valid @RequestBody BoatDto boatDto) {
         return boatService.updateBoat(id, boatDto);
     }
 

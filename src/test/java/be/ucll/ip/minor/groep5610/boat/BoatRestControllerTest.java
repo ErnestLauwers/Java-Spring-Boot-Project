@@ -135,7 +135,7 @@ public class BoatRestControllerTest {
     public void givenThereAreBoats_whenPutRequestSendToUpdateABoatWithValidValues_thenJSONWithUpdatedBoatIsReturned() throws Exception {
         given(service.updateBoat(eq(validBoat1.getId()), any())).willReturn(validBoat2);
 
-        boatRestController.perform(put("/api/boat/update/" + validBoat1.getId())
+        boatRestController.perform(put("/api/boat/update?id=" + validBoat1.getId())
                         .content(mapper.writeValueAsString(validBoatDto2))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -152,7 +152,7 @@ public class BoatRestControllerTest {
     public void givenThereAreNoBoats_whenPutRequestSendToUpdateABoatWithNonExistentId_thenErrorInJSONFormatIsReturned() throws Exception {
         given(service.updateBoat(eq(validBoat1.getId()), any())).willThrow(new ServiceException("No boat found with this id."));
 
-        boatRestController.perform(put("/api/boat/update/" + validBoat1.getId())
+        boatRestController.perform(put("/api/boat/update?id=" + validBoat1.getId())
                         .content(mapper.writeValueAsString(validBoatDto1))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
@@ -166,7 +166,7 @@ public class BoatRestControllerTest {
     public void givenThereAreBoats_whenDeleteRequestSendToDeleteABoatWithValidId_thenJSONWithDeletedBoatIsReturned() throws Exception {
         given(service.getBoat(validBoat1.getId())).willReturn(validBoat1);
 
-        boatRestController.perform(delete("/api/boat/delete/" + validBoat1.getId())
+        boatRestController.perform(delete("/api/boat/delete?id=" + validBoat1.getId())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -183,7 +183,7 @@ public class BoatRestControllerTest {
     public void givenThereAreNoBoats_whenDeleteRequestSendToDeleteABoatWithNonExistentId_thenErrorInJSONFormatIsReturned() throws Exception {
         given(service.getBoat(123L)).willThrow(new ServiceException("No boat found with this id."));
 
-        boatRestController.perform(delete("/api/boat/delete/" + 123L)
+        boatRestController.perform(delete("/api/boat/delete?id=" + 123)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
