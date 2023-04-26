@@ -3,6 +3,7 @@ package be.ucll.ip.minor.groep5610.team.domain;
 import be.ucll.ip.minor.groep5610.regatta.domain.Regatta;
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -72,5 +73,14 @@ public class Team {
 
     public void addRegisteredIn(Regatta regatta) {
         this.getRegisteredIn().add(regatta);
+    }
+
+    public boolean isAlreadyRegisteredInRegattaOnDate(LocalDate date) {
+        for (Regatta regatta: this.registeredIn) {
+            if (regatta.getDate().equals(date)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

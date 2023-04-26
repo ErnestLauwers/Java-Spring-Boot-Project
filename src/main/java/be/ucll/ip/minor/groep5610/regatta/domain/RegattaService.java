@@ -103,6 +103,10 @@ public class RegattaService {
         Regatta regatta = getRegatta(regattaId);
         Team team = teamService.getTeam(teamId);
 
+        if (team.isAlreadyRegisteredInRegattaOnDate(regatta.getDate())) {
+            throw new ServiceException(messageSource.getMessage("team.already.registered.in.regatta.on.that.day", null, LocaleContextHolder.getLocale()));
+        }
+
         regatta.addTeam(team);
         regattaRepository.save(regatta);
         return team;

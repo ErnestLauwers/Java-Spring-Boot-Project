@@ -4,9 +4,16 @@ import be.ucll.ip.minor.groep5610.regatta.domain.Regatta;
 import be.ucll.ip.minor.groep5610.regatta.domain.RegattaService;
 import be.ucll.ip.minor.groep5610.team.domain.Team;
 import be.ucll.ip.minor.groep5610.team.web.TeamDto;
+import org.hibernate.service.spi.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -39,5 +46,25 @@ public class RegattaTeamRestController {
         dto.setName(regatta.getName());
 
         return dto;
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler({MethodArgumentNotValidException.class, ServiceException.class, ResponseStatusException.class})
+    public Map<String, String> handleValidationExceptions(Exception ex) {
+        Map<String, String> errors = new HashMap<>();
+        if (ex instanceof MethodArgumentNotValidException) {
+            ((MethodArgumentNotValidException)ex).getBindingResult().getAllErrors().forEach((error) -> {
+                String fieldName = ((FieldError) error).getField();
+                String errorMessage = error.getDefaultMessage();
+                errors.put(fieldName, errorMessage);
+            });
+        }
+        else if (ex instanceof ServiceException) {
+            errors.put("error", ex.getMessage());
+        }
+        else {
+            errors.put(((ResponseStatusException) ex).getReason(), ex.getCause().getMessage());
+        }
+        return errors;
     }
 }
