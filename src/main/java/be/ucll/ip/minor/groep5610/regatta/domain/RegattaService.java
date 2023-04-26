@@ -99,11 +99,12 @@ public class RegattaService {
         return regattaRepository.searchBy(searchDto.getDateAfter(), searchDto.getDateBefore(), searchDto.getCategory(), pageable);
     }
 
-    public Regatta addTeamToRegatta(Long teamId, Long regattaId) {
+    public Team addTeamToRegatta(Long teamId, Long regattaId) {
         Regatta regatta = getRegatta(regattaId);
         Team team = teamService.getTeam(teamId);
 
         regatta.addTeam(team);
-        return regattaRepository.save(regatta);
+        regattaRepository.save(regatta);
+        return team;
     }
 }

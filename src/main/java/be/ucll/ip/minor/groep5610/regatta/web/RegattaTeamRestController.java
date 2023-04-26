@@ -3,6 +3,7 @@ package be.ucll.ip.minor.groep5610.regatta.web;
 import be.ucll.ip.minor.groep5610.regatta.domain.Regatta;
 import be.ucll.ip.minor.groep5610.regatta.domain.RegattaService;
 import be.ucll.ip.minor.groep5610.team.domain.Team;
+import be.ucll.ip.minor.groep5610.team.web.TeamDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,26 +17,26 @@ public class RegattaTeamRestController {
     private RegattaService regattaService;
 
     @PostMapping ("/add/team/{teamId}/to/regatta/{regattaId}")
-    public RegattaDto addExistingTeamToRegatta(@PathVariable("teamId") Long teamId, @PathVariable("regattaId") Long regattaId) {
+    public TeamDto addExistingTeamToRegatta(@PathVariable("teamId") Long teamId, @PathVariable("regattaId") Long regattaId) {
         return toDto(regattaService.addTeamToRegatta(teamId, regattaId));
     }
 
-    public static RegattaDto toDto(Regatta regatta) {
-        RegattaDto regattaDto = new RegattaDto();
-        regattaDto.setId(regatta.getId());
-        regattaDto.setRegisteredTeams(regatta.getRegisteredTeams().stream().map(RegattaTeamRestController::toRegattaTeamDto).collect(Collectors.toList()));
-        regattaDto.setWedstrijdNaam(regatta.getWedstrijdNaam());
-        regattaDto.setName(regatta.getName());
-        regattaDto.setDate(regatta.getDate());
-        regattaDto.setMaxTeams(regatta.getMaxTeams());
-        regattaDto.setCategorie(regatta.getCategorie());
-        return regattaDto;
+    public static TeamDto toDto(Team team) {
+        TeamDto dto = new TeamDto();
+        dto.setId(team.getId());
+        dto.setName(team.getName());
+        dto.setCategory(team.getCategory());
+        dto.setPassengers(team.getPassengers());
+        dto.setClub(team.getClub());
+        dto.setRegisteredIn(team.getRegisteredIn().stream().map(RegattaTeamRestController::toRegattaTeamDto).collect(Collectors.toList()));
+
+        return dto;
     }
 
-    public static RegattaTeamDto toRegattaTeamDto(Team team) {
+    public static RegattaTeamDto toRegattaTeamDto(Regatta regatta) {
         RegattaTeamDto dto = new RegattaTeamDto();
 
-        dto.setName(team.getName());
+        dto.setName(regatta.getName());
 
         return dto;
     }
