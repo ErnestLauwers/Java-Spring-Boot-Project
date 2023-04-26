@@ -1,12 +1,20 @@
 package be.ucll.ip.minor.groep5610.team.domain;
 
+import be.ucll.ip.minor.groep5610.regatta.domain.Regatta;
 import jakarta.persistence.*;
+
+import java.util.Set;
+
 @Entity
 @Table(name = "team")
 public class Team {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
+    @ManyToMany(mappedBy = "registeredTeams")
+    private Set<Regatta> registeredIn;
+
     private String name;
     private String category;
     private Integer passengers;

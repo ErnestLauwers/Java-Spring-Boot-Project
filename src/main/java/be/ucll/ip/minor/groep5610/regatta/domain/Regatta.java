@@ -1,8 +1,10 @@
 package be.ucll.ip.minor.groep5610.regatta.domain;
 
+import be.ucll.ip.minor.groep5610.team.domain.Team;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 @Entity
 @Table(name = "regatta")
@@ -10,6 +12,14 @@ public class Regatta {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
+    @ManyToMany
+    @JoinTable(
+            name = "registered_teams",
+            joinColumns = @JoinColumn(name = "regatta_id"),
+            inverseJoinColumns = @JoinColumn(name = "team_id")
+    )
+    private Set<Team> registeredTeams;
 
     // naam wedstrijd
     private String wedstrijdNaam;
