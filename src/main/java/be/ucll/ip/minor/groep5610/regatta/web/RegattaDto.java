@@ -7,9 +7,11 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class RegattaDto {
     private long id;
+    private List<RegattaTeamDto> registeredTeams;
     private String wedstrijdNaam;
     private String name;
     private LocalDate date;
@@ -20,6 +22,10 @@ public class RegattaDto {
 
     public long getId() {
         return id;
+    }
+
+    public List<RegattaTeamDto> getRegisteredTeams() {
+        return registeredTeams;
     }
 
     @NotBlank(message = "wedstrijd.naam.missing")
@@ -53,6 +59,10 @@ public class RegattaDto {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public void setRegisteredTeams(List<RegattaTeamDto> registeredTeams) {
+        this.registeredTeams = registeredTeams;
     }
 
     public void setWedstrijdNaam(String wedstrijdnaam) {

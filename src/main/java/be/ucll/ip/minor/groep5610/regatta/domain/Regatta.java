@@ -4,6 +4,7 @@ import be.ucll.ip.minor.groep5610.team.domain.Team;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -40,6 +41,13 @@ public class Regatta {
 
     public long getId() {
         return id;
+    }
+
+    public Set<Team> getRegisteredTeams() {
+        if (registeredTeams == null) {
+            this.registeredTeams = new HashSet<>();
+        }
+        return registeredTeams;
     }
 
     public String getWedstrijdNaam() {
@@ -91,5 +99,10 @@ public class Regatta {
     public void setCategorie(String categorie) {
         if(categorie.isEmpty() || categorie == null) throw new IllegalArgumentException();
         this.categorie = categorie;
+    }
+
+    public void addTeam(Team team) {
+        this.getRegisteredTeams().add(team);
+        team.addRegisteredIn(this);
     }
 }

@@ -1,9 +1,13 @@
 package be.ucll.ip.minor.groep5610.team.web;
 
+import be.ucll.ip.minor.groep5610.regatta.web.RegattaDto;
 import jakarta.validation.constraints.*;
+
+import java.util.List;
 
 public class TeamDto {
     private long id;
+    private List<RegattaDto> registeredIn;
     private String name;
     private String category;
     private Integer passengers;
@@ -12,6 +16,10 @@ public class TeamDto {
     //GETTERS
     public long getId() {
         return id;
+    }
+
+    public List<RegattaDto> getRegisteredIn() {
+        return registeredIn;
     }
 
     @Size(min = 5, message = "{team.name.invalid}")
@@ -38,6 +46,10 @@ public class TeamDto {
     //SETTERS
     public void setId(long id) {
         this.id = id;
+    }
+
+    public void setRegisteredIn(List<RegattaDto> registeredIn) {
+        this.registeredIn = registeredIn;
     }
 
     public void setName(String name) {

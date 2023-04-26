@@ -2,6 +2,8 @@ package be.ucll.ip.minor.groep5610.regatta.domain;
 
 import be.ucll.ip.minor.groep5610.regatta.web.RegattaDto;
 import be.ucll.ip.minor.groep5610.regatta.web.RegattaSearchDto;
+import be.ucll.ip.minor.groep5610.team.domain.Team;
+import be.ucll.ip.minor.groep5610.team.domain.TeamService;
 import org.hibernate.service.spi.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -17,6 +19,9 @@ public class RegattaService {
 
     @Autowired
     private RegattaRepository regattaRepository;
+
+    @Autowired
+    private TeamService teamService;
 
     @Autowired
     private MessageSource messageSource;
@@ -92,5 +97,13 @@ public class RegattaService {
         }
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(sortDir), sort));
         return regattaRepository.searchBy(searchDto.getDateAfter(), searchDto.getDateBefore(), searchDto.getCategory(), pageable);
+    }
+
+    public Regatta addTeamToRegatta(Long teamId, Long regattaId) {
+        Regatta regatta = getRegatta(regattaId);
+        Team team = teamService.getTeam(teamId);
+
+        regatta.addTeam(team);
+        return regattaRepository.save(regatta);
     }
 }

@@ -3,6 +3,7 @@ package be.ucll.ip.minor.groep5610.team.domain;
 import be.ucll.ip.minor.groep5610.regatta.domain.Regatta;
 import jakarta.persistence.*;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -23,6 +24,13 @@ public class Team {
     //GETTERS
     public long getId() {
         return id;
+    }
+
+    public Set<Regatta> getRegisteredIn() {
+        if (registeredIn == null) {
+            registeredIn = new HashSet<>();
+        }
+        return registeredIn;
     }
 
     public String getName() {
@@ -60,5 +68,9 @@ public class Team {
 
     public void setClub(String club) {
         this.club = club;
+    }
+
+    public void addRegisteredIn(Regatta regatta) {
+        this.getRegisteredIn().add(regatta);
     }
 }
