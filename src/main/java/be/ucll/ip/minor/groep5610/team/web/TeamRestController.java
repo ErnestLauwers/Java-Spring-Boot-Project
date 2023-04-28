@@ -1,5 +1,7 @@
 package be.ucll.ip.minor.groep5610.team.web;
 
+import be.ucll.ip.minor.groep5610.regatta.domain.Regatta;
+import be.ucll.ip.minor.groep5610.regatta.web.RegattaTeamDto;
 import be.ucll.ip.minor.groep5610.team.domain.Team;
 import be.ucll.ip.minor.groep5610.team.domain.TeamService;
 import jakarta.validation.Valid;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/team")
@@ -29,37 +32,38 @@ public class TeamRestController {
     }
 
     @GetMapping("/overview")
-    public ResponseEntity<List<Team>> overview(){
+    public ResponseEntity<List<TeamDto>> overview(){
         List<Team> teams = teamService.getTeams();
 
         if(teams.isEmpty()){
             createSampleData();
             teams = teamService.getTeams();
         }
-        return ResponseEntity.ok().body(teams);
+        return ResponseEntity.ok().body(teams.stream().map(TeamRestController::toDto).collect(Collectors.toList()));
     }
 
     @PostMapping("/add")
-    public Team add(@Valid @RequestBody TeamDto teamDto) {
-        return teamService.createTeam(teamDto);
+    public TeamDto add(@Valid @RequestBody TeamDto teamDto) {
+        return toDto(teamService.createTeam(teamDto));
     }
 
     @PutMapping("/update/{id}")
-    public Team update(@PathVariable("id") Long id, @Valid @RequestBody TeamDto teamDto) {
-        return teamService.updateTeam(id, teamDto);
+    public TeamDto update(@PathVariable("id") Long id, @Valid @RequestBody TeamDto teamDto) {
+        return toDto(teamService.updateTeam(id, teamDto));
     }
 
     @DeleteMapping("/delete/{id}")
-    public Team delete(@PathVariable("id") Long id){
+    public TeamDto delete(@PathVariable("id") Long id){
         Team deletedTeam = teamService.getTeam(id);
         teamService.deleteTeamById(id);
-        return deletedTeam;
+        return toDto(deletedTeam);
     }
 
     @GetMapping("/search")
     public ResponseEntity<?> searchByCategory(@RequestParam("category") String category){
         try {
-            return ResponseEntity.ok().body(teamService.getTeamsByCategory(category));
+            List<Team> teams = teamService.getTeamsByCategory(category);
+            return ResponseEntity.ok().body(teams.stream().map(TeamRestController::toDto).collect(Collectors.toList()));
         } catch (RuntimeException e){
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -68,10 +72,31 @@ public class TeamRestController {
     @GetMapping("/search/{number}")
     public ResponseEntity<?> searchByPassengers(@PathVariable("number") int passengers) {
         try {
-            return ResponseEntity.ok().body(teamService.getTeamsWithLessPassengersThan(passengers));
+            List<Team> teams = teamService.getTeamsWithLessPassengersThan(passengers);
+            return ResponseEntity.ok().body(teams.stream().map(TeamRestController::toDto).collect(Collectors.toList()));
         } catch (RuntimeException e){
             return ResponseEntity.badRequest().body(e.getMessage());
         }
+    }
+
+    public static TeamDto toDto(Team team) {
+        TeamDto dto = new TeamDto();
+        dto.setId(team.getId());
+        dto.setName(team.getName());
+        dto.setCategory(team.getCategory());
+        dto.setPassengers(team.getPassengers());
+        dto.setClub(team.getClub());
+        dto.setRegisteredIn(team.getRegisteredIn().stream().map(TeamRestController::toRegattaTeamDto).collect(Collectors.toList()));
+
+        return dto;
+    }
+
+    public static RegattaTeamDto toRegattaTeamDto(Regatta regatta) {
+        RegattaTeamDto dto = new RegattaTeamDto();
+
+        dto.setName(regatta.getName());
+
+        return dto;
     }
 
     private void createSampleData() {
