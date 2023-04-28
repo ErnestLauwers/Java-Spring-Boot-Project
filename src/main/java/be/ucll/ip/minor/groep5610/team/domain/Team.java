@@ -85,4 +85,8 @@ public class Team {
         }
         return false;
     }
+
+    public void removeRegisteredIn(Regatta regatta) {
+        this.getRegisteredIn().remove(regatta);
+    }
 }

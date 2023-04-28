@@ -105,4 +105,9 @@ public class Regatta {
         this.getRegisteredTeams().add(team);
         team.addRegisteredIn(this);
     }
+
+    public void removeTeam(Team team) {
+        this.getRegisteredTeams().remove(team);
+        team.removeRegisteredIn(this);
+    }
 }

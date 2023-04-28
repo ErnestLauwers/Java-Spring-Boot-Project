@@ -33,6 +33,11 @@ public class RegattaTeamRestController {
         return regattaService.getAllTeamsInRegattaWithId(regattaId);
     }
 
+    @PostMapping("/remove/team/{teamId}/from/regatta/{regattaId}")
+    public TeamDto removeTeamFromRegatta(@PathVariable("teamId") Long teamId, @PathVariable("regattaId") Long regattaId) {
+        return toDto(regattaService.removeTeamFromRegatta(teamId, regattaId));
+    }
+
     public static TeamDto toDto(Team team) {
         TeamDto dto = new TeamDto();
         dto.setId(team.getId());

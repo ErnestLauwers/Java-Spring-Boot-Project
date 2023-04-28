@@ -119,4 +119,13 @@ public class RegattaService {
         Regatta regatta = getRegatta(regattaId);
         return regatta.getRegisteredTeams();
     }
+
+    public Team removeTeamFromRegatta(Long teamId, Long regattaId) {
+        Regatta regatta = getRegatta(regattaId);
+        Team team = teamService.getTeam(teamId);
+
+        regatta.removeTeam(team);
+        regattaRepository.save(regatta);
+        return team;
+    }
 }
