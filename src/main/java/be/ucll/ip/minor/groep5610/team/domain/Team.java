@@ -1,6 +1,7 @@
 package be.ucll.ip.minor.groep5610.team.domain;
 
 import be.ucll.ip.minor.groep5610.regatta.domain.Regatta;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -15,6 +16,7 @@ public class Team {
     private long id;
 
     @ManyToMany(mappedBy = "registeredTeams")
+    @JsonIgnore
     private Set<Regatta> registeredIn;
 
     private String name;

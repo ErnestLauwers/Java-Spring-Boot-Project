@@ -14,6 +14,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.Set;
+
 @Service
 public class RegattaService {
 
@@ -110,5 +112,10 @@ public class RegattaService {
         regatta.addTeam(team);
         regattaRepository.save(regatta);
         return team;
+    }
+
+    public Set<Team> getAllTeamsInRegattaWithId(Long regattaId) {
+        Regatta regatta = getRegatta(regattaId);
+        return regatta.getRegisteredTeams();
     }
 }

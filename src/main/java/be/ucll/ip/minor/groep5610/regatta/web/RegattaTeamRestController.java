@@ -28,6 +28,11 @@ public class RegattaTeamRestController {
         return toDto(regattaService.addTeamToRegatta(teamId, regattaId));
     }
 
+    @GetMapping("/teams")
+    public Iterable<Team> getAllRegisteredTeamsInARegatta(@RequestParam("regattaId") Long regattaId) {
+        return regattaService.getAllTeamsInRegattaWithId(regattaId);
+    }
+
     public static TeamDto toDto(Team team) {
         TeamDto dto = new TeamDto();
         dto.setId(team.getId());
