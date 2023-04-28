@@ -64,7 +64,7 @@ public class RegattaController {
             }
             regattaService.createRegatta(regatta);
             return "redirect:/regatta/overview";
-        } catch (IllegalArgumentException exc) {
+        } catch (ServiceException exc) {
             model.addAttribute("error", exc.getMessage());
             return "regatta/add";
         }
@@ -100,7 +100,7 @@ public class RegattaController {
             }
             regattaService.updateRegatta(dto, regatta);
             return "redirect:/regatta/overview";
-        } catch (IllegalArgumentException exc) {
+        } catch (ServiceException exc) {
             model.addAttribute("error", exc.getMessage());
             return "regatta/update";
         }
