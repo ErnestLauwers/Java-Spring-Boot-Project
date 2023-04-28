@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
 import java.util.Set;
 
 @Service
@@ -108,6 +109,14 @@ public class RegattaService {
 
         if (team.isAlreadyRegisteredInRegattaOnDate(regatta.getDate())) {
             throw new ServiceException(messageSource.getMessage("team.already.registered.in.regatta.on.that.day", null, LocaleContextHolder.getLocale()));
+        }
+
+        if (regatta.getMaxTeams() == regatta.getRegisteredTeams().size()) {
+            throw new ServiceException(messageSource.getMessage("regatta.max.teams.reached", null, LocaleContextHolder.getLocale()));
+        }
+
+        if (!team.getCategory().equals(regatta.getCategorie())) {
+            throw new ServiceException(messageSource.getMessage("team.category.wrong.for.regatta", null, LocaleContextHolder.getLocale()));
         }
 
         regatta.addTeam(team);
