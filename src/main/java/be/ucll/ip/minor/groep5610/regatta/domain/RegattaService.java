@@ -107,6 +107,10 @@ public class RegattaService {
         Regatta regatta = getRegatta(regattaId);
         Team team = teamService.getTeam(teamId);
 
+        if (regatta.getRegisteredTeams().contains(team)) {
+            throw new ServiceException(messageSource.getMessage("team.already.registered.in.this.regatta", null, LocaleContextHolder.getLocale()));
+        }
+
         if (team.isAlreadyRegisteredInRegattaOnDate(regatta.getDate())) {
             throw new ServiceException(messageSource.getMessage("team.already.registered.in.regatta.on.that.day", null, LocaleContextHolder.getLocale()));
         }
@@ -132,6 +136,10 @@ public class RegattaService {
     public Team removeTeamFromRegatta(Long teamId, Long regattaId) {
         Regatta regatta = getRegatta(regattaId);
         Team team = teamService.getTeam(teamId);
+
+        if (!regatta.getRegisteredTeams().contains(team)) {
+            throw new ServiceException(messageSource.getMessage("team.not.registered.in.this.regatta", null, LocaleContextHolder.getLocale()));
+        }
 
         regatta.removeTeam(team);
         regattaRepository.save(regatta);
