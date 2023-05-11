@@ -54,9 +54,9 @@ public class TeamRestController {
 
     @DeleteMapping("/delete/{id}")
     public TeamDto delete(@PathVariable("id") Long id){
-        Team deletedTeam = teamService.getTeam(id);
+        TeamDto deletedTeam = toDto(teamService.getTeam(id));
         teamService.deleteTeamById(id);
-        return toDto(deletedTeam);
+        return deletedTeam;
     }
 
     @GetMapping("/search")
