@@ -57,11 +57,10 @@ public class RegattaService {
     }
 
     public void deleteRegatta(Long id) {
-        System.out.println(getRegatta(id));
-        if (getRegatta(id).getRegisteredTeams() != null){
+        if (getRegatta(id).getRegisteredTeams().size() > 0){
             throw new ServiceException(messageSource.getMessage("regatta.with.registered.teams", null, LocaleContextHolder.getLocale()));
         }
-        //regattaRepository.deleteById(id);
+        regattaRepository.deleteById(id);
     }
 
     public void updateRegatta(RegattaDto dto, Regatta regatta){
