@@ -56,6 +56,9 @@ public class TeamService {
     }
 
     public void deleteTeamById(Long id) {
+        if(getTeam(id).getRegisteredIn().size() > 0){
+            throw new ServiceException(messageSource.getMessage("team.registered.in.regatta", null, LocaleContextHolder.getLocale()));
+        }
         teamRepository.delete(getTeam(id));
     }
 
