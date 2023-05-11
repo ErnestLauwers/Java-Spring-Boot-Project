@@ -9,6 +9,9 @@
         <div class="card">
             <div class="card-body">
                 <h1 th:text="#{regatta.delete}" class="h4 card-title"></h1>
+                <div th:if="${error!=null}" class="alert alert-danger">
+                    <span th:text="${error}"></span>
+                </div>
                 <p class="card-text">Bent u zeker dat u de volgende regatta wilt verwijderen?</p>
                 <ul class="list-unstyled fw-bold">
                     <li>Wedstrijdnaam: <span class="fw-normal" th:text="${regatta.wedstrijdNaam}"></span></li>

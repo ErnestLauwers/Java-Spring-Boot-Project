@@ -4,6 +4,7 @@ import be.ucll.ip.minor.groep5610.regatta.web.RegattaDto;
 import be.ucll.ip.minor.groep5610.regatta.web.RegattaSearchDto;
 import be.ucll.ip.minor.groep5610.team.domain.Team;
 import be.ucll.ip.minor.groep5610.team.domain.TeamService;
+import com.sun.tools.jconsole.JConsoleContext;
 import org.hibernate.service.spi.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -56,7 +57,11 @@ public class RegattaService {
     }
 
     public void deleteRegatta(Long id) {
-        regattaRepository.deleteById(id);
+        System.out.println(getRegatta(id));
+        if (getRegatta(id).getRegisteredTeams() != null){
+            throw new ServiceException(messageSource.getMessage("regatta.with.registered.teams", null, LocaleContextHolder.getLocale()));
+        }
+        //regattaRepository.deleteById(id);
     }
 
     public void updateRegatta(RegattaDto dto, Regatta regatta){
@@ -64,6 +69,9 @@ public class RegattaService {
         if (existingRegatta != null && existingRegatta.getId() != regatta.getId()) {
             String message = messageSource.getMessage("combination.club.datum.wedstrijd.is.not.unique", null, LocaleContextHolder.getLocale());
             throw new ServiceException(message);
+        }
+        if (regatta.getRegisteredTeams() != null){
+            throw new ServiceException(messageSource.getMessage("regatta.with.registered.teams", null, LocaleContextHolder.getLocale()));
         }
         regatta.setWedstrijdNaam(dto.getWedstrijdNaam());
         regatta.setName(dto.getName());

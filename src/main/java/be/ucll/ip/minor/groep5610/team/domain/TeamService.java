@@ -1,5 +1,6 @@
 package be.ucll.ip.minor.groep5610.team.domain;
 
+import be.ucll.ip.minor.groep5610.regatta.domain.Regatta;
 import be.ucll.ip.minor.groep5610.team.web.TeamDto;
 import org.hibernate.service.spi.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -78,9 +78,16 @@ public class RegattaController {
     }
 
     @PostMapping("/regatta/delete/{id}")
-    public String delete(@PathVariable("id") long id) {
-        regattaService.deleteRegatta(id);
-        return "redirect:/regatta/overview";
+    public String deleteConfirm(@PathVariable("id") long id, Model model) {
+        try {
+            regattaService.deleteRegatta(id);
+            return "redirect:/regatta/overview";
+        } catch (ServiceException exc){
+            model.addAttribute("error", exc.getMessage());
+            Regatta regatta = regattaService.getRegatta(id);
+            model.addAttribute("regatta", toDto(regatta));
+            return "regatta/delete-confirmation";
+        }
     }
 
     @GetMapping("/regatta/update")
