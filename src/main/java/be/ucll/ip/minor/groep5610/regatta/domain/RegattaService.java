@@ -69,7 +69,7 @@ public class RegattaService {
             String message = messageSource.getMessage("combination.club.datum.wedstrijd.is.not.unique", null, LocaleContextHolder.getLocale());
             throw new ServiceException(message);
         }
-        if (regatta.getRegisteredTeams() != null){
+        if (regatta.getRegisteredTeams().size() > 0){
             throw new ServiceException(messageSource.getMessage("regatta.with.registered.teams", null, LocaleContextHolder.getLocale()));
         }
         regatta.setWedstrijdNaam(dto.getWedstrijdNaam());
