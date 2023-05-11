@@ -71,8 +71,11 @@ public class RegattaService {
             String message = messageSource.getMessage("combination.club.datum.wedstrijd.is.not.unique", null, LocaleContextHolder.getLocale());
             throw new ServiceException(message);
         }
-        if (regatta.getRegisteredTeams().size() > 0){
-            throw new ServiceException(messageSource.getMessage("regatta.with.registered.teams", null, LocaleContextHolder.getLocale()));
+        if (regatta.getRegisteredTeams().size() > 0 && !Objects.equals(regatta.getCategorie(), dto.getCategorie())){
+            //throw new ServiceException(messageSource.getMessage("regatta.with.registered.teams", null, LocaleContextHolder.getLocale()));
+            for(Team team: regatta.getRegisteredTeams()){
+                removeTeamFromRegatta(team.getId(), regatta.getId());
+            }
         }
         regatta.setWedstrijdNaam(dto.getWedstrijdNaam());
         regatta.setName(dto.getName());
