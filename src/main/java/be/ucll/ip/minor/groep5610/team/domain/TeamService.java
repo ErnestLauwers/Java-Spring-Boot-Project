@@ -48,6 +48,9 @@ public class TeamService {
             String message = messageSource.getMessage("team.combination.name.and.category.not.unique", null, LocaleContextHolder.getLocale());
             throw new ServiceException(message);
         }
+        if(getTeam(id).getRegisteredIn().size() > 0){
+            throw new ServiceException(messageSource.getMessage("team.registered.in.regatta", null, LocaleContextHolder.getLocale()));
+        }
         team.setName(dto.getName());
         team.setCategory(dto.getCategory());
         team.setPassengers(dto.getPassengers());
