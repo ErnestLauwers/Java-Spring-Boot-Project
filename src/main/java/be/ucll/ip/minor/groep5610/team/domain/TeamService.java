@@ -9,6 +9,7 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class TeamService {
@@ -49,11 +50,11 @@ public class TeamService {
             String message = messageSource.getMessage("team.combination.name.and.category.not.unique", null, LocaleContextHolder.getLocale());
             throw new ServiceException(message);
         }
-        if(team.getRegisteredIn().size() > 0){
-            throw new ServiceException(messageSource.getMessage("team.registered.in.regatta", null, LocaleContextHolder.getLocale()));
-            /* for regatta r : team.getRegisteredIn()
-                if(r.getcategory != dto.getcategory) removeTeamFromRegatta
-             */
+        if(team.getRegisteredIn().size() > 0 && !Objects.equals(team.getCategory(), dto.getCategory())){
+            //throw new ServiceException(messageSource.getMessage("team.registered.in.regatta", null, LocaleContextHolder.getLocale()));
+            for(Regatta regatta: team.getRegisteredIn()){
+                regatta.removeTeam(team);
+            }
         }
         team.setName(dto.getName());
         team.setCategory(dto.getCategory());

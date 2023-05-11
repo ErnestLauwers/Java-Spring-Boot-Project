@@ -58,6 +58,7 @@ public class RegattaService {
 
     public void deleteRegatta(Long id) {
         if (getRegatta(id).getRegisteredTeams().size() > 0){
+            // throw new ServiceException(messageSource.getMessage("team.registered.in.regatta", null, LocaleContextHolder.getLocale()));
             for(Team team: getRegatta(id).getRegisteredTeams()){
                 removeTeamFromRegatta(team.getId(), id);
             }
@@ -72,7 +73,7 @@ public class RegattaService {
             throw new ServiceException(message);
         }
         if (regatta.getRegisteredTeams().size() > 0 && !Objects.equals(regatta.getCategorie(), dto.getCategorie())){
-            //throw new ServiceException(messageSource.getMessage("regatta.with.registered.teams", null, LocaleContextHolder.getLocale()));
+            // throw new ServiceException(messageSource.getMessage("team.registered.in.regatta", null, LocaleContextHolder.getLocale()));
             for(Team team: regatta.getRegisteredTeams()){
                 removeTeamFromRegatta(team.getId(), regatta.getId());
             }
