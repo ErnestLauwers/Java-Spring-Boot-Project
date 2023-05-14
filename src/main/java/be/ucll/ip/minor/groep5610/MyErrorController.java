@@ -15,7 +15,7 @@ public class MyErrorController implements ErrorController {
     public String handleError(Model model, HttpServletRequest request) {
         Object status = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
         String message = null;
-        // beter message?
+
         switch(status.toString()) {
             case "401":
                 message = "You are not authorized (" + status + ")";

@@ -1,6 +1,6 @@
 package be.ucll.ip.minor.groep5610.team;
 
-import be.ucll.ip.minor.groep5610.team.domain.Team;
+import be.ucll.ip.minor.groep5610.team.web.TeamDto;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,7 +83,7 @@ public class TeamEnd2EndTest {
     @Test
     public void validateThatA200IsReturnedWithUpdatedTeamWhenValidValuesAreUsedWhenUpdatingATeam() {
         // add team
-        Team addedTeam = addValidTeam("Alpha", "AbCd123", 5, "ClubA");
+        TeamDto addedTeam = addValidTeam("Alpha", "AbCd123", 5, "ClubA");
 
         // update team with valid values
         TeamBodyValue value = new TeamBodyValue();
@@ -107,7 +107,7 @@ public class TeamEnd2EndTest {
     @Test
     public void validateThatA400IsReturnedWhenNonValidValuesAreUsedWhenUpdatingATeam() {
         // add team
-        Team addedTeam = addValidTeam("Alpha", "AbCd123", 5, "ClubA");
+        TeamDto addedTeam = addValidTeam("Alpha", "AbCd123", 5, "ClubA");
 
         // update team with invalid values
         TeamBodyValue invalidValue = new TeamBodyValue();
@@ -147,7 +147,7 @@ public class TeamEnd2EndTest {
     @Test
     public void validateThatA200IsReturnedWithTheDeletedTeamWhenDeletingATeam() {
         // add team
-        Team addedTeam = addValidTeam("Alpha", "AbCd123", 5, "ClubA");
+        TeamDto addedTeam = addValidTeam("Alpha", "AbCd123", 5, "ClubA");
 
         // delete the added team
         client.delete()
@@ -204,7 +204,7 @@ public class TeamEnd2EndTest {
                         "{\"name\": \"Alpha\", " + "\"category\" :  \"AbCd123\", " + "\"passengers\": 5, " + "\"club\": \"ClubA\"}]");
     }
 
-    public Team addValidTeam(String name, String category, Integer passengers, String club) {
+    public TeamDto addValidTeam(String name, String category, Integer passengers, String club) {
         TeamBodyValue value = new TeamBodyValue();
         value.name = name;
         value.category = category;
@@ -216,7 +216,7 @@ public class TeamEnd2EndTest {
                 .bodyValue(value)
                 .exchange()
                 .expectStatus().isOk()
-                .expectBody(Team.class)
+                .expectBody(TeamDto.class)
                 .returnResult()
                 .getResponseBody();
     }

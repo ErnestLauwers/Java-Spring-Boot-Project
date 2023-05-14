@@ -4,7 +4,6 @@ import be.ucll.ip.minor.groep5610.regatta.web.RegattaDto;
 import be.ucll.ip.minor.groep5610.regatta.web.RegattaSearchDto;
 import be.ucll.ip.minor.groep5610.team.domain.Team;
 import be.ucll.ip.minor.groep5610.team.domain.TeamService;
-import com.sun.tools.jconsole.JConsoleContext;
 import org.hibernate.service.spi.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -85,28 +84,6 @@ public class RegattaService {
         regatta.setCategorie(dto.getCategorie());
         regattaRepository.save(regatta);
     }
-
-//    public Page<Regatta> sort(int page, int size, String sort, String sortDir){
-//        if(sortDir.equals("asc")) {
-//            return regattaRepository.findAll(PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, sort)));
-//        } else {
-//            return regattaRepository.findAll(PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, sort)));
-//        }
-//    }
-//
-//    public Page<Regatta> searchBy(LocalDate dateAfter, LocalDate dateBefore, String category, int page, int size) {
-//        Pageable pageable = PageRequest.of(page, size);
-//        if (category.isEmpty() && dateAfter == null && dateBefore == null) {
-//            throw new ServiceException(messageSource.getMessage("regatta.search.fields.all.empty", null, LocaleContextHolder.getLocale()));
-//        }
-//        if ((dateAfter == null && dateBefore != null) || (dateBefore == null && dateAfter != null)) {
-//            throw new ServiceException(messageSource.getMessage("regatta.search.dateAfter.or.dateBefore.empty", null, LocaleContextHolder.getLocale()));
-//        }
-//        if (dateAfter != null && dateAfter.isAfter(dateBefore)) {
-//            throw new ServiceException(messageSource.getMessage("regatta.search.dateAfter.is.after.dateBefore", null, LocaleContextHolder.getLocale()));
-//        }
-//        return regattaRepository.searchBy(dateAfter, dateBefore, category, pageable);
-//    }
 
     public Page<Regatta> searchAndSort(RegattaSearchDto searchDto, String sort, String sortDir, int page, int size) {
         if (searchDto.getDateAfter() != null && searchDto.getDateAfter().isAfter(searchDto.getDateBefore())) {

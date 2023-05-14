@@ -45,7 +45,7 @@ public class RegattaTeamRestController {
         dto.setCategory(team.getCategory());
         dto.setPassengers(team.getPassengers());
         dto.setClub(team.getClub());
-        dto.setRegisteredIn(team.getRegisteredIn().stream().map(RegattaTeamRestController::toRegattaTeamDto).collect(Collectors.toList()));
+        dto.setRegattaNames(team.getRegisteredIn().stream().map(RegattaTeamRestController::toRegattaTeamDto).collect(Collectors.toList()));
 
         return dto;
     }

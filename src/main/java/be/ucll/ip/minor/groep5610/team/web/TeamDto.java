@@ -11,18 +11,20 @@ public class TeamDto {
     private String category;
     private Integer passengers;
     private String club;
-    private List<RegattaTeamDto> registeredIn;
+    private List<RegattaTeamDto> regattaNames;
 
     //GETTERS
     public long getId() {
         return id;
     }
 
+    @NotNull(message = "{team.name.mandatory}")
     @Size(min = 5, message = "{team.name.invalid}")
     public String getName() {
         return name;
     }
 
+    @NotNull(message = "{team.category.mandatory}")
     @Pattern(regexp = "^[a-zA-Z0-9]{7}$", message = "{team.category.invalid}")
     public String getCategory() {
         return category;
@@ -39,8 +41,8 @@ public class TeamDto {
         return club;
     }
 
-    public List<RegattaTeamDto> getRegisteredIn() {
-        return registeredIn;
+    public List<RegattaTeamDto> getRegattaNames() {
+        return regattaNames;
     }
 
     //SETTERS
@@ -64,7 +66,7 @@ public class TeamDto {
         this.club = club;
     }
 
-    public void setRegisteredIn(List<RegattaTeamDto> registeredIn) {
-        this.registeredIn = registeredIn;
+    public void setRegattaNames(List<RegattaTeamDto> regattaNames) {
+        this.regattaNames = regattaNames;
     }
 }

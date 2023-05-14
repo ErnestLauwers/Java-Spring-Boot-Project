@@ -10,6 +10,11 @@ public class MainController {
 
     private static Logger LOGGER = LoggerFactory.getLogger(MainController.class);
 
+    @GetMapping("/home")
+    public String index(){
+        return "index";
+    }
+
     @GetMapping("/login")
     public String login() {
         return "login";

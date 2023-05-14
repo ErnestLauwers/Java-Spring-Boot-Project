@@ -1,6 +1,7 @@
 package be.ucll.ip.minor.groep5610.regatta.domain;
 
 import be.ucll.ip.minor.groep5610.team.domain.Team;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -20,6 +21,7 @@ public class Regatta {
             joinColumns = @JoinColumn(name = "regatta_id"),
             inverseJoinColumns = @JoinColumn(name = "team_id")
     )
+    @JsonManagedReference
     private Set<Team> registeredTeams;
 
     // naam wedstrijd
