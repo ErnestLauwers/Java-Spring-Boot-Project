@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.Iterator;
 import java.util.Objects;
 import java.util.Set;
 
@@ -78,7 +79,19 @@ public class RegattaService {
             }
         }
         if(regatta.getMaxTeams() > dto.getMaxTeams()){
-            throw new ServiceException(messageSource.getMessage("regatta.with.registered.teams", null, LocaleContextHolder.getLocale()));
+            //throw new ServiceException(messageSource.getMessage("regatta.with.registered.teams", null, LocaleContextHolder.getLocale()));
+            int i = regatta.getMaxTeams();
+            Set<Team> registeredTeams = regatta.getRegisteredTeams();
+            Iterator<Team> iterator = registeredTeams.iterator();
+
+            while (iterator.hasNext()) {
+                if (i <= dto.getMaxTeams()) {
+                    break;
+                }
+                iterator.next();
+                iterator.remove();
+                i--;
+            }
         }
         regatta.setWedstrijdNaam(dto.getWedstrijdNaam());
         regatta.setName(dto.getName());
