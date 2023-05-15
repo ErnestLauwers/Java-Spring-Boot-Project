@@ -72,10 +72,13 @@ public class RegattaService {
             throw new ServiceException(message);
         }
         if (regatta.getRegisteredTeams().size() > 0 && !Objects.equals(regatta.getCategorie(), dto.getCategorie())){
-            // throw new ServiceException(messageSource.getMessage("team.registered.in.regatta", null, LocaleContextHolder.getLocale()));
+            // throw new ServiceException(messageSource.getMessage("regatta.with.registered.teams", null, LocaleContextHolder.getLocale()));
             for(Team team: regatta.getRegisteredTeams()){
                 removeTeamFromRegatta(team.getId(), regatta.getId());
             }
+        }
+        if(regatta.getMaxTeams() > dto.getMaxTeams()){
+            throw new ServiceException(messageSource.getMessage("regatta.with.registered.teams", null, LocaleContextHolder.getLocale()));
         }
         regatta.setWedstrijdNaam(dto.getWedstrijdNaam());
         regatta.setName(dto.getName());
