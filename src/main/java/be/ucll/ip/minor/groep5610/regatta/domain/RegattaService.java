@@ -78,9 +78,9 @@ public class RegattaService {
                 removeTeamFromRegatta(team.getId(), regatta.getId());
             }
         }
-        if(regatta.getMaxTeams() > dto.getMaxTeams()){
+        if(regatta.getRegisteredTeams().size() > dto.getMaxTeams()){
             //throw new ServiceException(messageSource.getMessage("regatta.with.registered.teams", null, LocaleContextHolder.getLocale()));
-            int i = regatta.getMaxTeams();
+            int i = regatta.getRegisteredTeams().size();
             Set<Team> registeredTeams = regatta.getRegisteredTeams();
             Iterator<Team> iterator = registeredTeams.iterator();
 
