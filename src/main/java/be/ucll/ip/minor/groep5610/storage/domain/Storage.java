@@ -1,10 +1,16 @@
 package be.ucll.ip.minor.groep5610.storage.domain;
 
+import be.ucll.ip.minor.groep5610.boat.domain.Boat;
 import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 @Table(name = "storage")
 public class Storage {
+
+    @OneToMany(mappedBy = "storage")
+    private List<Boat> boats;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,6 +23,10 @@ public class Storage {
     private Integer space;
 
     private Integer height;
+
+    public List<Boat> getBoats() {
+        return boats;
+    }
 
     public long getId() {
         return id;
@@ -62,4 +72,13 @@ public class Storage {
         this.height = height;
     }
 
+    public void addBoat(Boat boat) {
+        this.getBoats().add(boat);
+        boat.setStorage(this);
+    }
+
+    public void removeBoat(Boat boat) {
+        this.getBoats().remove(boat);
+        boat.setStorage(null);
+    }
 }

@@ -38,6 +38,8 @@ public class BoatService {
     }
 
     public void deleteBoatById(Long id) {
+        Boat boat = getBoat(id);
+        boat.getStorage().removeBoat(boat);
         boatRepository.deleteById(id);
     }
 
@@ -82,6 +84,32 @@ public class BoatService {
         if (existingBoat != null && existingBoat.getId() != id) {
            String message = messageSource.getMessage("boat.insurance.number.unique", null, LocaleContextHolder.getLocale());
            throw new ServiceException(message);
+        }
+        if (boat.getStorage() != null && dto.getHeight() > boat.getStorage().getHeight()) {
+            String message = messageSource.getMessage("updated.boat.height.larger.than.storage.height", null, LocaleContextHolder.getLocale());
+            throw new ServiceException(message);
+        }
+        if (boat.getStorage() != null) {
+            int requiredSpace = dto.getLength() * dto.getWidth();
+            int occupiedSpace = 0;
+            List<Boat> tempList = boat.getStorage().getBoats();
+            tempList.remove(boat);
+            for (Boat b : tempList) {
+                occupiedSpace += b.getLength() * b.getWidth();
+            }
+            int availableSpace = (int) (boat.getStorage().getSpace() * 0.8) - occupiedSpace;
+
+            if (requiredSpace > availableSpace) {
+                String message = messageSource.getMessage("updated.boat.doesnt.fit.in.storage", null, LocaleContextHolder.getLocale());
+                throw new ServiceException(message);
+            }
+
+            for (Boat b : tempList) {
+                if (b.getEmail().equals(dto.getEmail())) {
+                    String message = messageSource.getMessage("updated.boat.owner.already.has.boat.in.storage", null, LocaleContextHolder.getLocale());
+                    throw new ServiceException(message);
+                }
+            }
         }
         boat.setName(dto.getName());
         boat.setEmail(dto.getEmail());

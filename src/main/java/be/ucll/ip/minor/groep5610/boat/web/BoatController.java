@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/boat")
@@ -39,26 +40,26 @@ public class BoatController {
     }
 
     @GetMapping("/overview")
-    public ResponseEntity<List<Boat>> overview() {
+    public ResponseEntity<List<BoatDto>> overview() {
         List<Boat> boats = boatService.getAllBoats();
         if (boats.isEmpty()) {
             createSampleData();
             boats = boatService.getAllBoats();
         }
-        return ResponseEntity.ok().body(boats);
+        return ResponseEntity.ok().body(boats.stream().map(BoatController::toDto).collect(Collectors.toList()));
     }
 
     @PostMapping("/add")
-    public Boat add(@Valid @RequestBody BoatDto boatDto) {
-        return boatService.createBoat(boatDto);
+    public BoatDto add(@Valid @RequestBody BoatDto boatDto) {
+        return toDto(boatService.createBoat(boatDto));
     }
 
     @DeleteMapping("/delete")
-    public Boat delete(@RequestParam("id") Long id) {
+    public BoatDto delete(@RequestParam("id") Long id) {
 
         Boat deletedBoat = boatService.getBoat(id);
         boatService.deleteBoatById(id);
-        return deletedBoat;
+        return toDto(deletedBoat);
 
     }
 
@@ -81,11 +82,11 @@ public class BoatController {
     }
 
     @PutMapping("/update")
-    public Boat update(@RequestParam("id") Long id, @Valid @RequestBody BoatDto boatDto) {
-        return boatService.updateBoat(id, boatDto);
+    public BoatDto update(@RequestParam("id") Long id, @Valid @RequestBody BoatDto boatDto) {
+        return toDto(boatService.updateBoat(id, boatDto));
     }
 
-    public BoatDto toDto(Boat boat) {
+    public static BoatDto toDto(Boat boat) {
         BoatDto boatDto = new BoatDto();
         boatDto.setId(boat.getId());
         boatDto.setName(boat.getName());
@@ -94,6 +95,11 @@ public class BoatController {
         boatDto.setWidth(boat.getWidth());
         boatDto.setHeight(boat.getHeight());
         boatDto.setInsuranceNumber(boat.getInsuranceNumber());
+        if (boat.getStorage() == null) {
+            boatDto.setStorageName("unknown");
+        } else {
+            boatDto.setStorageName(boat.getStorage().getName());
+        }
         return boatDto;
     }
 

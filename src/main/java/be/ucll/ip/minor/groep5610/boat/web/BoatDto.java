@@ -1,5 +1,6 @@
 package be.ucll.ip.minor.groep5610.boat.web;
 
+import be.ucll.ip.minor.groep5610.storage.domain.Storage;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -14,6 +15,7 @@ public class BoatDto {
     private Integer width;
     private Integer height;
     private String insuranceNumber;
+    private String storageName;
 
     public long getId() {
         return id;
@@ -21,6 +23,14 @@ public class BoatDto {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public void setStorageName(String name) {
+        this.storageName = name;
+    }
+
+    public String getStorageName() {
+        return this.storageName;
     }
 
     @Size(min = 5, message = "{name.short}")

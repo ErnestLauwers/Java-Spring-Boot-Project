@@ -1,10 +1,17 @@
 package be.ucll.ip.minor.groep5610.boat.domain;
 
+import be.ucll.ip.minor.groep5610.storage.domain.Storage;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "boat")
 public class Boat {
+
+    @ManyToOne
+    @JoinColumn(name = "storage_id")
+    @JsonBackReference
+    private Storage storage;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,6 +29,13 @@ public class Boat {
 
     private String insuranceNumber;
 
+    public Storage getStorage() {
+        return storage;
+    }
+
+    public void setStorage(Storage storage) {
+        this.storage = storage;
+    }
     public long getId() {
         return id;
     }
