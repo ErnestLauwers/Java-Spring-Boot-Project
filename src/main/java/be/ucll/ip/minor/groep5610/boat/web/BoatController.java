@@ -66,7 +66,7 @@ public class BoatController {
     @GetMapping("/search")
     public ResponseEntity<?> searchByInsurance(@RequestParam("insurance") String insurance) {
         try {
-            return ResponseEntity.ok().body(boatService.getBoatByInsurance(insurance));
+            return ResponseEntity.ok().body(toDto(boatService.getBoatByInsurance(insurance)));
         } catch (RuntimeException exc) {
             return ResponseEntity.badRequest().body(exc.getMessage());
         }
@@ -75,7 +75,7 @@ public class BoatController {
     @GetMapping("/search/{height}/{width}")
     public ResponseEntity<?> searchByHeightWidth(@PathVariable("height") int height, @PathVariable("width") int width) {
         try {
-            return ResponseEntity.ok().body(boatService.getBoatByHeightWidth(height, width));
+            return ResponseEntity.ok().body(boatService.getBoatByHeightWidth(height, width).stream().map(BoatController::toDto).collect(Collectors.toList()));
         } catch (RuntimeException exc) {
             return ResponseEntity.badRequest().body(exc.getMessage());
         }
