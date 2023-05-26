@@ -39,7 +39,7 @@ public class StorageBoatController {
         return storageService.getAllBoatsInStorage(storageId).stream().map(StorageBoatController::toDto).collect(Collectors.toList());
     }
 
-    @DeleteMapping ("/remove/boat/{boatId}/from/storage/{storageId}")
+    @PostMapping ("/remove/boat/{boatId}/from/storage/{storageId}")
     public BoatDto removeBoatFromStorage(@PathVariable("boatId") Long boatId, @PathVariable("storageId") Long storageId) {
         return toDto(storageService.removeBoatFromStorage(boatId, storageId));
     }
