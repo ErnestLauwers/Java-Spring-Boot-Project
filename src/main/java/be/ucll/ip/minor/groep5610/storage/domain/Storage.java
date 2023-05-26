@@ -9,12 +9,12 @@ import java.util.List;
 @Table(name = "storage")
 public class Storage {
 
-    @OneToMany(mappedBy = "storage")
-    private List<Boat> boats;
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
+    @OneToMany(mappedBy = "storage")
+    private List<Boat> boats;
 
     private String name;
 

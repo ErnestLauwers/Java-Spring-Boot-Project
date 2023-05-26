@@ -1,6 +1,7 @@
 package be.ucll.ip.minor.groep5610.storage.web;
 
 import be.ucll.ip.minor.groep5610.boat.domain.Boat;
+import be.ucll.ip.minor.groep5610.boat.web.BoatController;
 import be.ucll.ip.minor.groep5610.boat.web.BoatDto;
 import be.ucll.ip.minor.groep5610.storage.domain.StorageService;
 import org.hibernate.service.spi.ServiceException;
@@ -15,6 +16,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/storage-boat")
@@ -33,8 +35,8 @@ public class StorageBoatController {
     }
 
     @GetMapping ("/boats")
-    public List<Boat> getAllBoatsInStorage(@RequestParam("storageId") Long storageId) {
-        return storageService.getAllBoatsInStorage(storageId);
+    public List<BoatDto> getAllBoatsInStorage(@RequestParam("storageId") Long storageId) {
+        return storageService.getAllBoatsInStorage(storageId).stream().map(StorageBoatController::toDto).collect(Collectors.toList());
     }
 
     @DeleteMapping ("/remove/boat/{boatId}/from/storage/{storageId}")

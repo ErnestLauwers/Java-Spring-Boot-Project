@@ -8,14 +8,14 @@ import jakarta.persistence.*;
 @Table(name = "boat")
 public class Boat {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
     @ManyToOne
     @JoinColumn(name = "storage_id")
     @JsonBackReference
     private Storage storage;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
 
     private String name;
 
